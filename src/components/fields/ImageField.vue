@@ -7,6 +7,7 @@
                 <div class="ui fluid card">
                     <div class="image">
                         <img :src="croppedImage" v-if="croppedImage" class="ui image">
+                        <img :src="'/uploads/' + selection" v-else-if="!hasCropper" class="ui image">
                         <image-cropper v-else :src="'/uploads/' + selection" :width="width"
                                        :height="height" @crop="onCrop"></image-cropper>
                     </div>
@@ -53,9 +54,9 @@
         },
 
         data() {
-            let uncachedURL = null;
+            let croppedImage = null;
             if (this.value && this.value.url) {
-                uncachedURL = this.value.url;
+                croppedImage = this.value.url;
             }
 
             let filename = (this.value ? this.value.filename : null) || null;
@@ -63,7 +64,7 @@
             return {
                 openFileManager: false,
                 selection: filename,
-                croppedImage: uncachedURL,
+                croppedImage: croppedImage,
             }
         },
 
@@ -73,8 +74,10 @@
             },
 
             onSelectFile(file) {
-                console.log(file);
                 this.selection = file;
+                this.$emit('input', {
+                    filename: this.selection
+                });
             },
 
             onDeselectFile() {
@@ -102,6 +105,9 @@
         },
 
         computed: {
+            hasCropper() {
+                return this.options && this.options.crop;
+            },
             width() {
                 if (this.options && this.options.width) return this.options.width;
                 return 100;

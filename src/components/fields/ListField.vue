@@ -2,14 +2,14 @@
     <div class="field">
         <label>{{ label }}</label>
         <div :class="{'top attached': !displayAsCards}" class="ui menu">
-            <a class="item" v-for="block in options.blocks" @click="addBlock(block.type)">
+            <a class="item" v-for="block in options.blocks" @click="addBlock(block.type)" :key="block.type">
                 <i class="add icon"></i> {{ block.name }}
             </a>
         </div>
 
         <div :class="{'ui cards': displayAsCards, 'ui attached segment': !displayAsCards}">
             <div :class="{'card': displayAsCards, 'ui vertical segment': !displayAsCards}"
-                 v-for="(block, $index) in blocksWithFields" :key="getKey(block)" v-if="block">
+                 v-for="(block, $index) in blocksWithFields" :key="block.key" v-if="block">
                 <div class="content">
                     <div class="header">
                         <strong>{{ getBlockName(block.type) }}</strong>
@@ -18,6 +18,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="content">
                     <field :type="field.type"
                            :label="field.name"
@@ -59,7 +60,7 @@
 
         data() {
             return {
-                blocks: [...this.value]
+                blocks: this.value ? [...this.value] : []
             }
         },
 
@@ -74,6 +75,7 @@
                 this.blocks.push({
                     type: type,
                     value: {},
+                    key: (Math.random()*9999999)|0
                 });
                 this.emitInput();
             },
@@ -88,22 +90,21 @@
             },
             emitInput() {
                 this.$emit('input', [...this.blocks]);
-            },
-            getKey(block) {
-                if (!block) return null;
-
-                // TODO: Use a less expensive key.
-                return JSON.stringify(block);
             }
         },
 
         computed: {
             blocksWithFields() {
-                return this.blocks.map(blockData => {
+                if(!this.blocks) return [];
+                return this.blocks.map((blockData, index) => {
                     let block = this.getBlock(blockData.type);
                     if (!block) return null;
 
-                    return {...blockData, fields: block.fields};
+                    return {
+                        ...blockData,
+                        fields: block.fields,
+                        key: index
+                    };
                 })
             },
 
