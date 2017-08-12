@@ -1,21 +1,25 @@
 export default {
-    'login': 'Log in',
-    'logout': 'Log out',
+    login: 'Log in',
+    logout: 'Log out',
 
-    'username': 'Username',
-    'password': 'Password',
+    username: 'Username',
+    password: 'Password',
 
-    'welcome': 'Welcome',
-    'manageContent': 'Manage website content',
+    welcome: 'Welcome',
+    manageContent: 'Manage website content',
 
-    'allRecords': 'All',
-    'addRecord': 'Add new',
+    allRecords: 'All',
+    addRecord: 'Add new',
 
-    'fileManager': 'File manager',
-    'allFiles': 'All files',
+    fileManager: 'File manager',
+    allFiles: 'All files',
 
-    'new': 'New',
-    'edit': 'Edit',
-    'delete': 'Delete',
-    'save': 'Save'
+    new: 'New',
+    edit: 'Edit',
+    delete: 'Delete',
+    save: 'Save',
+
+    chooseImage: 'Choose image',
+    chooseAnotherFile: 'Choose another file',
+    reCrop: 'Re-crop'
 }

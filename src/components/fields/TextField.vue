@@ -1,7 +1,7 @@
 <template>
     <div class="field">
         <label>{{ label }}</label>
-        <input type="text" v-if="!getOption('multiline')" v-bind:value="value" v-on:input="onInput">
+        <input type="text" v-if="!getOption('admin.multiline')" v-bind:value="value" v-on:input="onInput">
         <textarea v-else cols="30" rows="10" v-bind:value="value" v-on:input="onInput"></textarea>
     </div>
 </template>

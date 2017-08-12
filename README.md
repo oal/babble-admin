@@ -1,6 +1,18 @@
-# admin
+# Babble CMS Admin
 
-> Babble CMS Admin
+## Using Babble Admin
+```
+cd my-babble-project
+mkdir assets
+cd assets
+git clone https://github.com/oal/babble-admin.git admin
+
+cd admin
+npm install
+npm run build
+```
+
+The admin files will appear in `my-babble-project/public/admin`, so go to `http://localhost:8000/admin` to manage your site's content.
 
 ## Build Setup
 

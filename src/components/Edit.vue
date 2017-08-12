@@ -3,14 +3,14 @@
         <div class="ui loading basic segment" v-if="loading"></div>
         <div v-else>
             <h1>
-                <span v-if="isNew">{{ $t('edit') }}</span>
-                <span v-else>{{ $t('new') }}</span>
+                <span v-if="isNew && !model.single">{{ $t('new') }}</span>
+                <span v-else>{{ $t('edit') }}</span>
                 {{ model.name }}
             </h1>
 
             <div class="ui form">
                 <div class="ui grid">
-                    <div class="sixteen wide field">
+                    <div class="sixteen wide field" v-if="!model.single">
                         <label>ID</label>
                         <input v-model="changedId" pattern="[A-Za-z0-9-]+" required>
                     </div>
@@ -66,7 +66,7 @@
 
         data() {
             return {
-                isNew: !!this.id,
+                isNew: !this.id,
                 changedId: this.id,
                 loading: true,
                 model: {},
@@ -91,27 +91,24 @@
                     this.data = {};
                 }
 
-                let promises = [];
-
-                let modelPromise = this.$http.options('/models/' + this.modelType).then(response => {
+                this.$http.options('/models/' + this.modelType).then(response => {
                     this.model = response.data;
-                });
-                promises.push(modelPromise);
 
-                if (this.id) {
-                    let dataPromise = this.$http.get('/models/' + this.modelType + '/' + this.id).then(response => {
-                        this.data = response.data;
-                    });
-                    promises.push(dataPromise);
-                }
+                    // Only load record data if ID is set, or if this is a single instance model (doesn't have an ID).
+                    if(this.id || this.model.single) {
+                        this.$http.get(this.dataPath).then(response => {
+                            this.data = response.data;
 
-                Promise.all(promises).then(() => {
-                    this.model.fields.forEach(field => {
-                        if (!this.data[field.key]) {
-                            this.data[field.key] = '';
-                        }
-                    });
-                    this.loading = false;
+                            this.model.fields.forEach(field => {
+                                if (!this.data[field.key]) {
+                                    this.data[field.key] = '';
+                                }
+                            });
+                            this.loading = false;
+                        });
+                    } else {
+                        this.loading = false;
+                    }
                 });
             },
             save() {
@@ -128,7 +125,7 @@
                     };
                 }
 
-                request('/models/' + this.modelType + '/' + this.changedId, data).then(response => {
+                request(this.dataPath, data).then(response => {
                     // Redirect if page didn't already have an ID. Otherwise, update data.
                     if (this.id !== response.data.id) {
                         let location = {
@@ -166,6 +163,11 @@
                     }
                     return field;
                 });
+            },
+            dataPath() {
+                let dataPath = '/models/' + this.modelType;
+                if(!this.model.single) dataPath += '/' + this.changedId;
+                return dataPath;
             }
         }
     }

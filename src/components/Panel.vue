@@ -15,29 +15,21 @@
         <div id="main">
             <aside id="sidebar">
                 <div class="ui vertical text menu" v-for="model in models" v-bind:key="model.type">
-                    <div class="header item">
+                    <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" class="header item">
                         <i class="icon" :class="model.options.admin.icon"
                            v-if="model.options && model.options.admin && model.options.admin.icon"></i>
                         {{ model.name_plural }}
-                    </div>
-
-                    <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" class="item">
-                        {{ $t('allRecords') }} {{ model.name_plural }}
                     </router-link>
 
-                    <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}" class="item">
+                    <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}" class="item" v-if="!model.single">
                         {{ $t('addRecord') }}
                     </router-link>
                 </div>
 
                 <div class="ui vertical text menu">
-                    <div class="header item">
+                    <router-link v-bind:to="{name: 'Files'}" class="header item">
                         <i class="file icon"></i>
                         {{ $t('fileManager') }}
-                    </div>
-
-                    <router-link v-bind:to="{name: 'Files'}" class="item">
-                        {{ $t('allFiles') }}
                     </router-link>
                 </div>
             </aside>

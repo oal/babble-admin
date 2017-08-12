@@ -14,15 +14,15 @@
             <table class="ui compact striped table">
                 <thead>
                 <tr>
-                    <th v-for="column in listDisplay" :class="{collapsing: column.name === 'ID'}">
+                    <th v-for="column in listDisplay" :class="{collapsing: column.name === 'ID'}" :key="column.key">
                         {{ column.name }}
                     </th>
                     <th>&nbsp;</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="record in models">
-                    <td v-for="column in listDisplay">
+                <tr v-for="record in models" :key="record.id">
+                    <td v-for="column in listDisplay" :key="column.key">
                         <component v-bind:is="column.type + '-preview'"
                                    v-bind:value="getColumnValue(column, record)"
                                    v-if="hasPreviewComponent(column)"></component>
@@ -92,6 +92,11 @@
                 });
 
                 Promise.all([modelPromise, recordsPromise]).then(() => {
+                    // Redirect if single instance model.
+                    if(this.model.single) {
+                        this.$router.replace({name: 'EditSingle', params: {modelType: this.model.type}})
+                        return;
+                    }
                     this.loading = false;
                 });
             },

@@ -14,11 +14,11 @@
                     <div class="extra content" v-if="selection">
                         <a class="right floated" @click="onDeselectFile">
                             <i class="folder icon"></i>
-                            Choose another file
+                            {{ $t('chooseAnotherFile') }}
                         </a>
-                        <a @click="onReCrop" v-if="croppedImage">
+                        <a @click="onReCrop" v-if="croppedImage && hasCropper">
                             <i class="crop icon"></i>
-                            Re-crop
+                            {{ $t('reCrop') }}
                         </a>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
 
         <div class="ui primary left labeled icon button" v-else-if="!openFileManager" @click="onOpenFileManager">
             <i class="folder icon"></i>
-            Choose image
+            {{ $t('chooseImage') }}
         </div>
 
         <file-manager v-else @input="onSelectFile"></file-manager>
@@ -75,6 +75,7 @@
 
             onSelectFile(file) {
                 this.selection = file;
+                this.croppedImage = null;
                 this.$emit('input', {
                     filename: this.selection
                 });
@@ -83,6 +84,10 @@
             onDeselectFile() {
                 this.selection = null;
                 this.croppedImage = null;
+                this.openFileManager = true;
+                this.$emit('input', {
+                    filename: this.selection
+                });
             },
 
             onReCrop() {
@@ -106,15 +111,15 @@
 
         computed: {
             hasCropper() {
-                return this.options && this.options.crop;
+                return this.options && this.options.admin && this.options.admin.crop;
             },
             width() {
                 if (this.options && this.options.width) return this.options.width;
-                return 100;
+                return null;
             },
             height() {
                 if (this.options && this.options.height) return this.options.height;
-                return 100;
+                return null;
             }
         }
     }
@@ -127,10 +132,10 @@
 
     .card .image {
         background: #333 url('/static/checkerboard.png');
-        width: auto !important;
-        display: flex;
 
         img {
+            width: auto;
+            max-width: 100%;
             margin: auto;
             border-radius: 0;
             box-shadow: 0 0 25px rgba(#000, 0.25);

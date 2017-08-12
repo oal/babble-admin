@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="width: 100%">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.css">
         <img ref="image" :src="src" style="max-width: 100%">
 

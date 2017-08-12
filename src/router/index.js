@@ -51,6 +51,12 @@ export default new Router({
                     props: true
                 },
                 {
+                    path: '/models/:modelType/edit',
+                    name: 'EditSingle',
+                    component: Edit,
+                    props: true
+                },
+                {
                     path: '/files',
                     name: 'Files',
                     component: Files,
