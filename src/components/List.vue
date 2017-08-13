@@ -2,16 +2,15 @@
     <div>
         <div class="ui loading basic segment" v-if="loading"></div>
         <div v-else>
-            <h1>
-                {{ model.name_plural }}
-
+            <div class="flex between">
+                <h1>{{ model.name_plural }}</h1>
                 <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}"
-                             class="ui right floated primary left labeled icon button">
+                             class="blue icon button">
                     <i class="add icon"></i>
                     {{ $t('addRecord') }} {{ model.name }}
                 </router-link>
-            </h1>
-            <table class="ui compact striped table">
+            </div>
+            <table class="table">
                 <thead>
                 <tr>
                     <th v-for="column in listDisplay" :class="{collapsing: column.name === 'ID'}" :key="column.key">
@@ -29,13 +28,13 @@
                         <div v-else>{{ getColumnValue(column, record) }}</div>
                     </td>
 
-                    <td class="collapsing">
+                    <td>
                         <router-link v-bind:to="{name: 'Edit', params: {modelType: model.type, id: record.id}}"
-                                     class="ui green left labeled icon button">
+                                     class="green icon button">
                             <i class="edit icon"></i>
                             {{ $t('edit') }}
-                        </router-link>
-                        <a href="#" class="ui red left labeled icon button">
+                        </router-link><!--
+                        --><a href="#" class="red icon button">
                             <i class="remove icon"></i>
                             {{ $t('delete') }}
                         </a>

@@ -18,8 +18,8 @@
                     </div>
                 </div>
                 <div class="ui center aligned secondary segment">
-                    <div class="ui right labeled primary icon button" @click="login" :class="{loading: loading}">
-                        <i class="right arrow icon"></i>
+                    <div class="blue fluid icon button" @click="login" :class="{loading: loading}">
+                        <i class="key icon"></i>
                         {{ $t('login') }}
                     </div>
                 </div>

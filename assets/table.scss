@@ -1,0 +1,25 @@
+$borderColor: mix($darkBlue, #fff, 20%);
+
+table.table {
+    background-color: #fff;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid $borderColor;
+
+    th {
+        text-align: left;
+        font-size: 85%;
+        background-color: mix($borderColor, #fff, 15%);
+    }
+
+    th, td {
+        padding: 0.7rem 1rem;
+        border-top: 1px solid $borderColor;
+
+        &:last-child {
+            width: 1px;
+            white-space: nowrap;
+            padding: 2px;
+        }
+    }
+}

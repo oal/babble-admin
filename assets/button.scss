@@ -1,0 +1,76 @@
+$buttonPadding: 0.8rem 1.1rem;
+
+$buttonColor: mix($darkBlue, #fff, 15%);
+
+.button {
+    background-color: $buttonColor;
+    padding: $buttonPadding;
+    display: inline-flex;
+    color: #222;
+    align-items: center;
+    margin-right: 2px;
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 140%;
+    align-self: baseline; // Fix height when parent is a flex element.
+
+    &, > .icon {
+        box-shadow: 0 3px 0 rgba(#fff, 0.1) inset;
+    }
+
+    &:last-of-type {
+        margin-right: 0;
+    }
+
+    &.icon {
+        padding: 0 1rem 0 0;
+    }
+
+    > .icon {
+        background-color: mix($buttonColor, #000, 96%);
+        display: block;
+        height: auto;
+        width: auto;
+        margin-right: 1rem;
+
+        &:before {
+            padding: $buttonPadding;
+            display: block;
+        }
+    }
+
+    &.fluid {
+        width: 100%;
+    }
+}
+
+$buttonNames: blue green red;
+$buttonColors: #388CAF #46B630 #DB2C34;
+
+@for $i from 1 through length($buttonNames) {
+    $name: nth($buttonNames, $i);
+    $color: nth($buttonColors, $i);
+
+    .button.#{$name} {
+        background-color: $color;
+        color: rgba(#fff, 0.9);
+        text-shadow: 0 1px 0 rgba(#000, 0.2);
+        transition: all 0.15s;
+
+        > .icon {
+            background-color: mix($color, #000, 96%);
+            color: rgba(#fff, 0.8);
+            transition: all 0.15s;
+        }
+
+        &:hover {
+            color: #fff;
+            background-color: mix($color, #fff, 90%);
+
+            > .icon {
+                background-color: mix($color, #fff, 95%);
+                color: #fff;
+            }
+        }
+    }
+}

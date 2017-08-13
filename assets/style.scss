@@ -1,4 +1,4 @@
-$darkBlue: #11668a;
+@import '_variables';
 
 .segment, .input, .card, .field input, .button, .table {
     border-radius: 1px !important;
@@ -52,6 +52,16 @@ a {
     padding: 2rem;
 }
 
+.flex {
+    display: flex;
+
+    &.between {
+        justify-content: space-between;
+    }
+}
+
+@import 'button';
 @import 'top';
 @import 'sidebar';
 @import 'tiles';
+@import 'table';
