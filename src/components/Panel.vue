@@ -1,5 +1,6 @@
 <template>
-    <div id="panel">
+    <div class="very padded loading segment" v-if="loading"></div>
+    <div id="panel" v-else>
         <header id="top">
             <router-link :to="{name: 'Index'}">Babble CMS Admin</router-link>
             <ul class="top-right">
@@ -50,17 +51,23 @@
         name: 'panel',
 
         created: function () {
-            if (!this.$http.defaults.auth) {
-                this.$router.push({name: 'Login'});
-            }
+            this.loading = true;
 
-            this.$http.options('/models').then(response => {
-                this.models = response.data;
+            this.$http.get('/login').then(response => {
+                this.$root.user = response.data;
+                this.$http.options('/models').then(response => {
+                    this.models = response.data;
+                    this.loading = false;
+                });
+            }).catch(() => {
+                this.$router.push({name: 'Login'});
+                this.loading = false;
             });
         },
 
         data() {
             return {
+                loading: false,
                 models: []
             }
         },
