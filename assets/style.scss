@@ -1,0 +1,57 @@
+$darkBlue: #11668a;
+
+.segment, .input, .card, .field input, .button, .table {
+    border-radius: 1px !important;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    min-height: 100%;
+    height: auto;
+}
+
+body {
+    flex-grow: 1;
+}
+
+#app {
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-grow: 1;
+}
+
+a {
+    cursor: pointer;
+}
+
+#panel {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+
+
+#main {
+    display: flex;
+    flex-grow: 1;
+}
+
+@media (max-width: 600px) {
+    #main {
+        flex-direction: column;
+    }
+}
+
+#content {
+    background-color: mix($darkBlue, #fff, 5%);
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+@import 'top';
+@import 'sidebar';
+@import 'tiles';

@@ -14,24 +14,28 @@
         </header>
         <div id="main">
             <aside id="sidebar">
-                <div class="ui vertical text menu" v-for="model in models" v-bind:key="model.type">
-                    <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" class="header item">
-                        <i class="icon" :class="model.options.admin.icon"
-                           v-if="model.options && model.options.admin && model.options.admin.icon"></i>
-                        <span v-if="model.single">{{ model.name }}</span>
-                        <span v-else>{{ model.name_plural }}</span>
-                    </router-link>
+                <div class="menu" v-for="model in models" v-bind:key="model.type">
+                    <i class="icon" :class="model.options.admin.icon"
+                        v-if="model.options && model.options.admin && model.options.admin.icon"></i>
+                    <div class="content">
+                        <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" class="header item">
+                            <span v-if="model.single">{{ model.name }}</span>
+                            <span v-else>{{ model.name_plural }}</span>
+                        </router-link>
 
-                    <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}" class="item" v-if="!model.single">
-                        {{ $t('addRecord') }}
-                    </router-link>
+                        <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}" class="item" v-if="!model.single">
+                            {{ $t('addRecord') }}
+                        </router-link>
+                    </div>
                 </div>
 
-                <div class="ui vertical text menu">
-                    <router-link v-bind:to="{name: 'Files'}" class="header item">
-                        <i class="file icon"></i>
-                        {{ $t('fileManager') }}
-                    </router-link>
+                <div class="menu">
+                    <i class="file icon"></i>
+                    <div class="content">
+                        <router-link v-bind:to="{name: 'Files'}" class="header item">
+                            {{ $t('fileManager') }}
+                        </router-link>
+                    </div>
                 </div>
             </aside>
             <article id="content">
@@ -69,74 +73,3 @@
         }
     }
 </script>
-
-<style lang="scss" type="text/scss">
-    a {
-        cursor: pointer;
-    }
-
-    #panel {
-        font-family: sans-serif;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    }
-
-    #top {
-        background-color: #111;
-        padding: 1rem 2rem;
-        color: #fff;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-
-        a {
-            color: #fff;
-            font-weight: bold;
-            flex-grow: 1;
-        }
-
-        .top-right {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-            justify-content: space-between;
-
-            li {
-                display: block;
-                padding: 0;
-                margin: 0 0 0 2rem;
-
-                &:first-child {
-                    margin-left: 0;
-                }
-            }
-        }
-    }
-
-    #main {
-        display: flex;
-        flex-grow: 1;
-    }
-
-    @media (max-width: 600px) {
-        #main {
-            flex-direction: column;
-        }
-    }
-
-    #sidebar {
-        background-color: #eee;
-        flex-basis: 300px;
-        padding: 2rem;
-    }
-
-    #content {
-        background-color: #fafafa;
-        flex-grow: 1;
-        padding: 2rem;
-    }
-</style>

@@ -1,0 +1,51 @@
+
+.tiles {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -1rem;
+
+    .tile {
+        background-color: mix($darkBlue, #fff, 90%);
+        color: #fff;
+
+        display: flex;
+        
+        flex-basis: calc(33.3333% - 1rem);
+
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+            transition: all 0.15s;
+
+        display: flex;
+
+        &:hover {
+            background-color: $darkBlue;
+            .left {
+                background-color: rgba(#fff, 0.05);
+
+                .icon {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .left {
+            background-color: rgba(#fff, 0.1);
+            padding: 2rem;
+            display: flex;
+            transition: all 0.15s;
+            border-right: 1px solid rgba($darkBlue, 0.1);
+
+            .icon {
+                font-size: 160%;
+                margin: auto;
+                transition: 0.15s transform;
+            }
+        }
+
+        .content {
+            padding: 2rem;
+            font-weight: bold;
+        }
+    }
+}
