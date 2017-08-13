@@ -34,10 +34,10 @@
                             <i class="edit icon"></i>
                             {{ $t('edit') }}
                         </router-link><!--
-                        --><a href="#" class="red icon button">
+                        --><div class="red icon button" @click="remove(record)">
                             <i class="remove icon"></i>
                             {{ $t('delete') }}
-                        </a>
+                        </div>
                     </td>
                 </tr>
                 </tbody>
@@ -105,6 +105,15 @@
             hasPreviewComponent(column) {
                 let componentName = upperFirst(`${camelCase(column.type)}Preview`);
                 return !!this.$options.components[componentName];
+            },
+            remove(record) {
+                let ok = confirm('Do you really want to delete this item?');
+                if(!ok) return;
+
+                this.$http.delete('/models/' + this.modelType + '/' + record.id).then(response => {
+                    console.log(response);
+                    this.fetchData();
+                });
             }
         },
 
