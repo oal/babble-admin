@@ -18,7 +18,8 @@
                     <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" class="header item">
                         <i class="icon" :class="model.options.admin.icon"
                            v-if="model.options && model.options.admin && model.options.admin.icon"></i>
-                        {{ model.name_plural }}
+                        <span v-if="model.single">{{ model.name }}</span>
+                        <span v-else>{{ model.name_plural }}</span>
                     </router-link>
 
                     <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}" class="item" v-if="!model.single">
