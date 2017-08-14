@@ -44,6 +44,8 @@
 
 <script>
     import {upperFirst, camelCase} from 'lodash';
+    import slug from 'slug';
+
     import Field from '@/components/fields/Field';
 
     const numberToString = (num) => {
@@ -79,7 +81,7 @@
         },
 
         watch: {
-            '$route': 'fetchData'
+            '$route': 'fetchData',
         },
 
         methods: {
@@ -98,15 +100,11 @@
                     if(this.id || this.model.single) {
                         this.$http.get(this.dataPath).then(response => {
                             this.data = response.data;
-
-                            this.model.fields.forEach(field => {
-                                if (!this.data[field.key]) {
-                                    this.data[field.key] = '';
-                                }
-                            });
+                            this.initEmptyFields();
                             this.loading = false;
                         });
                     } else {
+                        this.initEmptyFields();
                         this.loading = false;
                     }
                 });
@@ -149,6 +147,25 @@
             },
             onFieldInput(key, value) {
                 this.data[key] = value;
+            },
+            initEmptyFields() {
+                this.model.fields.forEach(field => {
+                    if (!this.data[field.key]) {
+                        this.data[field.key] = '';
+                    }
+                });
+
+                // Automatic ID if enabled in model options.
+                if(!this.data.id && this.model.options && this.model.options.admin && this.model.options.admin.id) {
+                    this.data = {...this.data}; // Allows us to watch for changes.
+
+                    let autoFieldKey = this.model.options.admin.id;
+                    let watchKey = 'data.' + autoFieldKey;
+                    
+                    this.$watch(watchKey, value => {
+                        this.changedId = slug(value, {mode: 'rfc3986'});
+                    });
+                }
             }
         },
 
