@@ -25,12 +25,12 @@
             </div>
         </div>
 
-        <div class="ui primary left labeled icon button" v-else-if="!openFileManager" @click="onOpenFileManager">
+        <div class="blue labeled icon button" v-else-if="!openFileManager" @click="onOpenFileManager">
             <i class="folder icon"></i>
             {{ $t('chooseImage') }}
         </div>
 
-        <file-manager v-else @input="onSelectFile"></file-manager>
+        <file-manager v-else @input="onSelectFile" :directory="directory"></file-manager>
     </div>
 </template>
 
@@ -61,9 +61,13 @@
 
             let filename = (this.value ? this.value.filename : null) || null;
 
+            let directory = '/';
+            if(filename) directory = '/' + filename.split('/').slice(0, -1).join('/');
+
             return {
                 openFileManager: false,
                 selection: filename,
+                directory: directory,
                 croppedImage: croppedImage,
             }
         },

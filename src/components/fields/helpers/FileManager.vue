@@ -1,10 +1,10 @@
 <template>
-    <div class="ui fluid card" v-if="!selection">
+    <div class="ui fluid card">
         <div class="ui basic very padded loading segment" v-if="progress < 100"></div>
         <div class="content">
             <div class="ui breadcrumb">
                 <a class="section" @click="popToDir(0)">Uploads</a>
-                <span v-for="dir, $index in path">
+                <span v-for="dir, $index in path" :key="dir">
                         <span class="divider">/</span>
                         <strong v-if="$index === path.length-1">
                             {{ dir }}
@@ -17,7 +17,7 @@
 
         <div class="content">
             <div class="ui cards files">
-                <div class="ui card file" v-for="file in files">
+                <div class="ui card file" v-for="file in files" :key="file.name">
                     <div class="preview content">
                         <div class="image" :style="'background-image: url(/uploads/' + getURL(file) + ')'"
                              v-if="file.type.indexOf('image') === 0"
@@ -57,9 +57,16 @@
     export default {
         name: 'file-manager',
 
+        props: [
+            'directory'
+        ],
+
         data() {
+            let path = [];
+            if(this.directory) path = this.directory.split('/').filter(dir => !!dir);
+            
             return {
-                'path': [],
+                'path': path,
                 'files': [],
                 'selection': null,
                 'progress': 100
