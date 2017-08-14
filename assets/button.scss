@@ -1,10 +1,12 @@
-$buttonPadding: 0.8rem 1.1rem;
+$buttonPaddingVertical: 0.7rem;
+$buttonPaddingHorizontal: 1.2rem;
+$buttonPadding: $buttonPaddingVertical $buttonPaddingHorizontal;
 
 $buttonColor: mix($darkBlue, #fff, 15%);
+$borderRadius: 1px;
 
 .button {
     background-color: $buttonColor;
-    padding: $buttonPadding;
     display: inline-flex;
     color: #222;
     align-items: center;
@@ -13,8 +15,10 @@ $buttonColor: mix($darkBlue, #fff, 15%);
     line-height: 140%;
     align-self: baseline; // Fix height when parent is a flex element.
     cursor: pointer;
+    border-radius: $borderRadius;
 
     &, > .icon {
+        border-radius: $borderRadius;
         box-shadow: 0 3px 0 rgba(#fff, 0.1) inset;
     }
 
@@ -23,8 +27,16 @@ $buttonColor: mix($darkBlue, #fff, 15%);
         margin-left: 2px;
     }
 
-    &.icon {
+    &:not(.labeled.icon) {
+        padding: $buttonPadding;
+    }
+
+    &.labeled.icon {
         padding: 0 1rem 0 0;
+
+        > .icon {
+            margin-right: 1rem;
+        }
     }
 
     > .icon {
@@ -32,7 +44,7 @@ $buttonColor: mix($darkBlue, #fff, 15%);
         display: block;
         height: auto;
         width: auto;
-        margin-right: 1rem;
+        margin: 0;
 
         &:before {
             padding: $buttonPadding;
@@ -42,6 +54,29 @@ $buttonColor: mix($darkBlue, #fff, 15%);
 
     &.fluid {
         width: 100%;
+    }
+}
+
+$buttonSizes: tiny;
+$buttonPaddings: 0.4;
+
+@for $i from 1 through length($buttonSizes) {
+    $size: nth($buttonSizes, $i);
+    $paddingVertical: $buttonPaddingVertical * nth($buttonPaddings, $i);
+    $paddingHorizontal: $buttonPaddingHorizontal * nth($buttonPaddings, $i) * 1.2;
+    $padding: $paddingVertical $paddingHorizontal;
+
+    .#{$size}.button {
+        &:not(.labeled.icon) {
+            padding: $padding;
+        }
+
+        > .icon {
+            &:before {
+                padding: $padding;
+                display: block;
+            }
+        }
     }
 }
 

@@ -31,7 +31,7 @@
                     <div class="sixteen wide column">
                         <div class="ui divider"></div>
 
-                        <div class="green icon button" v-on:click="save">
+                        <div class="green labeled icon button" v-on:click="save">
                             <i class="save icon"></i>
                             {{ $t('save') }}
                         </div>

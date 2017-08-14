@@ -5,7 +5,7 @@
             <div class="flex between">
                 <h1>{{ model.name_plural }}</h1>
                 <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}"
-                             class="blue icon button">
+                             class="blue labeled icon button">
                     <i class="add icon"></i>
                     {{ $t('addRecord') }} {{ model.name }}
                 </router-link>
@@ -30,11 +30,11 @@
 
                     <td>
                         <router-link v-bind:to="{name: 'Edit', params: {modelType: model.type, id: record.id}}"
-                                     class="green icon button">
+                                     class="green labeled icon button">
                             <i class="edit icon"></i>
                             {{ $t('edit') }}
                         </router-link><!--
-                        --><div class="red icon button" @click="remove(record)">
+                        --><div class="red labeled icon button" @click="remove(record)">
                             <i class="remove icon"></i>
                             {{ $t('delete') }}
                         </div>

@@ -11,10 +11,18 @@
             <div :class="{'card': displayAsCards, 'ui vertical segment': !displayAsCards}"
                  v-for="(block, $index) in blocksWithFields" :key="block.key" v-if="block">
                 <div class="content">
-                    <div class="header">
+                    <div class="flex between header">
                         <strong>{{ getBlockName(block.type) }}</strong>
-                        <div class="ui tiny right floated red icon button" @click="removeBlockAt($index)">
-                            <i class="remove icon"></i>
+                        <div class="right floated">
+                            <div class="tiny blue icon button" @click="moveBlock($index, -1)" v-if="$index > 0">
+                                <i class="caret icon" :class="{left: displayAsCards, up: !displayAsCards}"></i>
+                            </div><!--
+                            --><div class="tiny blue icon button" @click="moveBlock($index, 1)" v-if="$index < blocksWithFields.length-1">
+                                <i class="caret icon" :class="{right: displayAsCards, down: !displayAsCards}"></i>
+                            </div><!--
+                            --><div class="tiny red icon button" @click="removeBlockAt($index)">
+                                <i class="remove icon"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -77,6 +85,17 @@
                     value: {},
                     key: (Math.random()*9999999)|0
                 });
+                this.emitInput();
+            },
+
+            moveBlock(index, movement) {
+                // Swap.
+                let temp = this.blocks[index+movement];
+                this.blocks[index + movement] = this.blocks[index];
+                this.blocks[index] = temp;
+
+                // Trigger change.
+                this.blocks = [...this.blocks];
                 this.emitInput();
             },
             removeBlockAt(index) {
