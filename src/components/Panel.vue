@@ -19,12 +19,12 @@
                     <i class="icon" :class="model.options.admin.icon"
                         v-if="model.options && model.options.admin && model.options.admin.icon"></i>
                     <div class="content">
-                        <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" class="header item">
+                        <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" active-class="active" class="header item">
                             <span v-if="model.single">{{ model.name }}</span>
                             <span v-else>{{ model.name_plural }}</span>
                         </router-link>
 
-                        <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}" class="item" v-if="!model.single">
+                        <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}" active-class="active" class="item" v-if="!model.single">
                             {{ $t('addRecord') }}
                         </router-link>
                     </div>
