@@ -5,6 +5,7 @@ table.table {
     width: 100%;
     border-collapse: collapse;
     border: 1px solid $borderColor;
+    outline: 1px solid #fff;
 
     th {
         text-align: left;
@@ -21,5 +22,14 @@ table.table {
             white-space: nowrap;
             padding: 2px;
         }
+
+        &.collapsing {
+             width: 1px;
+            white-space: nowrap;
+        }
+    }
+    
+    td:first-child {
+        background: linear-gradient(90deg, mix($borderColor, #fff, 20%) 50%, #fff 100%);
     }
 }
