@@ -19,7 +19,7 @@ export default {
     delete: 'Slett',
     save: 'Lagre',
 
+    chooseImage: 'Velg bilde',
     chooseAnotherFile: 'Velg en annen fil',
-    reCrop: 'Beskjær',
-    chooseImage: 'Velg bilde'
+    reCrop: 'Beskjær'
 }

@@ -25,6 +25,7 @@
     import PasswordField from '@/components/fields/PasswordField';
     import ListField from '@/components/fields/ListField';
     import HtmlField from '@/components/fields/HtmlField';
+    import MarkdownField from '@/components/fields/MarkdownField';
 
     export default {
         name: 'field',
@@ -45,7 +46,8 @@
             ImageField,
             PasswordField,
             ListField,
-            HtmlField
+            HtmlField,
+            MarkdownField
         },
 
         methods: {

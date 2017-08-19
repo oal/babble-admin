@@ -1,5 +1,6 @@
 <template>
-    <div class="very padded loading segment" v-if="loading"></div>
+    <div class="very padded loading segment" v-if="loading">
+    </div>
     <div id="panel" v-else>
         <header id="top">
             <router-link :to="{name: 'Index'}">Babble CMS Admin</router-link>
@@ -16,8 +17,7 @@
         <div id="main">
             <aside id="sidebar">
                 <div class="menu" v-for="model in models" v-bind:key="model.type">
-                    <i class="icon" :class="model.options.admin.icon"
-                        v-if="model.options && model.options.admin && model.options.admin.icon"></i>
+                    <i class="icon" :class="model.options.admin.icon" v-if="model.options && model.options.admin && model.options.admin.icon"></i>
                     <div class="content">
                         <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" active-class="active" class="header item">
                             <span v-if="model.single">{{ model.name }}</span>
@@ -47,36 +47,36 @@
 </template>
 
 <script>
-    export default {
-        name: 'panel',
+export default {
+    name: 'panel',
 
-        created: function () {
-            this.loading = true;
+    created: function () {
+        this.loading = true;
 
-            this.$http.get('/login').then(response => {
-                this.$root.user = response.data;
-                this.$http.options('/models').then(response => {
-                    this.models = response.data;
-                    this.loading = false;
-                });
-            }).catch(() => {
-                this.$router.push({name: 'Login'});
+        this.$http.get('/login').then(response => {
+            this.$root.user = response.data;
+            this.$http.options('/models').then(response => {
+                this.models = response.data;
                 this.loading = false;
             });
-        },
+        }).catch(() => {
+            this.$router.push({ name: 'Login' });
+            this.loading = false;
+        });
+    },
 
-        data() {
-            return {
-                loading: false,
-                models: []
-            }
-        },
+    data() {
+        return {
+            loading: false,
+            models: []
+        }
+    },
 
-        methods: {
-            logout() {
-                this.$http.auth = null;
-                this.$router.push({name: 'Login'});
-            }
+    methods: {
+        logout() {
+            this.$http.auth = null;
+            this.$router.push({ name: 'Login' });
         }
     }
+}
 </script>
