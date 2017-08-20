@@ -1,6 +1,5 @@
 <template>
-    <div class="very padded loading segment" v-if="loading">
-    </div>
+    <div class="very padded loading segment" v-if="loading"></div>
     <div id="panel" v-else>
         <header id="top">
             <router-link :to="{name: 'Index'}">Babble CMS Admin</router-link>
@@ -43,12 +42,22 @@
                 <router-view></router-view>
             </article>
         </div>
+
+        <div v-if="showLoginDialog" id="login-overlay">
+            <login-form @login="onLogin"></login-form>
+        </div>
     </div>
 </template>
 
 <script>
+import LoginForm from '@/components/LoginForm';
+
 export default {
     name: 'panel',
+
+    components: {
+        LoginForm
+    },
 
     created: function () {
         this.loading = true;
@@ -63,11 +72,19 @@ export default {
             this.$router.push({ name: 'Login' });
             this.loading = false;
         });
+
+        this.$http.interceptors.response.use(null, (error) => {
+            if (error.response.status === 401) {
+                this.showLoginDialog = true;
+            }
+            return Promise.reject(error);
+        });
     },
 
     data() {
         return {
             loading: false,
+            showLoginDialog: false,
             models: []
         }
     },
@@ -76,7 +93,23 @@ export default {
         logout() {
             this.$http.auth = null;
             this.$router.push({ name: 'Login' });
+        },
+        onLogin() {
+            this.showLoginDialog = false;
         }
     }
 }
 </script>
+
+<style scoped>
+#login-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(25, 25, 25, 0.8);
+    z-index: 1;
+    display: flex;
+}
+</style>

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import axios from 'axios';
 
 import Login from '@/components/Login';
 import Panel from '@/components/Panel';
@@ -10,9 +9,6 @@ import Edit from '@/components/Edit';
 import Files from '@/components/Files';
 
 Vue.use(Router);
-Vue.prototype.$http = axios.create({
-    baseURL: '/api'
-});
 
 export default new Router({
     routes: [
