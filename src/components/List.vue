@@ -22,8 +22,9 @@
                 <tbody>
                 <tr v-for="record in models" :key="record.id">
                     <td v-for="column in listDisplay" :key="column.key" :class="{highlight: column.key === 'id'}">
-                        <component v-bind:is="column.type + '-preview'"
-                                   v-bind:value="getColumnValue(column, record)"
+                        <component :is="column.type + '-preview'"
+                                   :value="getColumnValue(column, record)"
+                                   :field="column"
                                    v-if="hasPreviewComponent(column)"></component>
                         <div v-else>{{ getColumnValue(column, record) }}</div>
                     </td>
@@ -51,6 +52,7 @@
     import IdPreview from '@/components/previews/IdPreview';
     import BooleanPreview from '@/components/previews/BooleanPreview';
     import DatetimePreview from '@/components/previews/DatetimePreview';
+    import ChoicePreview from '@/components/previews/ChoicePreview';
 
     export default {
         name: 'panel',
@@ -58,7 +60,8 @@
         components: {
             IdPreview,
             BooleanPreview,
-            DatetimePreview
+            DatetimePreview,
+            ChoicePreview
         },
 
         props: [
