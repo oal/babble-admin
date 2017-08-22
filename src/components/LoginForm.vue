@@ -50,7 +50,7 @@ export default {
                 this.loading = false;
                 this.$emit('login');
             }).catch(response => {
-                console.error(response.data);
+                this.$root.addMessage('Invalid username and / or password', 'error');
                 this.loading = false;
             });
         }

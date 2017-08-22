@@ -5,6 +5,10 @@
                 {{ $t('login') }}
             </h2>
             <login-form @login="onLogin"></login-form>
+
+            <div class="ui visible message" v-for="message in $root.messages" :key="message.message" :class="message.type">
+                {{ message.message }}
+            </div>
         </div>
     </div>
 </template>
@@ -34,5 +38,15 @@ export default {
 .segment {
     margin: auto;
     align-self: center;
+}
+
+.message {
+    position: absolute;
+    z-index: 2;
+    margin: 0;
+    width: 100%;
+    left: 0;
+    padding: 1rem;
+    margin: 1rem 0;
 }
 </style>

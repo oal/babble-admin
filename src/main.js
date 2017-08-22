@@ -33,6 +33,24 @@ new Vue({
     i18n: i18n,
     router,
     template: '<App/>',
+    data: {
+        messages: []
+    },
+    mounted() {
+        setInterval(() => {
+            let time = new Date();
+            this.messages = this.messages.filter(message => time - message.added < 3000);
+        }, 500);
+    },
+    methods: {
+        addMessage(message, type) {
+            this.messages.push({
+                message: message,
+                type: type || 'info',
+                added: new Date()
+            })
+        }
+    },
     components: {
         App
     }
