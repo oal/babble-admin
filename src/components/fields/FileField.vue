@@ -5,15 +5,15 @@
         <div v-if="selection">
             <div class="field">
                 <div class="ui buttons">
-                    <a :href="'/uploads/' + selection" class="ui button" target="_blank">{{ selection }}</a>
-                    <div class="ui primary icon button" @click="onOpenFileManager">
+                    <a :href="'/uploads/' + selection" class="button" target="_blank">{{ selection }}</a>
+                    <div class="blue icon button" @click="onOpenFileManager">
                         <i class="folder icon"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="ui primary left labeled icon button" v-else-if="!openFileManager" @click="onOpenFileManager">
+        <div class="blue labeled icon button" v-else-if="!openFileManager" @click="onOpenFileManager">
             <i class="folder icon"></i>
             Choose file
         </div>

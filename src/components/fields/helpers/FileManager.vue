@@ -22,7 +22,7 @@
                         <div class="image" :style="'background-image: url(/uploads/' + getURL(file) + ')'"
                              v-if="file.type.indexOf('image') === 0"
                              @click="selectFile(file)"></div>
-                        <div class="dir" v-else @click="goToDir(file)">
+                        <div class="dir" v-else @click="selectFile(file)">
                             <i :class="'huge ' + getIconClass(file.type) + ' icon'"></i>
                             <span>{{ file.name }}</span>
                         </div>
@@ -64,7 +64,7 @@
         data() {
             let path = [];
             if(this.directory) path = this.directory.split('/').filter(dir => !!dir);
-            
+
             return {
                 'path': path,
                 'files': [],
@@ -113,7 +113,7 @@
             },
 
             selectFile(file) {
-                if (file.type === 'directory') return false;
+                if (file.type === 'directory') return this.goToDir(file);
                 this.selection = this.getURL(file);
                 this.$emit('input', this.selection);
             },

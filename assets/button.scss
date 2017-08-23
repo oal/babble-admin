@@ -22,6 +22,10 @@ $borderRadius: 1px;
         box-shadow: 0 3px 0 rgba(#fff, 0.1) inset;
     }
 
+    &:not(.icon) {
+        padding: $buttonPadding;
+    }
+
     // Spacing between buttons, but not around standalone buttons.
     & + .button {
         margin-left: 2px;
