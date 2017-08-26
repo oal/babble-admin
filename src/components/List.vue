@@ -14,7 +14,11 @@
                 <thead>
                 <tr>
                     <th v-for="column in listDisplay" :class="{collapsing: column.name === 'ID'}" :key="column.key">
-                        {{ column.name }}
+                        <a @click="sortBy(column.key)">
+                            {{ column.name }}
+                            <i class="caret up icon" v-if="sort === column.key"></i>
+                            <i class="caret down icon" v-if="sort === '-'+column.key"></i>
+                        </a>
                     </th>
                     <th>&nbsp;</th>
                 </tr>
@@ -29,7 +33,7 @@
                         <div v-else>{{ getColumnValue(column, record) }}</div>
                     </td>
 
-                    <td>
+                    <td class="right aligned">
                         <router-link v-bind:to="{name: 'Edit', params: {modelType: model.type, id: record.id}}"
                                      class="green labeled icon button">
                             <i class="edit icon"></i>
@@ -73,6 +77,7 @@
                 loading: true,
                 model: {},
                 models: [],
+                sort: 'id'
             }
         },
 
@@ -91,17 +96,29 @@
                 let modelPromise = this.$http.options('/models/' + this.modelType).then(response => {
                     this.model = response.data;
                 });
-                let recordsPromise = this.$http.get('/models/' + this.modelType).then(response => {
-                    this.models = response.data;
-                });
 
-                Promise.all([modelPromise, recordsPromise]).then(() => {
+                Promise.all([modelPromise, this.fetchRecords()]).then(() => {
                     // Redirect if single instance model.
                     if(this.model.single) {
                         this.$router.replace({name: 'EditSingle', params: {modelType: this.model.type}})
                         return;
                     }
                     this.loading = false;
+                });
+            },
+            fetchRecords() {
+                let wasLoading = this.loading;
+                this.loading = true;
+
+                let params = {
+                    sort: this.sort
+                };
+                return this.$http.get('/models/' + this.modelType, {params: params}).then(response => {
+                    this.models = response.data;
+
+                    // If fetchRecords is called outside of fetchData, and it wasn't already loading,
+                    // there is no more requests waiting at this time.
+                    if(!wasLoading) this.loading = false;
                 });
             },
             getColumnValue(column, record) {
@@ -119,6 +136,14 @@
                     console.log(response);
                     this.fetchData();
                 });
+            },
+            sortBy(columnKey) {
+                if(this.sort === columnKey) {
+                    this.sort = '-' + columnKey;
+                } else {
+                    this.sort = columnKey;
+                }
+                this.fetchRecords();
             }
         },
 

@@ -19,6 +19,10 @@
 </script>
 
 <style scoped>
+    div {
+        white-space: nowrap;
+    }
+
     span {
         text-transform:uppercase;
         font-size: 80%;

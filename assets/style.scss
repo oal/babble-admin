@@ -60,6 +60,10 @@ a {
     }
 }
 
+.right.aligned {
+    text-align: right;
+}
+
 @import 'button';
 @import 'top';
 @import 'sidebar';

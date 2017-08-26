@@ -48,10 +48,14 @@ export default {
                     ]
                 }
             });
-            mediumEditor.subscribe('editableInput', (event, editable) => {
-                let value = mediumEditor.getContent();
-                this.$emit('input', value);
+
+            // Remove style attributes inserted by the browser in the contenteditable element.
+            mediumEditor.subscribe('blur', (event, editable) => {
+                let value = $('<div>'+ mediumEditor.getContent() +'</div>');
+                value.find('*').removeAttr('style');
+                this.$emit('input', value.html());
             })
+
             this.mediumEditor = mediumEditor;
         } else {
             let codemirrorEditor = CodeMirror.fromTextArea(this.$refs.editor, {

@@ -4,7 +4,7 @@
         <div class="content">
             <div class="ui breadcrumb">
                 <a class="section" @click="popToDir(0)">Uploads</a>
-                <span v-for="dir, $index in path" :key="dir">
+                <span v-for="(dir, $index) in path" :key="dir">
                         <span class="divider">/</span>
                         <strong v-if="$index === path.length-1">
                             {{ dir }}
