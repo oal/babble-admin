@@ -22,10 +22,6 @@
                             <span v-if="model.single">{{ model.name }}</span>
                             <span v-else>{{ model.name_plural }}</span>
                         </router-link>
-
-                        <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}" active-class="active" class="item" v-if="!model.single">
-                            {{ $t('addRecord') }}
-                        </router-link>
                     </div>
                 </div>
 

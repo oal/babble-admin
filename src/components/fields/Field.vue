@@ -4,7 +4,9 @@
                    @input="onFieldInput"
                    :label="label"
                    :name="name"
-                   :options="options" v-if="hasTypeComponent()"></component>
+                   :options="options"
+                   :blocks="blocks"
+                   v-if="hasTypeComponent()"></component>
         <div class="field" v-else>
             <label>{{ field.name }}</label>
             <div class="ui visible error message">
@@ -36,7 +38,8 @@
             'label',
             'name',
             'value',
-            'options'
+            'options',
+            'blocks'
         ],
 
         components: {

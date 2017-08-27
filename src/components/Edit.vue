@@ -20,6 +20,7 @@
                            :name="field.key"
                            :options="field.options"
                            :class="field.classes"
+                           :blocks="blocks"
 
                            :value="data[field.key]"
                            @input="onFieldInput(field.key, $event)"
@@ -72,6 +73,7 @@
                 changedId: this.id,
                 loading: true,
                 model: {},
+                blocks: {},
                 data: {},
             }
         },
@@ -94,7 +96,8 @@
                 }
 
                 this.$http.options('/models/' + this.modelType).then(response => {
-                    this.model = response.data;
+                    this.model = response.data.model;
+                    this.blocks = response.data.blocks;
 
                     // Only load record data if ID is set, or if this is a single instance model (doesn't have an ID).
                     if(this.id || this.model.single) {
@@ -161,7 +164,7 @@
 
                     let autoFieldKey = this.model.options.admin.id;
                     let watchKey = 'data.' + autoFieldKey;
-                    
+
                     this.$watch(watchKey, value => {
                         this.changedId = slug(value, {mode: 'rfc3986'});
                     });

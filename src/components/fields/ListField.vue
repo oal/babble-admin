@@ -2,7 +2,7 @@
     <div class="field">
         <label>{{ label }}</label>
         <div :class="{'top attached': !displayAsCards}" class="ui menu">
-            <a class="item" v-for="block in options.blocks" @click="addBlock(block.type)" :key="block.type">
+            <a class="item" v-for="block in blockObjects" @click="addBlock(block.type)" :key="block.type">
                 <i class="add icon"></i> {{ block.name }}
             </a>
         </div>
@@ -32,8 +32,9 @@
                            :label="field.name"
                            :name="field.key"
                            :options="field.options"
+                           :blocks="blocks"
 
-                           :value="blocks[$index].value[field.key]"
+                           :value="blockData[$index].value[field.key]"
                            @input="onFieldInput($index, field.key, $event)"
 
                            v-for="field in block.fields"
@@ -58,7 +59,8 @@
             'value',
             'name',
             'label',
-            'options'
+            'options',
+            'blocks'
         ],
 
         beforeCreate: function () {
@@ -68,19 +70,19 @@
 
         data() {
             return {
-                blocks: this.value ? [...this.value] : []
+                blockData: this.value ? [...this.value] : []
             }
         },
 
         methods: {
             getBlock(blockType) {
-                return this.options.blocks.filter(block => block.type === blockType)[0];
+                return this.blockObjects.filter(block => block.type === blockType)[0];
             },
             getBlockName(blockType) {
                 return this.getBlock(blockType).name;
             },
             addBlock(type) {
-                this.blocks.push({
+                this.blockData.push({
                     type: type,
                     value: {},
                     key: (Math.random()*9999999)|0
@@ -90,32 +92,32 @@
 
             moveBlock(index, movement) {
                 // Swap.
-                let temp = this.blocks[index+movement];
-                this.blocks[index + movement] = this.blocks[index];
-                this.blocks[index] = temp;
+                let temp = this.blockData[index+movement];
+                this.blockData[index + movement] = this.blockData[index];
+                this.blockData[index] = temp;
 
                 // Trigger change.
-                this.blocks = [...this.blocks];
+                this.blockData = [...this.blockData];
                 this.emitInput();
             },
             removeBlockAt(index) {
-                this.blocks.splice(index, 1);
+                this.blockData.splice(index, 1);
                 this.emitInput();
             },
 
             onFieldInput(blockIndex, key, value) {
-                this.blocks[blockIndex].value[key] = value;
+                this.blockData[blockIndex].value[key] = value;
                 this.emitInput();
             },
             emitInput() {
-                this.$emit('input', [...this.blocks]);
+                this.$emit('input', [...this.blockData]);
             }
         },
 
         computed: {
             blocksWithFields() {
                 if(!this.blocks) return [];
-                return this.blocks.map((blockData, index) => {
+                return this.blockData.map((blockData, index) => {
                     let block = this.getBlock(blockData.type);
                     if (!block) return null;
 
@@ -129,6 +131,15 @@
 
             displayAsCards() {
                 return this.options.admin && this.options.admin.cards === true;
+            },
+
+            blockObjects() {
+                let blockTypes = this.options.blocks;
+                let blocks = [];
+                blockTypes.forEach(type => {
+                    blocks.push(this.blocks[type]);
+                });
+                return blocks;
             }
         }
     }

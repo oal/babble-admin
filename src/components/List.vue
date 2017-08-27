@@ -94,7 +94,7 @@
                 this.loading = true;
 
                 let modelPromise = this.$http.options('/models/' + this.modelType).then(response => {
-                    this.model = response.data;
+                    this.model = response.data.model;
                 });
 
                 Promise.all([modelPromise, this.fetchRecords()]).then(() => {
