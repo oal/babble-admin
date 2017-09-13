@@ -18,8 +18,11 @@ export default {
     edit: 'Rediger',
     delete: 'Slett',
     save: 'Lagre',
+    close: 'Lukk',
 
     chooseImage: 'Velg bilde',
     chooseAnotherFile: 'Velg en annen fil',
-    reCrop: 'Beskjær'
+    reCrop: 'Beskjær',
+
+    confirmDeleteMessage: 'Vil du virkelig slette denne filen?'
 }

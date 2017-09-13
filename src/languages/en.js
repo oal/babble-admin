@@ -18,8 +18,11 @@ export default {
     edit: 'Edit',
     delete: 'Delete',
     save: 'Save',
+    close: 'Close',
 
     chooseImage: 'Choose image',
     chooseAnotherFile: 'Choose another file',
-    reCrop: 'Re-crop'
+    reCrop: 'Re-crop',
+
+    confirmDeleteMessage: 'Do you really want to delete this file?'
 }
