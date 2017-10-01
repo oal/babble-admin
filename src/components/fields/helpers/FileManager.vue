@@ -19,7 +19,7 @@
             <div class="ui cards files">
                 <div class="ui card file" v-for="file in files" :key="file.name">
                     <div class="preview content">
-                        <div class="image" :style="'background-image: url(/uploads/' + getURL(file) + ')'"
+                        <div class="image" :style="`background-image: url('/uploads/${getURL(file)}')`"
                              v-if="file.type.indexOf('image') === 0"
                              @click="selectFile(file)"></div>
                         <div class="dir" v-else @click="selectFile(file)">
