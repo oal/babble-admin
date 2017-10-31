@@ -59,6 +59,7 @@
 
         computed: {
             aspectRatio() {
+                if(!this.width || !this.height) return 0;
                 return this.width / this.height;
             }
         }
