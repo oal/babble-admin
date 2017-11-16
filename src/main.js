@@ -36,10 +36,33 @@ new Vue({
     data: {
         messages: []
     },
+    created() {
+        this.$http.interceptors.response.use(response => {
+            let message = response.data.message;
+            if(!message) {
+                if(response.config.method === 'post') message = 'Saving successful.';
+                else if(response.config.method === 'put') message = 'Update successful.';
+            }
+            if(message) {
+                this.addMessage(message, 'success');
+            }
+            return response;
+        }, error => {
+            let message = error.response.data.error;
+            if(!message && error.response.status === 500) {
+                message = 'An unknown error has occurred.';
+            }
+
+            if(message) {
+                this.addMessage(message, 'error');
+            }
+            return Promise.reject(error);
+        });
+    },
     mounted() {
         setInterval(() => {
             let time = new Date();
-            this.messages = this.messages.filter(message => time - message.added < 3000);
+            this.messages = this.messages.filter(message => time - message.added < 5000);
         }, 500);
     },
     methods: {

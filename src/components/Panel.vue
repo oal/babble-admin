@@ -16,9 +16,11 @@
         <div id="main">
             <aside id="sidebar">
                 <div class="menu" v-for="model in models" v-bind:key="model.type">
-                    <i class="icon" :class="model.options.admin.icon" v-if="model.options && model.options.admin && model.options.admin.icon"></i>
+                    <i class="icon" :class="model.options.admin.icon"
+                       v-if="model.options && model.options.admin && model.options.admin.icon"></i>
                     <div class="content">
-                        <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" active-class="active" class="header item">
+                        <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" active-class="active"
+                                     class="header item">
                             <span v-if="model.single">{{ model.name }}</span>
                             <span v-else>{{ model.name_plural }}</span>
                         </router-link>
@@ -31,6 +33,13 @@
                         <router-link v-bind:to="{name: 'Files'}" class="header item">
                             {{ $t('fileManager') }}
                         </router-link>
+                    </div>
+                </div>
+
+                <div class="messages">
+                    <div class="ui visible message" v-for="message in $root.messages" :key="message.message"
+                         :class="message.type">
+                        {{ message.message }}
                     </div>
                 </div>
             </aside>
@@ -46,66 +55,99 @@
 </template>
 
 <script>
-import LoginForm from '@/components/LoginForm';
+    import LoginForm from '@/components/LoginForm';
 
-export default {
-    name: 'panel',
+    export default {
+        name: 'panel',
 
-    components: {
-        LoginForm
-    },
+        components: {
+            LoginForm
+        },
 
-    created: function () {
-        this.loading = true;
+        created: function () {
+            this.loading = true;
 
-        this.$http.get('/login').then(response => {
-            this.$root.user = response.data;
-            this.$http.options('/models').then(response => {
-                this.models = response.data;
+            this.$http.get('/login').then(response => {
+                this.$root.user = response.data;
+                this.$http.options('/models').then(response => {
+                    this.models = response.data;
+                    this.loading = false;
+                });
+            }).catch(() => {
+                this.$router.push({name: 'Login'});
                 this.loading = false;
             });
-        }).catch(() => {
-            this.$router.push({ name: 'Login' });
-            this.loading = false;
-        });
 
-        this.$http.interceptors.response.use(null, (error) => {
-            if (error.response.status === 401) {
-                this.showLoginDialog = true;
-            }
-            return Promise.reject(error);
-        });
-    },
-
-    data() {
-        return {
-            loading: false,
-            showLoginDialog: false,
-            models: []
-        }
-    },
-
-    methods: {
-        logout() {
-            this.$http.auth = null;
-            this.$router.push({ name: 'Login' });
+            this.$http.interceptors.response.use(null, (error) => {
+                if (error.response.status === 401) {
+                    this.showLoginDialog = true;
+                }
+                return Promise.reject(error);
+            });
         },
-        onLogin() {
-            this.showLoginDialog = false;
+
+        data() {
+            return {
+                loading: false,
+                showLoginDialog: false,
+                models: []
+            }
+        },
+
+        methods: {
+            logout() {
+                this.$http.auth = null;
+                this.$router.push({name: 'Login'});
+            },
+            onLogin() {
+                this.showLoginDialog = false;
+            }
         }
     }
-}
 </script>
 
 <style scoped>
-#login-overlay {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(25, 25, 25, 0.8);
-    z-index: 1;
-    display: flex;
-}
+    #login-overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(25, 25, 25, 0.8);
+        z-index: 1;
+        display: flex;
+    }
+
+    @keyframes message-enter {
+        0% {
+            transform: translateY(200px);
+            opacity: 0;
+        }
+
+        15% {
+            transform: translateY(0px);
+            opacity: 1;
+        }
+
+        85% {
+            transform: translateY(0px);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(200px);
+            opacity: 0;
+        }
+    }
+
+    .messages {
+        padding: 1rem;
+        position: absolute;
+        bottom: 0;
+    }
+
+    .messages .message {
+        animation: message-enter 5s;
+        animation-fill-mode: forwards;
+    }
 </style>
