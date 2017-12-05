@@ -29,6 +29,7 @@
     import HtmlField from '@/components/fields/HtmlField';
     import MarkdownField from '@/components/fields/MarkdownField';
     import ChoiceField from '@/components/fields/ChoiceField';
+    import TagsField from '@/components/fields/TagsField';
 
     export default {
         name: 'field',
@@ -52,7 +53,8 @@
             ListField,
             HtmlField,
             MarkdownField,
-            ChoiceField
+            ChoiceField,
+            TagsField
         },
 
         methods: {

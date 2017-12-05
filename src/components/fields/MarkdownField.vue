@@ -59,3 +59,9 @@
         }
     }
 </script>
+
+<style scoped>
+    .segment {
+        padding: 0;
+    }
+</style>
