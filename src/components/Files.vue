@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>File manager</h1>
+        <h1>{{ $t('fileManager') }}</h1>
         <div class="file-manager">
             <file-manager @input="select" ref="file-manager"></file-manager>
             <div v-if="selection" class="selected-file">

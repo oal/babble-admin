@@ -16,8 +16,11 @@ req.keys().forEach(key => {
 
 // Init language.
 Vue.use(VueI18n);
-let language = navigator.languages[0];
-if (!languages[language]) language = 'en';
+let language = 'en';
+let validLanguages = navigator.languages.filter(lang => !!languages[lang]);
+if(validLanguages.length) {
+    language = validLanguages[0];
+}
 const i18n = new VueI18n({
     locale: language,
     messages: languages,
@@ -40,8 +43,8 @@ new Vue({
         this.$http.interceptors.response.use(response => {
             let message = response.data.message;
             if(!message) {
-                if(response.config.method === 'post') message = 'Saving successful.';
-                else if(response.config.method === 'put') message = 'Update successful.';
+                if(response.config.method === 'post') message = this.$t('saveSuccessful');
+                else if(response.config.method === 'put') message = this.$t('updateSuccessful');
             }
             if(message) {
                 this.addMessage(message, 'success');
@@ -50,7 +53,7 @@ new Vue({
         }, error => {
             let message = error.response.data.error;
             if(!message && error.response.status === 500) {
-                message = 'An unknown error has occurred.';
+                message = this.$t('unknownError');
             }
 
             if(message) {

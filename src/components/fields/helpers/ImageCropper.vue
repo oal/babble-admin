@@ -5,9 +5,25 @@
 
         <div class="ui basic segment">
             <div class="ui menu">
-                <a class="item" @click="onConfirmCrop">
+                <a class="item" @click="flipHorizontal">
+                    <i class="resize horizontal icon"></i>
+                    {{ $t('flipHorizontal') }}
+                </a>
+                <a class="item" @click="flipVertical">
+                    <i class="resize vertical icon"></i>
+                    {{ $t('flipVertical') }}
+                </a>
+                <a class="item" @click="rotateLeft">
+                    <i class="level up icon"></i>
+                    {{ $t('rotateLeft') }}
+                </a>
+                <a class="item" @click="rotateRight">
+                    <i class="level down icon"></i>
+                    {{ $t('rotateRight') }}
+                </a>
+                <a class="right active blue item" @click="onConfirmCrop">
                     <i class="crop icon"></i>
-                    Crop
+                    <strong>{{ $t('confirmCrop') }}</strong>
                 </a>
             </div>
         </div>
@@ -34,9 +50,9 @@
             // setTimeout so that the cropper gets initialized to the correct size.
             setTimeout(() => {
                 this.cropper = new Cropper(this.$refs.image, {
-                    rotatable: false,
+                    rotatable: true,
                     zoomable: false,
-                    scalable: false,
+                    scalable: true,
                     viewMode: 1,
                     aspectRatio: this.aspectRatio
                 });
@@ -54,6 +70,24 @@
                     height: this.height
                 });
                 this.$emit('crop', canvas, this.cropper.getData());
+            },
+            flipHorizontal() {
+                let data = this.cropper.getImageData();
+                let flip = data.scaleX === 1 ? -1 : 1;
+                this.cropper.scale(flip, 1);
+            },
+            flipVertical() {
+                let data = this.cropper.getImageData();
+                let flip = data.scaleY === 1 ? -1 : 1;
+                this.cropper.scale(1, flip);
+            },
+            rotateLeft() {
+                this.cropper.rotate(-90);
+                this.cropper.move(0);
+            },
+            rotateRight() {
+                this.cropper.rotate(90);
+                this.cropper.move(0);
             }
         },
 

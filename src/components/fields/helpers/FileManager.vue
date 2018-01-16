@@ -3,7 +3,7 @@
         <div class="ui basic very padded loading segment" v-if="progress < 100"></div>
         <div class="content">
             <div class="ui breadcrumb">
-                <a class="section" @click="popToDir(0)">Uploads</a>
+                <a class="section" @click="popToDir(0)">{{ $t('uploads') }}</a>
                 <span v-for="(dir, $index) in path" :key="dir">
                         <span class="divider">/</span>
                         <strong v-if="$index === path.length-1">
@@ -28,14 +28,14 @@
                         </div>
                     </div>
                 </div>
-                <em v-if="files.length === 0" style="padding: 1rem 1rem 3rem 1rem">No files found.</em>
+                <em v-if="files.length === 0" style="padding: 1rem 1rem 3rem 1rem">{{ $t('noFilesFound') }}</em>
             </div>
         </div>
 
         <div class="extra content">
             <a class="right floated" @click="onCreateDirectory">
                 <i class="folder icon"></i>
-                Create new directory
+                {{ $t('createDirectory') }}
             </a>
 
             <input type="file" multiple :id="uploadId" @change="onUploadChange"
@@ -43,7 +43,7 @@
             <a>
                 <label class="upload-label" :for="uploadId">
                     <i class="add icon"></i>
-                    Upload file
+                    {{ $t('uploadFile') }}
                 </label>
             </a>
         </div>
@@ -153,7 +153,7 @@
             },
 
             onRenameDirectory(index) {
-                let name = prompt('New directory name:');
+                let name = prompt(this.$t('newDirectoryName') + ':');
                 if(!name) return;
 
                 let apiPath = ['/files', ...this.path.slice(0, index + 1)].join('/');

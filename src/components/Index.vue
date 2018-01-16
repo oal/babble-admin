@@ -12,13 +12,6 @@
                         <span v-else>{{ model.name_plural }}</span>
                     </div>
                 </router-link>
-                <!--<div class="content">
-                    <router-link :to="{name: 'Create', params: {modelType: model.type}}" class="right floated" v-if="!model.single">
-                        <i class="green add icon"></i>
-                    </router-link>
-                    <router-link :to="{name: 'List', params: {modelType: model.type}}" class="header">
-                    </router-link>
-                </div>-->
             </div>
     </div>
 </template>

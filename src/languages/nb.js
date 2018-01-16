@@ -4,6 +4,7 @@ export default {
 
     username: 'Brukernavn',
     password: 'Passord',
+    invalidLogin: 'Ugyldig brukernavn og / eller passord.',
 
     welcome: 'Velkommen',
     manageContent: 'Rediger innhold',
@@ -13,6 +14,12 @@ export default {
 
     fileManager: 'Filbehandler',
     allFiles: 'Alle filer',
+    newDirectoryName: 'Nytt mappenavn',
+
+    uploads: 'Opplastinger',
+    noFilesFound: 'Ingen filer funnet.',
+    createDirectory: 'Ny mappe',
+    uploadFile: 'Last opp fil',
 
     new: 'Ny',
     edit: 'Rediger',
@@ -23,6 +30,15 @@ export default {
     chooseImage: 'Velg bilde',
     chooseAnotherFile: 'Velg en annen fil',
     reCrop: 'Beskjær',
+    flipHorizontal: 'Flipp horisontalt',
+    flipVertical: 'Flipp vertikalt',
+    rotateLeft: 'Roter venstre',
+    rotateRight: 'Roter høyre',
+    confirmCrop: 'Bekreft beskjæring',
 
-    confirmDeleteMessage: 'Vil du virkelig slette denne filen?'
+    confirmDeleteMessage: 'Vil du virkelig slette denne filen?',
+
+    saveSuccessful: 'Lagring vellykket.',
+    updateSuccessful: 'Endring vellykket.',
+    unknownError: 'En ukjent feil har oppstått.'
 }
