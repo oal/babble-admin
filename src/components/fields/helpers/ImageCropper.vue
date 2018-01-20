@@ -37,7 +37,8 @@
         props: [
             'src',
             'width',
-            'height'
+            'height',
+            'cropData' // Cropping information.
         ],
 
         data() {
@@ -54,7 +55,8 @@
                     zoomable: true,
                     scalable: true,
                     viewMode: 2,
-                    aspectRatio: this.aspectRatio
+                    aspectRatio: this.aspectRatio,
+                    data: this.cropData || null
                 });
             }, 0);
         },
@@ -93,7 +95,7 @@
 
         computed: {
             aspectRatio() {
-                if(!this.width || !this.height) return 0;
+                if (!this.width || !this.height) return 0;
                 return this.width / this.height;
             }
         }

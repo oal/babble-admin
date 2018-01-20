@@ -9,7 +9,7 @@
                         <img :src="croppedImage" v-if="croppedImage" class="ui image">
                         <img :src="'/uploads/' + selection" v-else-if="!hasCropper" class="ui image">
                         <image-cropper v-else :src="'/uploads/' + selection" :width="width"
-                                       :height="height" @crop="onCrop"></image-cropper>
+                                       :height="height" @crop="onCrop" :crop-data="cropData"></image-cropper>
                     </div>
                     <div class="extra content" v-if="selection">
                         <a class="right floated" @click="onDeselectFile">
@@ -62,7 +62,7 @@
             let filename = (this.value ? this.value.filename : null) || null;
 
             let directory = '/';
-            if(filename) directory = '/' + filename.split('/').slice(0, -1).join('/');
+            if (filename) directory = '/' + filename.split('/').slice(0, -1).join('/');
 
             return {
                 openFileManager: false,
@@ -123,6 +123,10 @@
             },
             height() {
                 if (this.options && this.options.height) return this.options.height;
+                return null;
+            },
+            cropData() {
+                if (this.value && this.value.crop) return this.value.crop;
                 return null;
             }
         }
