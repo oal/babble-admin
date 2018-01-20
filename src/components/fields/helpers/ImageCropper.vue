@@ -51,9 +51,9 @@
             setTimeout(() => {
                 this.cropper = new Cropper(this.$refs.image, {
                     rotatable: true,
-                    zoomable: false,
+                    zoomable: true,
                     scalable: true,
-                    viewMode: 1,
+                    viewMode: 2,
                     aspectRatio: this.aspectRatio
                 });
             }, 0);
