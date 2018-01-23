@@ -1,17 +1,19 @@
 <template>
-    <div class="field">
+    <div class="field" :class="{error: error}" v-if="hasTypeComponent()">
         <component :is="type + '-field'" :value="value"
                    @input="onFieldInput"
                    :label="label"
                    :name="name"
                    :options="options"
-                   :blocks="blocks"
-                   v-if="hasTypeComponent()"></component>
-        <div class="field" v-else>
-            <label>{{ field.name }}</label>
-            <div class="ui visible error message">
-                No component registered for field type "{{ type }}".
-            </div>
+                   :blocks="blocks"></component>
+        <div class="ui visible error message" v-if="error">
+            <p>{{ error }}</p>
+        </div>
+    </div>
+    <div class="field" v-else>
+        <label>{{ field.name }}</label>
+        <div class="ui visible error message">
+            No component registered for field type "{{ type }}".
         </div>
     </div>
 </template>
@@ -40,7 +42,8 @@
             'name',
             'value',
             'options',
-            'blocks'
+            'blocks',
+            'error'
         ],
 
         components: {

@@ -11,8 +11,14 @@
             <div class="ui form">
                 <div class="ui grid">
                     <div class="sixteen wide field" v-if="!model.single">
-                        <label>ID</label>
-                        <input v-model="changedId" pattern="[A-Za-z0-9-]+" required>
+                        <div class="field" :class="{error: errors.id}">
+                            <label>ID</label>
+                            <input v-model="changedId" pattern="[A-Za-z0-9-]+" required>
+                            <div class="ui visible error message" v-if="errors.id">
+                                <p>{{ errors.id }}</p>
+                            </div>
+                        </div>
+
                     </div>
 
                     <field :type="field.type"
@@ -21,6 +27,7 @@
                            :options="field.options"
                            :class="field.classes"
                            :blocks="blocks"
+                           :error="errors['fields.' + field.key]"
 
                            :value="data[field.key]"
                            @input="onFieldInput(field.key, $event)"
@@ -75,6 +82,7 @@
                 model: {},
                 blocks: {},
                 data: {},
+                errors: {}
             }
         },
 
@@ -143,8 +151,14 @@
                         });
                     }
 
+                    this.errors = {};
                     this.loading = false;
-                }).catch(_ => {
+                }).catch(error => {
+                    let errors = {};
+                    error.response.data.errors.forEach(errorObject => {
+                        errors[errorObject.property] = errorObject.message;
+                    })
+                    this.errors = errors;
                     this.loading = false
                 });
             },

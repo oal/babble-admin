@@ -2,11 +2,11 @@
     <div class="fields">
         <div class="field">
             <label>{{ label }}</label>
-            <input type="date" v-bind:value="date" v-on:input="onInput" ref="date">
+            <input type="date" v-bind:value="date" v-on:input="update" ref="date">
         </div>
         <div class="field">
             <label>&nbsp;</label>
-            <input type="time" v-bind:value="time" v-on:input="onInput" ref="time">
+            <input type="time" v-bind:value="time" v-on:input="update" ref="time">
         </div>
     </div>
 </template>
@@ -26,11 +26,15 @@
             'label'
         ],
 
+        mounted() {
+            this.update();
+        },
+
         methods: {
-            onInput(event) {
+            update(event = null) {
                 let date = this.$refs.date.value;
                 let time = this.$refs.time.value;
-                this.$emit('input', `${date} ${time}`);
+                this.$emit('input', `${date}T${time}:00Z`);
             }
         },
 
