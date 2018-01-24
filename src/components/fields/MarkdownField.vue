@@ -1,9 +1,10 @@
 <template>
-    <div class="field">
-        <label>{{ label }}</label>
-        <div class="ui segment">
-            <textarea ref="editor" v-bind:value="value"></textarea>
+    <div class="markdown-field">
+        <div class="input-group">
+            <label>{{ label }}</label>
         </div>
+
+        <textarea ref="editor" v-bind:value="value"></textarea>
     </div>
 </template>
 
@@ -47,7 +48,7 @@
         },
 
         beforeDestroy() {
-            if(this.codemirrorEditor) {
+            if (this.codemirrorEditor) {
                 // No teardown needed?
             }
         },
@@ -60,8 +61,17 @@
     }
 </script>
 
-<style scoped>
-    .segment {
-        padding: 0;
+<style>
+    .markdown-field .CodeMirror {
+        border-radius: 2px;
+        border: 2px solid rgba(0, 0, 0, .54);
+    }
+
+    .markdown-field .CodeMirror-gutters {
+        background-color: rgba(0, 0, 0, .54);
+    }
+
+    .markdown-field .CodeMirror-linenumber {
+        color: #e0e0e0
     }
 </style>

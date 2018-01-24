@@ -1,9 +1,5 @@
 <template>
-    <div class="field">
-        <label>{{ label }}</label>
-        <input type="text" v-if="!getOption('admin.multiline')" v-bind:value="value" v-on:input="onInput">
-        <textarea v-else cols="30" rows="10" v-bind:value="value" v-on:input="onInput"></textarea>
-    </div>
+    <v-text-field :label="label" :value="value" @input="onInput" :textarea="!!getOption('admin.multiline')"></v-text-field>
 </template>
 
 <script>

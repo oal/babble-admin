@@ -27,6 +27,11 @@ export default {
     save: 'Lagre',
     close: 'Lukk',
 
+    invalidIdError: 'ID-feltet kan bare inneholde små bokstaver, tall, bindestrek (-) og understrek (_).',
+
+    date: 'Dato',
+    time: 'Tid',
+
     chooseImage: 'Velg bilde',
     chooseAnotherFile: 'Velg en annen fil',
     reCrop: 'Beskjær',

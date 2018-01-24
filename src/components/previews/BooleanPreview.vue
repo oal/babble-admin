@@ -1,7 +1,7 @@
 <template>
     <div>
-        <i class="green checkmark icon" v-if="value"></i>
-        <i class="red remove icon" v-else></i>
+        <v-icon color="green" v-if="value">check</v-icon>
+        <v-icon color="red" v-else>clear</v-icon>
     </div>
 </template>
 

@@ -8,44 +8,33 @@
                 {{ model.name }}
             </h1>
 
-            <div class="ui form">
-                <div class="ui grid">
-                    <div class="sixteen wide field" v-if="!model.single">
-                        <div class="field" :class="{error: errors.id}">
-                            <label>ID</label>
-                            <input v-model="changedId" pattern="[A-Za-z0-9-]+" required>
-                            <div class="ui visible error message" v-if="errors.id">
-                                <p>{{ errors.id }}</p>
-                            </div>
-                        </div>
+            <v-form>
+                <v-text-field label="ID" v-model="changedId" :rules="[validateId]" required v-if="!model.single"></v-text-field>
 
-                    </div>
+                <field :type="field.type"
+                       :label="field.name"
+                       :name="field.key"
+                       :options="field.options"
+                       :class="field.classes"
+                       :blocks="blocks"
+                       :error="errors['fields.' + field.key]"
 
-                    <field :type="field.type"
-                           :label="field.name"
-                           :name="field.key"
-                           :options="field.options"
-                           :class="field.classes"
-                           :blocks="blocks"
-                           :error="errors['fields.' + field.key]"
+                       :value="data[field.key]"
+                       @input="onFieldInput(field.key, $event)"
 
-                           :value="data[field.key]"
-                           @input="onFieldInput(field.key, $event)"
+                       v-for="field in processedFields"
+                       :key="field.key">
+                </field>
 
-                           v-for="field in processedFields"
-                           :key="field.key">
-                    </field>
+                <div class="sixteen wide column">
+                    <div class="ui divider"></div>
 
-                    <div class="sixteen wide column">
-                        <div class="ui divider"></div>
-
-                        <div class="green labeled icon button" v-on:click="save">
-                            <i class="save icon"></i>
-                            {{ $t('save') }}
-                        </div>
+                    <div class="green labeled icon button" v-on:click="save" v-if="this.dataPath">
+                        <i class="save icon"></i>
+                        {{ $t('save') }}
                     </div>
                 </div>
-            </div>
+            </v-form>
         </div>
     </div>
 </template>
@@ -108,7 +97,7 @@
                     this.blocks = response.data.blocks;
 
                     // Only load record data if ID is set, or if this is a single instance model (doesn't have an ID).
-                    if(this.id || this.model.single) {
+                    if (this.id || this.model.single) {
                         this.$http.get(this.dataPath).then(response => {
                             this.data = response.data;
                             this.initEmptyFields();
@@ -119,6 +108,16 @@
                         this.loading = false;
                     }
                 });
+            },
+            validateId(value) {
+                console.log(this.errors.id)
+                if (this.errors.id) {
+                    return this.errors.id;
+                }
+                if (value && !value.match(/^([a-z0-9-_]+)$/)) {
+                    return this.$t('invalidIdError');
+                }
+                return true;
             },
             save() {
                 this.loading = true;
@@ -173,7 +172,7 @@
                 });
 
                 // Automatic ID if enabled in model options.
-                if(!this.data.id && this.model.options && this.model.options.admin && this.model.options.admin.id) {
+                if (!this.data.id && this.model.options && this.model.options.admin && this.model.options.admin.id) {
                     this.data = {...this.data}; // Allows us to watch for changes.
 
                     let autoFieldKey = this.model.options.admin.id;
@@ -199,9 +198,12 @@
                 });
             },
             dataPath() {
-                let dataPath = '/models/' + this.modelType;
-                if(!this.model.single) dataPath += '/' + this.changedId;
-                return dataPath;
+                let path = '/models/' + this.modelType;
+
+                if (this.model.single) return path;
+                if (!this.changedId) return null;
+
+                return path + '/' + this.changedId;
             }
         }
     }

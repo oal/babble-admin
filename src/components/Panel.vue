@@ -1,57 +1,74 @@
 <template>
-    <div class="very padded loading segment" v-if="loading"></div>
-    <div id="panel" v-else>
-        <header id="top">
-            <router-link :to="{name: 'Index'}">Babble CMS Admin</router-link>
-            <ul class="top-right">
-                <li>{{ $t('welcome') }}, {{ $root.user.id }}!</li>
-                <li>
-                    <a @click="logout">
-                        {{ $t('logout') }}
-                        <i class="sign out icon"></i>
-                    </a>
-                </li>
-            </ul>
-        </header>
-        <div id="main">
-            <aside id="sidebar">
-                <div class="menu" v-for="model in models" v-bind:key="model.type">
-                    <i class="icon" :class="model.options.admin.icon"
-                       v-if="model.options && model.options.admin && model.options.admin.icon"></i>
-                    <div class="content">
-                        <router-link v-bind:to="{name: 'List', params: {modelType: model.type}}" active-class="active"
-                                     class="header item">
+    <v-app>
+        <v-navigation-drawer v-model="drawer" absolute light app>
+            <v-toolbar dark color="primary">
+                <v-toolbar-title>
+                    <router-link tag="div" :to="{name: 'Index'}">Babble CMS Admin</router-link>
+                </v-toolbar-title>
+            </v-toolbar>
+
+            <v-divider></v-divider>
+
+            <v-list dense class="pt-0" v-if="!loading">
+                <v-list-tile v-for="model in models" :key="model.type"
+                             :to="{name: 'List', params: {modelType: model.type}}">
+                    <v-list-tile-action>
+                        <v-icon v-if="model.options && model.options.admin && model.options.admin.icon">
+                            {{ model.options.admin.icon }}
+                        </v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
                             <span v-if="model.single">{{ model.name }}</span>
                             <span v-else>{{ model.name_plural }}</span>
-                        </router-link>
-                    </div>
-                </div>
+                        </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
 
-                <div class="menu">
-                    <i class="file icon"></i>
-                    <div class="content">
-                        <router-link v-bind:to="{name: 'Files'}" class="header item">
+                <v-list-tile :to="{name: 'Files'}">
+                    <v-list-tile-action>
+                        <v-icon>folder</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
                             {{ $t('fileManager') }}
-                        </router-link>
-                    </div>
-                </div>
+                        </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
 
-                <div class="messages">
-                    <div class="ui visible message" v-for="message in $root.messages" :key="message.message"
-                         :class="message.type">
-                        {{ message.message }}
-                    </div>
-                </div>
-            </aside>
-            <article id="content">
+        <v-toolbar dark color="primary" app>
+            <v-btn icon @click="drawer = !drawer">
+                <v-icon>menu</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-toolbar-title v-if="$root.user">
+                {{ $t('welcome') }}, {{ $root.user.id }}!
+            </v-toolbar-title>
+            <v-toolbar-items align-center>
+                <v-btn flat @click="logout">
+                    {{ $t('logout') }}
+                    <i class="sign out icon"></i>
+                </v-btn>
+            </v-toolbar-items>
+        </v-toolbar>
+
+        <v-content>
+            <v-container fill-height v-if="loading">
+                <v-layout justify-center align-center>
+                    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                </v-layout>
+            </v-container>
+            <v-container class="pb-3" fluid v-else>
                 <router-view></router-view>
-            </article>
-        </div>
-
-        <div v-if="showLoginDialog" id="login-overlay">
-            <login-form @login="onLogin"></login-form>
-        </div>
-    </div>
+                <!--<div v-if="showLoginDialog" id="login-overlay">-->
+                <!--<login-form @login="onLogin"></login-form>-->
+                <!--</div>-->
+            </v-container>
+        </v-content>
+        <!--<v-footer app></v-footer>-->
+    </v-app>
 </template>
 
 <script>
@@ -89,6 +106,7 @@
         data() {
             return {
                 loading: false,
+                drawer: true,
                 showLoginDialog: false,
                 models: []
             }
@@ -116,38 +134,5 @@
         background: rgba(25, 25, 25, 0.8);
         z-index: 1;
         display: flex;
-    }
-
-    @keyframes message-enter {
-        0% {
-            transform: translateY(200px);
-            opacity: 0;
-        }
-
-        15% {
-            transform: translateY(0px);
-            opacity: 1;
-        }
-
-        85% {
-            transform: translateY(0px);
-            opacity: 1;
-        }
-
-        100% {
-            transform: translateY(200px);
-            opacity: 0;
-        }
-    }
-
-    .messages {
-        padding: 1rem;
-        position: absolute;
-        bottom: 0;
-    }
-
-    .messages .message {
-        animation: message-enter 5s;
-        animation-fill-mode: forwards;
     }
 </style>

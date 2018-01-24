@@ -1,23 +1,36 @@
 <template>
-    <div class="fields">
-        <div class="field">
+    <div>
+        <div class="pb-3 input-group input-group--text-field">
             <label>{{ label }}</label>
-            <input type="date" v-bind:value="date" v-on:input="update" ref="date">
         </div>
-        <div class="field">
-            <label>&nbsp;</label>
-            <input type="time" v-bind:value="time" v-on:input="update" ref="time">
-        </div>
+        <v-layout row wrap>
+            <v-flex>
+                <v-menu class="pr-3">
+                    <v-text-field
+                            slot="activator"
+                            :label="$t('date')"
+                            v-model="date"
+                            prepend-icon="event"
+                            readonly>
+                    </v-text-field>
+                    <v-date-picker class="mt-3" v-model="date"></v-date-picker>
+                </v-menu>
+                <v-menu>
+                    <v-text-field
+                            slot="activator"
+                            :label="$t('time')"
+                            v-model="time"
+                            prepend-icon="schedule"
+                            readonly>
+                    </v-text-field>
+                    <v-time-picker landscape format="24hr" v-model="time"></v-time-picker>
+                </v-menu>
+            </v-flex>
+        </v-layout>
     </div>
 </template>
 
 <script>
-    import {get} from 'lodash';
-    import moment from 'moment';
-
-    const dateFormat = 'YYYY-MM-DD';
-    const timeFormat = 'hh:mm';
-
     export default {
         name: 'datetime-field',
 
@@ -26,27 +39,30 @@
             'label'
         ],
 
+        data() {
+            return {
+                date: null,
+                time: null
+            }
+        },
+
         mounted() {
             this.update();
         },
 
-        methods: {
-            update(event = null) {
-                let date = this.$refs.date.value;
-                let time = this.$refs.time.value;
-                this.$emit('input', `${date}T${time}:00Z`);
+        watch: {
+            date() {
+                this.emitInput();
+            },
+            time() {
+                this.emitInput();
             }
         },
 
-        computed: {
-            datetime() {
-                return moment(this.value, `${dateFormat} ${timeFormat}`);
-            },
-            date() {
-                return this.datetime.format(dateFormat);
-            },
-            time() {
-                return this.datetime.format(timeFormat);
+        methods: {
+            emitInput() {
+                if (!this.date || !this.time) return null;
+                this.$emit('input', `${this.date}T${this.time}:00Z`)
             }
         }
     }

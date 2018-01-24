@@ -1,10 +1,18 @@
 import axios from 'axios';
 import Vue from 'vue';
+
+import 'vuetify/dist/vuetify.min.css'
+import Vuetify from 'vuetify'
+
 import VueI18n from 'vue-i18n';
+
 import App from './App';
 import router from './router';
 
 Vue.config.productionTip = false;
+
+
+Vue.use(Vuetify);
 
 // Load language files.
 let req = require.context('./languages/', false, /.*\.js/);
@@ -64,17 +72,17 @@ new Vue({
     },
     mounted() {
         setInterval(() => {
-            let time = new Date();
-            this.messages = this.messages.filter(message => time - message.added < 5000);
-        }, 500);
+            this.messages = this.messages.filter(message => message.visible);
+        }, 1000);
     },
     methods: {
         addMessage(message, type) {
             this.messages.push({
+                key: Math.random().toString(36).substr(2, 5),
                 message: message,
                 type: type || 'info',
-                added: new Date()
-            })
+                visible: true
+            });
         }
     },
     components: {

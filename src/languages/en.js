@@ -27,6 +27,11 @@ export default {
     save: 'Save',
     close: 'Close',
 
+    invalidIdError: 'The ID field can only contain lowercase letters, numbers, dashes (-) and underscores (_).',
+
+    date: 'Date',
+    time: 'Time',
+
     chooseImage: 'Choose image',
     chooseAnotherFile: 'Choose another file',
     reCrop: 'Re-crop',

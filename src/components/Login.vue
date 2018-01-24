@@ -1,17 +1,18 @@
 <template>
-    <div id="login">
-        <div class="ui basic padded segment">
-            <h2 class="ui header center aligned">
-                {{ $t('login') }}
-            </h2>
-            <login-form @login="onLogin"></login-form>
-
-            <div class="ui visible message" v-for="message in $root.messages"
-                 :key="message.message" :class="message.type">
-                {{ message.message }}
-            </div>
-        </div>
-    </div>
+    <v-container fill-height>
+        <v-layout align-center>
+            <v-flex justify-center>
+                <v-card>
+                    <v-card-text>
+                        <h4 class="headline">
+                            {{ $t('login') }}
+                        </h4>
+                        <login-form @login="onLogin"></login-form>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -20,6 +21,12 @@
     export default {
         components: {
             LoginForm
+        },
+
+        data() {
+            return {
+                a: true
+            }
         },
 
         methods: {
@@ -31,17 +38,6 @@
 </script>
 
 <style scoped>
-    #login {
-        display: flex;
-        flex-grow: 1;
-        background-color: #f2f2f2;
-    }
-
-    .segment {
-        margin: auto;
-        align-self: center;
-    }
-
     .message {
         position: absolute;
         z-index: 2;

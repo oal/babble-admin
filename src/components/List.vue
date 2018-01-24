@@ -1,54 +1,46 @@
 <template>
-    <div>
-        <div class="ui loading basic segment" v-if="loading"></div>
-        <div v-else>
-            <div class="flex between">
-                <h1>{{ model.name_plural }}</h1>
-                <router-link v-bind:to="{name: 'Create', params: {modelType: model.type}}"
-                             class="blue labeled icon button">
-                    <i class="add icon"></i>
-                    {{ $t('addRecord') }} {{ model.name }}
-                </router-link>
-            </div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th v-for="column in listDisplay" :class="{collapsing: column.name === 'ID'}" :key="column.key">
-                        <a @click="sortBy(column.key)">
-                            {{ column.name }}
-                            <i class="caret up icon" v-if="sort === column.key"></i>
-                            <i class="caret down icon" v-if="sort === '-'+column.key"></i>
-                        </a>
-                    </th>
-                    <th>&nbsp;</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="record in models" :key="record.id">
-                    <td v-for="column in listDisplay" :key="column.key" :class="{highlight: column.key === 'id'}">
-                        <component :is="column.type + '-preview'"
-                                   :value="getColumnValue(column, record)"
-                                   :field="column"
-                                   v-if="hasPreviewComponent(column)"></component>
-                        <div v-else>{{ getColumnValue(column, record) }}</div>
-                    </td>
+    <v-layout fill-height justify-center align-center v-if="loading">
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </v-layout>
+    <v-flex fluid v-else>
+        <v-layout align-center class="pb-3">
+            <h1>{{ model.name_plural }}</h1>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" :to="{name: 'Create', params: {modelType: model.type}}"
+                   class="blue labeled icon button">
+                <i class="add icon"></i>
+                {{ $t('addRecord') }} {{ model.name }}
+            </v-btn>
+        </v-layout>
 
-                    <td class="right aligned">
-                        <router-link v-bind:to="{name: 'Edit', params: {modelType: model.type, id: record.id}}"
-                                     class="green labeled icon button">
-                            <i class="edit icon"></i>
-                            {{ $t('edit') }}
-                        </router-link><!--
-                        --><div class="red labeled icon button" @click="remove(record)">
-                            <i class="remove icon"></i>
-                            {{ $t('delete') }}
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        <v-data-table
+                v-bind:headers="headers"
+                :items="models"
+                hide-actions
+                class="elevation-1">
+            <template slot="items" slot-scope="props">
+                <td v-for="column in listDisplay" :key="column.key" :class="{highlight: column.key === 'id'}">
+                    <component :is="column.type + '-preview'"
+                               :value="getColumnValue(column, props.item)"
+                               :field="column"
+                               v-if="hasPreviewComponent(column)"></component>
+                    <div v-else>{{ getColumnValue(column, props.item) }}</div>
+                </td>
+
+                <td class="text-xs-right">
+                    <v-btn left flat color="green" dark
+                           :to="{name: 'Edit', params: {modelType: model.type, id: props.item.id}}">
+                        <v-icon left>edit</v-icon>
+                        {{ $t('edit') }}
+                    </v-btn>
+                    <v-btn left flat color="red" dark @click="remove(props.item)">
+                        <v-icon left>delete</v-icon>
+                        {{ $t('delete') }}
+                    </v-btn>
+                </td>
+            </template>
+        </v-data-table>
+    </v-flex>
 </template>
 
 <script>
@@ -99,7 +91,7 @@
 
                 Promise.all([modelPromise, this.fetchRecords()]).then(() => {
                     // Redirect if single instance model.
-                    if(this.model.single) {
+                    if (this.model.single) {
                         this.$router.replace({name: 'EditSingle', params: {modelType: this.model.type}})
                         return;
                     }
@@ -118,7 +110,7 @@
 
                     // If fetchRecords is called outside of fetchData, and it wasn't already loading,
                     // there is no more requests waiting at this time.
-                    if(!wasLoading) this.loading = false;
+                    if (!wasLoading) this.loading = false;
                 });
             },
             getColumnValue(column, record) {
@@ -130,7 +122,7 @@
             },
             remove(record) {
                 let ok = confirm('Do you really want to delete this item?');
-                if(!ok) return;
+                if (!ok) return;
 
                 this.$http.delete('/models/' + this.modelType + '/' + record.id).then(response => {
                     console.log(response);
@@ -138,7 +130,7 @@
                 });
             },
             sortBy(columnKey) {
-                if(this.sort === columnKey) {
+                if (this.sort === columnKey) {
                     this.sort = '-' + columnKey;
                 } else {
                     this.sort = columnKey;
@@ -179,9 +171,19 @@
 
                 return columns;
             },
+            headers() {
+                let buttonHeader = {text: '', value: null, sortable: false};
+                return [
+                    ...this.listDisplay.map(column => {
+                        return {
+                            text: column.name,
+                            value: column.key,
+                            align: 'left'
+                        }
+                    }),
+                    buttonHeader
+                ];
+            }
         }
     }
 </script>
-
-<style>
-</style>
