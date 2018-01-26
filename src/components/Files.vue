@@ -1,92 +1,79 @@
 <template>
     <div>
         <h1>{{ $t('fileManager') }}</h1>
-        <div class="file-manager">
-            <file-manager @input="select" ref="file-manager"></file-manager>
-            <div v-if="selection" class="selected-file">
+        <v-card>
+            <v-card-text>
+                <file-manager @input="select" ref="file-manager"></file-manager>
+            </v-card-text>
 
-                <h3>{{ selection }}</h3>
-                <div class="ui basic loading segment" v-if="loading"></div>
-                <div v-else>
-                    <div class="labeled icon button" @click="close">
-                        <i class="remove icon"></i>
-                        {{ $t('close') }}
-                    </div>
+        </v-card>
 
-                    <div class="red labeled icon button" @click="remove">
-                        <i class="trash icon"></i>
-                        {{ $t('delete') }}
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        <v-dialog v-model="showSelectionDialog" max-width="500px">
+            <v-card>
+                <v-card-title>
+                    {{ $t('fileManager') }}
+                </v-card-title>
+                <v-card-text>
+                    {{ selection }}
+                </v-card-text>
+                <v-card-actions>
+                    <!--TODO-->
+                    <!--<v-btn color="primary" flat @click.stop="showSelectionDialog = false">{{ $t('rename' )}}</v-btn>-->
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" flat @click.stop="remove">{{ $t('delete' )}}</v-btn>
+                    <v-btn color="primary" flat @click.stop="close">{{ $t('close' )}}</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
 <script>
-import FileManager from '@/components/fields/helpers/FileManager';
+    import FileManager from '@/components/fields/helpers/FileManager';
 
-export default {
-    components: {
-        FileManager
-    },
-
-    data() {
-        return {
-            loading: false,
-            selection: null
-        }
-    },
-
-    methods: {
-        select(selection) {
-            this.selection = selection;
+    export default {
+        components: {
+            FileManager
         },
 
-        remove() {
-            let ok = confirm(this.$t('confirmDeleteMessage'));
-            if (!ok) {
-                this.close();
-                return;
+        data() {
+            return {
+                loading: false,
+
+                showSelectionDialog: false,
+                selection: null
             }
-
-            this.loading = true;
-            this.$http.delete('/files/' + this.selection).then(response => {
-                this.$refs['file-manager'].loadFiles();
-                this.close();
-                this.loading = false;
-            }).catch(response => {
-                console.log('fail');
-                this.loading = false;
-            });
         },
 
-        close() {
-            this.selection = null;
+        methods: {
+            select(selection) {
+                this.showSelectionDialog = true;
+                this.selection = selection;
+            },
+
+            remove() {
+                let ok = confirm(this.$t('confirmDeleteMessage'));
+                if (!ok) {
+                    this.close();
+                    return;
+                }
+
+                this.loading = true;
+                this.$http.delete('/files/' + this.selection).then(response => {
+                    this.$refs['file-manager'].loadFiles();
+                    this.close();
+                    this.loading = false;
+                }).catch(response => {
+                    console.log('fail');
+                    this.loading = false;
+                });
+            },
+
+            close() {
+                this.showSelectionDialog = false;
+                this.selection = null;
+            }
         }
     }
-}
 </script>
-
-<style scoped>
-.file-manager {
-    position: relative;
-}
-
-.selected-file {
-    background-color: rgba(255, 255, 255, 0.95);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.selected-file>* {
-    padding: 0.5rem;
-}
-</style>

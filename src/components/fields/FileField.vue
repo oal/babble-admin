@@ -15,10 +15,26 @@
 
         <div class="blue labeled icon button" v-else-if="!openFileManager" @click="onOpenFileManager">
             <i class="folder icon"></i>
-            Choose file
+            {{ $t('chooseFile') }}
         </div>
 
-        <file-manager v-else @input="onSelectFile"></file-manager>
+        <v-dialog fullscreen transition="dialog-bottom-transition" v-model="openFileManager">
+            <v-card>
+                <v-toolbar dark color="primary">
+                    <v-btn icon @click.native="openFileManager = false" dark>
+                        <v-icon>close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>{{ $t('fileManager') }}</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                        <v-btn dark flat @click.native="dialog = false">Save</v-btn>
+                    </v-toolbar-items>
+                </v-toolbar>
+                <v-card-text>
+                    <file-manager @input="onSelectFile"></file-manager>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -55,6 +71,7 @@
             onSelectFile(file) {
                 this.selection = file;
                 this.$emit('input', this.selection);
+                this.croppedImage = null;
             },
 
             onDeselectFile() {

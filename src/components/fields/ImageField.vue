@@ -1,7 +1,5 @@
 <template>
     <div class="field">
-        <label>{{ label }}</label>
-
         <div v-if="selection">
             <div class="field">
                 <div class="ui fluid card">
@@ -25,12 +23,28 @@
             </div>
         </div>
 
-        <div class="blue labeled icon button" v-else-if="!openFileManager" @click="onOpenFileManager">
-            <i class="folder icon"></i>
-            {{ $t('chooseImage') }}
-        </div>
+        <v-btn dark color="blue-grey" v-else-if="!openFileManager" @click="onOpenFileManager">
+            {{ $t('choose') }} {{ label }}
+            <v-icon right>add_a_photo</v-icon>
+        </v-btn>
 
-        <file-manager v-else @input="onSelectFile" :directory="directory"></file-manager>
+        <v-dialog fullscreen transition="dialog-bottom-transition" v-model="openFileManager">
+            <v-card>
+                <v-toolbar dark color="primary">
+                    <v-btn icon @click.native="openFileManager = false" dark>
+                        <v-icon>close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>{{ $t('fileManager') }}</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                        <v-btn dark flat @click.native="dialog = false">Save</v-btn>
+                    </v-toolbar-items>
+                </v-toolbar>
+                <v-card-text>
+                    <file-manager @input="onSelectFile" :directory="directory"></file-manager>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -83,6 +97,7 @@
                 this.$emit('input', {
                     filename: this.selection
                 });
+                this.openFileManager = false;
             },
 
             onDeselectFile() {

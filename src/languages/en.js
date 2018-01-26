@@ -19,19 +19,24 @@ export default {
     uploads: 'Uploads',
     noFilesFound: 'No files found.',
     createDirectory: 'Create new directory',
+    renameDirectory: 'Rename current directory',
     uploadFile: 'Upload file',
 
     new: 'New',
     edit: 'Edit',
+    rename: 'Rename',
     delete: 'Delete',
     save: 'Save',
     close: 'Close',
+    directory: 'Directory',
 
     invalidIdError: 'The ID field can only contain lowercase letters, numbers, dashes (-) and underscores (_).',
 
     date: 'Date',
     time: 'Time',
 
+    choose: 'Choose',
+    chooseFile: 'Choose file',
     chooseImage: 'Choose image',
     chooseAnotherFile: 'Choose another file',
     reCrop: 'Re-crop',
