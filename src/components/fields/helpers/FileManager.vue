@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-layout align-center>
+        <v-layout wrap align-center>
             <v-breadcrumbs large>
                 <v-icon slot="divider">chevron_right</v-icon>
                 <v-breadcrumbs-item @click.native="popToDir(0)">

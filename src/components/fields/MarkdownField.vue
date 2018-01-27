@@ -36,9 +36,10 @@
 
         mounted() {
             let codemirrorEditor = CodeMirror.fromTextArea(this.$refs.editor, {
-                lineNumbers: true,
+                lineNumbers: false,
                 mode: 'markdown',
-                lineWrapping: true
+                lineWrapping: true,
+                viewportMargin: Infinity
             });
             codemirrorEditor.on('change', () => {
                 let value = codemirrorEditor.getValue();
@@ -62,9 +63,14 @@
 </script>
 
 <style>
+    .markdown-field {
+        min-width: 240px;
+    }
     .markdown-field .CodeMirror {
         border-radius: 2px;
         border: 2px solid rgba(0, 0, 0, .54);
+        height: auto;
+        min-height: 50px;
     }
 
     .markdown-field .CodeMirror-gutters {

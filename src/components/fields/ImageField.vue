@@ -1,48 +1,49 @@
 <template>
-    <div class="field">
-        <div v-if="selection">
-            <div class="field">
-                <div class="ui fluid card">
-                    <div class="image">
-                        <img :src="croppedImage" v-if="croppedImage" class="ui image">
-                        <img :src="'/uploads/' + selection" v-else-if="!hasCropper" class="ui image">
-                        <image-cropper v-else :src="'/uploads/' + selection" :width="width"
-                                       :height="height" @crop="onCrop" :crop-data="cropData"></image-cropper>
-                    </div>
-                    <div class="extra content" v-if="selection">
-                        <a class="right floated" @click="onDeselectFile">
-                            <i class="folder icon"></i>
-                            {{ $t('chooseAnotherFile') }}
-                        </a>
-                        <a @click="onReCrop" v-if="croppedImage && hasCropper">
-                            <i class="crop icon"></i>
-                            {{ $t('reCrop') }}
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <div>
+        <div v-if="croppedImage" class="image-card">
+            <img :src="croppedImage">
+            <v-layout wrap v-if="selection">
+                <v-btn flat color="primary" @click="onReCrop" v-if="croppedImage && hasCropper">
+                    <v-icon left>crop</v-icon>
+                    {{ $t('reCrop') }} {{ label }}
+                </v-btn>
+                <v-btn flat color="blue-grey" dark @click="onDeselectFile">
+                    <v-icon left>folder</v-icon>
+                    {{ $t('chooseAnotherFile') }}
+                </v-btn>
+            </v-layout>
         </div>
 
-        <v-btn dark color="blue-grey" v-else-if="!openFileManager" @click="onOpenFileManager">
+        <v-btn dark color="blue-grey" v-else @click="onOpenFileManager">
             {{ $t('choose') }} {{ label }}
             <v-icon right>add_a_photo</v-icon>
         </v-btn>
 
-        <v-dialog fullscreen transition="dialog-bottom-transition" v-model="openFileManager">
+        <v-dialog fullscreen transition="dialog-bottom-transition" v-model="showFileManager">
             <v-card>
                 <v-toolbar dark color="primary">
-                    <v-btn icon @click.native="openFileManager = false" dark>
+                    <v-btn icon @click.native="showFileManager = false" dark>
                         <v-icon>close</v-icon>
                     </v-btn>
                     <v-toolbar-title>{{ $t('fileManager') }}</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-toolbar-items>
-                        <v-btn dark flat @click.native="dialog = false">Save</v-btn>
-                    </v-toolbar-items>
                 </v-toolbar>
                 <v-card-text>
-                    <file-manager @input="onSelectFile" :directory="directory"></file-manager>
+                    <file-manager @input="onSelectFile" :directory="directory" v-if="showFileManager"></file-manager>
                 </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog fullscreen transition="dialog-bottom-transition" v-model="showImageEditor">
+            <v-card style="display: flex; flex-direction: column">
+                <v-toolbar dark color="primary">
+                    <v-btn icon @click.native="closeImageEditor" dark>
+                        <v-icon>close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>{{ $t('imageEditor') }}</v-toolbar-title>
+                </v-toolbar>
+                <image-cropper :src="'/uploads/' + selection" :width="width"
+                               :height="height" @crop="onCrop" :crop-data="cropData" v-if="selection">
+                </image-cropper>
             </v-card>
         </v-dialog>
     </div>
@@ -79,7 +80,8 @@
             if (filename) directory = '/' + filename.split('/').slice(0, -1).join('/');
 
             return {
-                openFileManager: false,
+                showFileManager: false,
+                showImageEditor: false,
                 selection: filename,
                 directory: directory,
                 croppedImage: croppedImage,
@@ -88,7 +90,12 @@
 
         methods: {
             onOpenFileManager() {
-                this.openFileManager = true;
+                this.showFileManager = true;
+            },
+
+            closeImageEditor() {
+                this.showImageEditor = false;
+                this.selection = null;
             },
 
             onSelectFile(file) {
@@ -97,20 +104,24 @@
                 this.$emit('input', {
                     filename: this.selection
                 });
-                this.openFileManager = false;
+                this.showFileManager = false;
+
+                if (this.hasCropper) {
+                    this.showImageEditor = true;
+                }
             },
 
             onDeselectFile() {
                 this.selection = null;
                 this.croppedImage = null;
-                this.openFileManager = true;
+                this.showFileManager = true;
                 this.$emit('input', {
                     filename: this.selection
                 });
             },
 
             onReCrop() {
-                this.croppedImage = null;
+                this.showImageEditor = true;
             },
 
             onCrop(previewCanvas, cropData) {
@@ -122,6 +133,7 @@
                             filename: this.selection,
                             crop: cropData
                         });
+                        this.showImageEditor = false;
                     };
                     reader.readAsDataURL(blob);
                 });
@@ -149,19 +161,11 @@
 </script>
 
 <style lang="scss" type="text/scss" scoped>
-    .card {
-        overflow: hidden;
-    }
-
-    .card .image {
-        background: #333 url('/static/checkerboard.png');
+    .image-card {
+        max-width: 500px;
 
         img {
-            width: auto;
             max-width: 100%;
-            margin: auto;
-            border-radius: 0;
-            box-shadow: 0 0 25px rgba(#000, 0.25);
         }
     }
 </style>

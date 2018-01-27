@@ -5,7 +5,7 @@
         </div>
         <v-layout row wrap>
             <v-flex>
-                <v-menu class="pr-3">
+                <v-menu full-width>
                     <v-text-field
                             slot="activator"
                             :label="$t('date')"
@@ -15,7 +15,9 @@
                     </v-text-field>
                     <v-date-picker class="mt-3" v-model="date"></v-date-picker>
                 </v-menu>
-                <v-menu>
+            </v-flex>
+            <v-flex>
+                <v-menu full-width>
                     <v-text-field
                             slot="activator"
                             :label="$t('time')"
@@ -23,7 +25,7 @@
                             prepend-icon="schedule"
                             readonly>
                     </v-text-field>
-                    <v-time-picker landscape format="24hr" v-model="time"></v-time-picker>
+                    <v-time-picker format="24hr" v-model="time"></v-time-picker>
                 </v-menu>
             </v-flex>
         </v-layout>
@@ -31,6 +33,8 @@
 </template>
 
 <script>
+    import moment from 'moment';
+
     export default {
         name: 'datetime-field',
 
@@ -40,14 +44,14 @@
         ],
 
         data() {
-            return {
-                date: null,
-                time: null
-            }
-        },
+            let dateTime;
+            if (this.value) dateTime = moment(this.value);
+            else dateTime = moment();
 
-        mounted() {
-            this.update();
+            return {
+                date: dateTime.format('YYYY-MM-DD'),
+                time: dateTime.format('HH:mm')
+            }
         },
 
         watch: {
@@ -62,7 +66,8 @@
         methods: {
             emitInput() {
                 if (!this.date || !this.time) return null;
-                this.$emit('input', `${this.date}T${this.time}:00Z`)
+                let dateTime = moment(`${this.date}T${this.time}:00`, 'YYYY-MM-DD hh:mm:ss');
+                this.$emit('input', dateTime.format())
             }
         }
     }

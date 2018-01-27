@@ -25,10 +25,6 @@
                         <v-icon>close</v-icon>
                     </v-btn>
                     <v-toolbar-title>{{ $t('fileManager') }}</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-toolbar-items>
-                        <v-btn dark flat @click.native="dialog = false">Save</v-btn>
-                    </v-toolbar-items>
                 </v-toolbar>
                 <v-card-text>
                     <file-manager @input="onSelectFile"></file-manager>
@@ -57,7 +53,7 @@
 
         data() {
             return {
-                openFileManager: false,
+                showFileManager: false,
                 selection: this.value || null
             }
         },
@@ -65,7 +61,7 @@
         methods: {
             onOpenFileManager() {
                 this.selection = null;
-                this.openFileManager = true;
+                this.showFileManager = true;
             },
 
             onSelectFile(file) {

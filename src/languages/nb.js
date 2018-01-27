@@ -12,6 +12,10 @@ export default {
     allRecords: 'Alle',
     addRecord: 'Opprett ny',
 
+    permalink: 'Permalenke',
+    view: 'Vis',
+    viewAll: 'Vis alle',
+
     fileManager: 'Filbehandler',
     allFiles: 'Alle filer',
     newDirectoryName: 'Nytt mappenavn',
@@ -39,6 +43,8 @@ export default {
     chooseFile: 'Velg fil',
     chooseImage: 'Velg bilde',
     chooseAnotherFile: 'Velg en annen fil',
+
+    imageEditor: 'Bilderedigering',
     reCrop: 'Beskjær',
     flipHorizontal: 'Flipp horisontalt',
     flipVertical: 'Flipp vertikalt',
@@ -48,6 +54,7 @@ export default {
 
     confirmDeleteMessage: 'Vil du virkelig slette denne filen?',
 
+    missingIdError: 'En ID kreves for å kunne lagre.',
     saveSuccessful: 'Lagring vellykket.',
     updateSuccessful: 'Endring vellykket.',
     unknownError: 'En ukjent feil har oppstått.'

@@ -52,7 +52,7 @@
 <script>
     import {get} from 'lodash';
 
-    import Field from '@/components/fields/Field';
+    import Field from '@/components/fields/helpers/Field';
 
     export default {
         props: [
@@ -65,7 +65,7 @@
 
         beforeCreate: function () {
             // Relevant: https://vuejs.org/v2/guide/components.html#Recursive-Components
-            this.$options.components.Field = require('./Field.vue')
+            this.$options.components.Field = require('./helpers/Field.vue')
         },
 
         data() {

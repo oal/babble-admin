@@ -1,13 +1,11 @@
 <template>
-    <div>
-        <h1>{{ $t('fileManager') }}</h1>
+    <v-container fluid>
+        <h1 class="headline pb-3">{{ $t('fileManager') }}</h1>
         <v-card>
             <v-card-text>
                 <file-manager @input="select" ref="file-manager"></file-manager>
             </v-card-text>
-
         </v-card>
-
 
         <v-dialog v-model="showSelectionDialog" max-width="500px">
             <v-card>
@@ -21,12 +19,17 @@
                     <!--TODO-->
                     <!--<v-btn color="primary" flat @click.stop="showSelectionDialog = false">{{ $t('rename' )}}</v-btn>-->
                     <v-spacer></v-spacer>
-                    <v-btn color="red" flat @click.stop="remove">{{ $t('delete' )}}</v-btn>
-                    <v-btn color="primary" flat @click.stop="close">{{ $t('close' )}}</v-btn>
+                    <v-btn color="primary" flat @click.stop="close">
+                        {{ $t('close') }}
+                    </v-btn>
+                    <v-btn color="red" flat @click.stop="remove">
+                        {{ $t('delete' )}}
+                        <v-icon right>delete</v-icon>
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </div>
+    </v-container>
 </template>
 
 <script>

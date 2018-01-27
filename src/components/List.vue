@@ -2,9 +2,9 @@
     <v-layout fill-height justify-center align-center v-if="loading">
         <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </v-layout>
-    <v-flex fluid v-else>
+    <v-container fluid v-else>
         <v-layout align-center class="pb-3">
-            <h1>{{ model.name_plural }}</h1>
+            <h1 class="headline">{{ model.name_plural }}</h1>
             <v-spacer></v-spacer>
             <v-btn color="primary" :to="{name: 'Create', params: {modelType: model.type}}"
                    class="blue labeled icon button">
@@ -40,7 +40,7 @@
                 </td>
             </template>
         </v-data-table>
-    </v-flex>
+    </v-container>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="field" :class="{error: error}" v-if="hasTypeComponent()">
+    <v-flex :class="{error: error}" v-if="hasTypeComponent()">
         <component :is="type + '-field'" :value="value"
                    @input="onFieldInput"
                    :label="label"
@@ -9,7 +9,7 @@
         <div class="ui visible error message" v-if="error">
             <p>{{ error }}</p>
         </div>
-    </div>
+    </v-flex>
     <div class="field" v-else>
         <label>{{ field.name }}</label>
         <div class="ui visible error message">

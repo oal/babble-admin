@@ -1,37 +1,41 @@
 <template>
-    <div style="width: 100%">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.css">
-        <img ref="image" :src="src" style="max-width: 100%">
-
-        <div class="ui basic segment">
-            <div class="ui menu">
-                <a class="item" @click="flipHorizontal">
-                    <i class="resize horizontal icon"></i>
+    <v-layout column>
+        <v-card style="flex: 0">
+            <v-layout wrap>
+                <v-btn flat color="teal" @click="flipHorizontal">
+                    <v-icon left>swap_horiz</v-icon>
                     {{ $t('flipHorizontal') }}
-                </a>
-                <a class="item" @click="flipVertical">
-                    <i class="resize vertical icon"></i>
+                </v-btn>
+                <v-btn flat color="teal" @click="flipVertical">
+                    <v-icon left>swap_vert</v-icon>
                     {{ $t('flipVertical') }}
-                </a>
-                <a class="item" @click="rotateLeft">
-                    <i class="level up icon"></i>
-                    {{ $t('rotateLeft') }}
-                </a>
-                <a class="item" @click="rotateRight">
-                    <i class="level down icon"></i>
+                </v-btn>
+                <v-btn color="indigo" flat @click="rotateRight">
+                    <v-icon left>rotate_right</v-icon>
                     {{ $t('rotateRight') }}
-                </a>
-                <a class="right active blue item" @click="onConfirmCrop">
-                    <i class="crop icon"></i>
-                    <strong>{{ $t('confirmCrop') }}</strong>
-                </a>
-            </div>
-        </div>
-    </div>
+                </v-btn>
+                <v-btn color="indigo" flat @click="rotateLeft">
+                    <v-icon left>rotate_left</v-icon>
+                    {{ $t('rotateLeft') }}
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn flat color="primary" @click="onConfirmCrop">
+                    <v-icon left>crop</v-icon>
+                    {{ $t('confirmCrop') }}
+                </v-btn>
+            </v-layout>
+        </v-card>
+
+        <v-flex>
+            <img ref="image" :src="src" class="editor-target">
+        </v-flex>
+    </v-layout>
+
 </template>
 
 <script>
     import Cropper from 'cropperjs';
+    import 'cropperjs/dist/cropper.min.css';
 
     export default {
         props: [
@@ -103,7 +107,8 @@
 </script>
 
 <style scoped>
-    .segment {
-        margin-top: 0;
+    .editor-target {
+        height: 0;
+        width: 0;
     }
 </style>

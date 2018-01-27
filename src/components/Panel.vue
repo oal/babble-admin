@@ -1,15 +1,8 @@
 <template>
     <v-app>
-        <v-navigation-drawer v-model="drawer" absolute light app>
-            <v-toolbar dark color="primary">
-                <v-toolbar-title>
-                    <router-link tag="div" :to="{name: 'Index'}">Babble CMS Admin</router-link>
-                </v-toolbar-title>
-            </v-toolbar>
 
-            <v-divider></v-divider>
-
-            <v-list dense class="pt-0" v-if="!loading">
+        <v-navigation-drawer v-model="drawer" light fixed clipped app>
+            <v-list dense v-if="!loading">
                 <v-list-tile v-for="model in models" :key="model.type"
                              :to="{name: 'List', params: {modelType: model.type}}">
                     <v-list-tile-action>
@@ -38,10 +31,13 @@
             </v-list>
         </v-navigation-drawer>
 
-        <v-toolbar dark color="primary" app>
+        <v-toolbar dark color="primary" fixed app class="pl-3 toolbar--clipped">
             <v-btn icon @click="drawer = !drawer">
                 <v-icon>menu</v-icon>
             </v-btn>
+            <v-toolbar-title>
+                <router-link tag="div" :to="{name: 'Index'}">Babble CMS Admin</router-link>
+            </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-title v-if="$root.user">
                 {{ $t('welcome') }}, {{ $root.user.id }}!
@@ -60,12 +56,10 @@
                     <v-progress-circular indeterminate color="primary"></v-progress-circular>
                 </v-layout>
             </v-container>
-            <v-container class="pb-3" fluid v-else>
-                <router-view></router-view>
-                <!--<div v-if="showLoginDialog" id="login-overlay">-->
-                <!--<login-form @login="onLogin"></login-form>-->
-                <!--</div>-->
-            </v-container>
+            <router-view v-else></router-view>
+            <!--<div v-if="showLoginDialog" id="login-overlay">-->
+            <!--<login-form @login="onLogin"></login-form>-->
+            <!--</div>-->
         </v-content>
         <!--<v-footer app></v-footer>-->
     </v-app>

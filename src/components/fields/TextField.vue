@@ -17,8 +17,7 @@
             getOption(path) {
                 return get(this.options, path, null)
             },
-            onInput(event) {
-                let value = event.target.value;
+            onInput(value) {
                 this.$emit('input', value);
             }
         }

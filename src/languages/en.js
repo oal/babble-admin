@@ -12,6 +12,10 @@ export default {
     allRecords: 'All',
     addRecord: 'Add new',
 
+    permalink: 'Permalink',
+    view: 'View',
+    viewAll: 'View all',
+
     fileManager: 'File manager',
     allFiles: 'All files',
     newDirectoryName: 'New directory name',
@@ -39,6 +43,8 @@ export default {
     chooseFile: 'Choose file',
     chooseImage: 'Choose image',
     chooseAnotherFile: 'Choose another file',
+
+    imageEditor: 'Image editor',
     reCrop: 'Re-crop',
     flipHorizontal: 'Flip horizontal',
     flipVertical: 'Flip vertical',
@@ -48,6 +54,7 @@ export default {
 
     confirmDeleteMessage: 'Do you really want to delete this file?',
 
+    missingIdError: 'An ID is required before saving.',
     saveSuccessful: 'Saving successful.',
     updateSuccessful: 'Update successful.',
     unknownError: 'An unknown error has occurred.'

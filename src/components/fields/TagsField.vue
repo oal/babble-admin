@@ -1,5 +1,5 @@
 <template>
-    <v-select v-model="value" :label="label" chips tags></v-select>
+    <v-select v-model="tags" :label="label" chips tags></v-select>
 </template>
 
 <script>
@@ -12,9 +12,29 @@
             'label'
         ],
 
+        data() {
+
+            return {
+                tags: []
+            }
+        },
+
         mounted() {
             if (!Array.isArray(this.value)) {
-                this.$emit('input', []);
+                let value = [];
+                if (this.value) value.push(this.value);
+                this.tags = value;
+            } else {
+                this.tags = [...this.value];
+            }
+        },
+
+        watch: {
+            value(value) {
+                this.$emit('input', value);
+            },
+            tags(value) {
+                this.$emit('input', value);
             }
         }
     }
