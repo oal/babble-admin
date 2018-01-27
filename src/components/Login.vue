@@ -1,17 +1,15 @@
 <template>
     <v-container fill-height>
-        <v-layout align-center>
-            <v-flex justify-center>
-                <v-card>
-                    <v-card-text>
-                        <h4 class="headline">
-                            {{ $t('login') }}
-                        </h4>
-                        <login-form @login="onLogin"></login-form>
-                    </v-card-text>
-                </v-card>
-            </v-flex>
-        </v-layout>
+        <v-dialog persistent v-model="showLoginDialog" max-width="300px">
+            <v-card>
+                <v-toolbar dark color="primary">
+                    <v-toolbar-title>{{ $t('login') }}</v-toolbar-title>
+                </v-toolbar>
+                <v-card-text>
+                    <login-form @login="onLogin"></login-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -25,26 +23,15 @@
 
         data() {
             return {
-                a: true
+                showLoginDialog: true
             }
         },
 
         methods: {
             onLogin() {
+                this.showLoginDialog = false;
                 this.$router.replace({name: 'Panel'});
             }
         }
     }
 </script>
-
-<style scoped>
-    .message {
-        position: absolute;
-        z-index: 2;
-        margin: 0;
-        width: 100%;
-        left: 0;
-        padding: 1rem;
-        margin: 1rem 0;
-    }
-</style>

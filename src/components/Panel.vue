@@ -35,11 +35,11 @@
             <v-btn icon @click="drawer = !drawer">
                 <v-icon>menu</v-icon>
             </v-btn>
-            <v-toolbar-title>
+            <v-toolbar-title class="hidden-sm-and-down">
                 <router-link tag="div" :to="{name: 'Index'}">Babble CMS Admin</router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-toolbar-title v-if="$root.user">
+            <v-toolbar-title v-if="$root.user" class="hidden-sm-and-down pr-3">
                 {{ $t('welcome') }}, {{ $root.user.id }}!
             </v-toolbar-title>
             <v-toolbar-items align-center>
@@ -56,12 +56,20 @@
                     <v-progress-circular indeterminate color="primary"></v-progress-circular>
                 </v-layout>
             </v-container>
+
             <router-view v-else></router-view>
-            <!--<div v-if="showLoginDialog" id="login-overlay">-->
-            <!--<login-form @login="onLogin"></login-form>-->
-            <!--</div>-->
+
+            <v-dialog persistent v-model="showLoginDialog" max-width="300px">
+                <v-card>
+                    <v-toolbar dark color="primary">
+                        <v-toolbar-title>{{ $t('login') }}</v-toolbar-title>
+                    </v-toolbar>
+                    <v-card-text>
+                        <login-form @login="onLogin"></login-form>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
         </v-content>
-        <!--<v-footer app></v-footer>-->
     </v-app>
 </template>
 

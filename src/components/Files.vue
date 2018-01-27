@@ -22,6 +22,10 @@
                     <v-btn color="primary" flat @click.stop="close">
                         {{ $t('close') }}
                     </v-btn>
+                    <v-btn color="green" flat tag="a" download :href="`/uploads/${selection}`">
+                        {{ $t('download') }}
+                        <v-icon right>file_download</v-icon>
+                    </v-btn>
                     <v-btn color="red" flat @click.stop="remove">
                         {{ $t('delete' )}}
                         <v-icon right>delete</v-icon>

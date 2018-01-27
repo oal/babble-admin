@@ -30,6 +30,7 @@ export default {
     edit: 'Rediger',
     rename: 'Gi nytt navn',
     delete: 'Slett',
+    download: 'Last ned',
     save: 'Lagre',
     close: 'Lukk',
     directory: 'Mappe',

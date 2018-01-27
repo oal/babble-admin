@@ -30,6 +30,7 @@ export default {
     edit: 'Edit',
     rename: 'Rename',
     delete: 'Delete',
+    download: 'Download',
     save: 'Save',
     close: 'Close',
     directory: 'Directory',
