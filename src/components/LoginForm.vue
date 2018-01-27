@@ -1,5 +1,5 @@
 <template>
-    <v-form @keypress.enter="login">
+    <v-form @keypress.native.enter="login">
         <v-text-field
                 :label="$t('username')"
                 v-model="username"
