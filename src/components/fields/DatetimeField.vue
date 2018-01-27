@@ -54,6 +54,10 @@
             }
         },
 
+        mounted() {
+            this.emitInput();
+        },
+
         watch: {
             date() {
                 this.emitInput();

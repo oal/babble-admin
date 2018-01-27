@@ -49,6 +49,7 @@
     import BooleanPreview from '@/components/previews/BooleanPreview';
     import DatetimePreview from '@/components/previews/DatetimePreview';
     import ChoicePreview from '@/components/previews/ChoicePreview';
+    import TagsPreview from '@/components/previews/TagsPreview';
 
     export default {
         name: 'panel',
@@ -57,7 +58,8 @@
             IdPreview,
             BooleanPreview,
             DatetimePreview,
-            ChoicePreview
+            ChoicePreview,
+            TagsPreview
         },
 
         props: [
