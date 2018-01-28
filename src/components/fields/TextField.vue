@@ -1,5 +1,5 @@
 <template>
-    <v-text-field :label="label" :value="value" @input="onInput" :textarea="!!getOption('admin.multiline')">
+    <v-text-field :label="label" :value="value" @input="onInput" :textarea="!!getOption('admin.multiline')" :error-messages="error">
     </v-text-field>
 </template>
 
@@ -12,7 +12,8 @@
         props: [
             'options',
             'value',
-            'label'
+            'label',
+            'error'
         ],
 
         methods: {

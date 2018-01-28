@@ -1,21 +1,15 @@
 <template>
-    <v-flex :class="{error: error}" v-if="hasTypeComponent()">
-        <component :is="type + '-field'" :value="value"
-                   @input="onFieldInput"
+    <v-flex v-if="hasTypeComponent()">
+        <component :is="type + '-field'"
+                   :value="value"
                    :label="label"
                    :name="name"
                    :options="options"
-                   :blocks="blocks"></component>
-        <div class="ui visible error message" v-if="error">
-            <p>{{ error }}</p>
-        </div>
+                   :error="error"
+                   :blocks="blocks"
+                   @input="onFieldInput">
+        </component>
     </v-flex>
-    <div class="field" v-else>
-        <label>{{ field.name }}</label>
-        <div class="ui visible error message">
-            No component registered for field type "{{ type }}".
-        </div>
-    </div>
 </template>
 
 <script>

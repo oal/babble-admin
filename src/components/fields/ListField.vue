@@ -1,71 +1,67 @@
 <template>
-    <div>
-        <v-card color="grey lighten-3">
-            <v-card-title>
-                <v-layout>
-                    <v-flex>
-                        <h2 class="headline mb-0">{{ label }}</h2>
-                    </v-flex>
-                    <v-spacer></v-spacer>
-                    <div>
-                        <v-btn flat color="green" v-for="block in blockObjects" @click="addBlock(block.type)"
-                               :key="block.type">
-                            <v-icon left>add_circle</v-icon>
-                            {{ block.name }}
-                        </v-btn>
-                    </div>
-                </v-layout>
-            </v-card-title>
+    <v-card color="grey lighten-3">
+        <v-card-title>
+            <v-layout>
+                <v-flex>
+                    <h2 class="headline mb-0">{{ label }}</h2>
+                </v-flex>
+                <v-spacer></v-spacer>
+                <div>
+                    <v-btn flat color="green" v-for="block in blockObjects" @click="addBlock(block.type)"
+                           :key="block.type">
+                        <v-icon left>add_circle</v-icon>
+                        {{ block.name }}
+                    </v-btn>
+                </div>
+            </v-layout>
+        </v-card-title>
 
-            <v-card-text class="pt-0">
-                <v-layout :column="!displayAsCards" wrap>
-                    <v-flex v-for="(block, $index) in blocksWithFields" :key="block.key" v-if="block">
-                        <v-card>
-                            <v-card-text>
-                                <v-layout align-center>
-                                    <v-flex>
-                                        <h3 class="subheading">
-                                            {{ getBlockName(block.type) }}
-                                        </h3>
-                                    </v-flex>
-                                    <v-spacer></v-spacer>
-                                    <div>
-                                        <v-btn color="primary" small icon @click="moveBlock($index, -1)" class="ml-0"
-                                               v-if="$index > 0">
-                                            <v-icon v-if="displayAsCards">keyboard_arrow_left</v-icon>
-                                            <v-icon v-else>keyboard_arrow_up</v-icon>
-                                        </v-btn>
-                                        <v-btn color="primary" small icon @click="moveBlock($index, 1)" class="ml-0"
-                                               v-if="$index < blocksWithFields.length-1">
-                                            <v-icon v-if="displayAsCards">keyboard_arrow_right</v-icon>
-                                            <v-icon v-else>keyboard_arrow_down</v-icon>
-                                        </v-btn>
-                                        <v-btn color="red" dark small icon @click="removeBlockAt($index)" class="ml-0">
-                                            <v-icon>clear</v-icon>
-                                        </v-btn>
-                                    </div>
-                                </v-layout>
+        <v-card-text v-if="error" class="red--text">{{ error }}</v-card-text>
 
-                            </v-card-text>
-                            <v-card-text>
-                                <!-- TODO: Send errors -->
-                                <field-list :fields="block.fields"
-                                            :data="blockData[$index].value"
-                                            :errors="{}"
-                                            :blocks="blocks"
-                                            @input="onFieldInput($index, $event)">
-                                </field-list>
-                            </v-card-text>
-                        </v-card>
-                    </v-flex>
-                    <!-- TODO -->
-                    <div class="ui visible error message" v-else>
-                        Could not find block type.
-                    </div>
-                </v-layout>
-            </v-card-text>
-        </v-card>
-    </div>
+        <v-card-text class="pt-0" v-if="blocksWithFields.length > 0">
+            <v-layout :column="!displayAsCards" wrap>
+                <v-flex v-for="(block, $index) in blocksWithFields" :key="block.key" v-if="block">
+                    <v-card>
+                        <v-card-text>
+                            <v-layout align-center>
+                                <v-flex>
+                                    <h3 class="subheading">
+                                        {{ getBlockName(block.type) }}
+                                    </h3>
+                                </v-flex>
+                                <v-spacer></v-spacer>
+                                <div>
+                                    <v-btn color="primary" small icon @click="moveBlock($index, -1)" class="ml-0"
+                                           v-if="$index > 0">
+                                        <v-icon v-if="displayAsCards">keyboard_arrow_left</v-icon>
+                                        <v-icon v-else>keyboard_arrow_up</v-icon>
+                                    </v-btn>
+                                    <v-btn color="primary" small icon @click="moveBlock($index, 1)" class="ml-0"
+                                           v-if="$index < blocksWithFields.length-1">
+                                        <v-icon v-if="displayAsCards">keyboard_arrow_right</v-icon>
+                                        <v-icon v-else>keyboard_arrow_down</v-icon>
+                                    </v-btn>
+                                    <v-btn color="red" dark small icon @click="removeBlockAt($index)" class="ml-0">
+                                        <v-icon>clear</v-icon>
+                                    </v-btn>
+                                </div>
+                            </v-layout>
+                        </v-card-text>
+
+                        <v-card-text>
+                            <!-- TODO: Send errors -->
+                            <field-list :fields="block.fields"
+                                        :data="blockData[$index].value"
+                                        :errors="{}"
+                                        :blocks="blocks"
+                                        @input="onFieldInput($index, $event)">
+                            </field-list>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
@@ -77,7 +73,8 @@
             'name',
             'label',
             'options',
-            'blocks'
+            'blocks',
+            'error'
         ],
 
         beforeCreate: function () {
