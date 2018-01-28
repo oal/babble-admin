@@ -3,7 +3,7 @@
         <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </v-layout>
     <v-container fluid v-else>
-        <v-layout align-center class="pb-3">
+        <v-layout wrap align-center class="pb-3">
             <h1 class="headline">{{ model.name_plural }}</h1>
             <v-spacer></v-spacer>
             <v-btn color="primary" :to="{name: 'Create', params: {modelType: model.type}}"

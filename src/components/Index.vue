@@ -16,14 +16,19 @@
                             <v-icon class="hidden-sm-and-down">{{ model.options.admin.icon }}</v-icon>
                         </v-card-title>
                         <v-card-actions>
-                            <v-btn color="primary" flat :to="{name: 'List', params: {modelType: model.type}}">
-                                {{ $t('viewAll') }}
-                                <v-icon right>view_list</v-icon>
-                            </v-btn>
                             <v-btn color="green" flat :to="{name: 'Create', params: {modelType: model.type}}"
                                    v-if="!model.single">
                                 {{ $t('addRecord') }}
                                 <v-icon right>add_circle</v-icon>
+                            </v-btn>
+
+                            <v-btn color="green" flat :to="{name: 'EditSingle', params: {modelType: model.type}}" v-if="model.single">
+                                {{ $t('edit') }}
+                                <v-icon right>edit</v-icon>
+                            </v-btn>
+                            <v-btn color="primary" flat :to="{name: 'List', params: {modelType: model.type}}" v-else>
+                                {{ $t('viewAll') }}
+                                <v-icon right>view_list</v-icon>
                             </v-btn>
                         </v-card-actions>
                     </v-card>
