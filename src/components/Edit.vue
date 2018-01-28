@@ -17,9 +17,12 @@
 
                         <v-spacer></v-spacer>
 
-                        <v-flex style="flex-grow: 0" v-if="!model.single && data._permalink">
-                            <span>
+                        <v-flex style="flex-grow: 0" v-if="!model.single">
+                            <span v-if="data._permalink">
                                 <strong>{{ $t('permalink') }}</strong>: {{ data._permalink }}
+                            </span>
+                            <span v-else>
+                                <strong>ID</strong>: {{ data.id }}
                             </span>
 
                             <v-btn dark color="blue-grey" @click="editId = true">

@@ -1,11 +1,10 @@
 <template>
-    <div class="input-group input-group--text-field input-group--textarea primary--text"><label>{{ label }}</label>
-        <div class="input-group__input">
-            <textarea ref="editor" v-bind:value="value"></textarea>
+    <div class="html-field">
+        <div class="input-group">
+            <label>{{ label }}</label>
         </div>
-        <div class="input-group__details">
-            <div class="input-group__messages"></div>
-        </div>
+
+        <textarea ref="editor" v-bind:value="value"></textarea>
     </div>
 </template>
 
@@ -17,7 +16,7 @@
 
     // Styles
     import 'medium-editor/src/sass/medium-editor.scss';
-    import 'medium-editor/src/sass/themes/default.scss';
+    import 'medium-editor/src/sass/themes/flat.scss';
     import 'codemirror/lib/codemirror.css';
 
     // Other imports
@@ -51,12 +50,18 @@
                     }
                 });
 
+                let removeSpans = (element) => {
+                    var spans = element.getElementsByTagName('span');
+                    for (var i = 0; i < spans.length; i++) {
+                        spans[i].outerHTML = spans[i].innerHTML
+                    }
+                };
+
                 // Remove style attributes inserted by the browser in the contenteditable element.
                 mediumEditor.subscribe('blur', (event, editable) => {
-                    let value = $('<div>' + mediumEditor.getContent() + '</div>');
-                    value.find('*').removeAttr('style');
-                    this.$emit('input', value.html());
-                })
+                    removeSpans(editable);
+                    this.$emit('input', editable.innerHTML);
+                });
 
                 this.mediumEditor = mediumEditor;
             } else {
@@ -87,3 +92,28 @@
         }
     }
 </script>
+
+<style>
+    .html-field {
+        min-width: 240px;
+    }
+
+    .html-field .CodeMirror, .html-field .medium-editor-element {
+        border-radius: 2px;
+        border: 2px solid rgba(0, 0, 0, .54);
+        height: auto;
+        min-height: 50px;
+    }
+
+    .html-field .medium-editor-element {
+        padding: 0.9rem 1.25rem;
+    }
+
+    .html-field .CodeMirror-gutters {
+        background-color: rgba(0, 0, 0, .54);
+    }
+
+    .html-field .CodeMirror-linenumber {
+        color: #e0e0e0
+    }
+</style>

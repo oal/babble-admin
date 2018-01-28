@@ -65,7 +65,6 @@
                 </v-layout>
             </v-card-text>
         </v-card>
-
     </div>
 </template>
 

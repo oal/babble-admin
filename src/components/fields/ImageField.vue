@@ -42,7 +42,8 @@
                     <v-toolbar-title>{{ $t('imageEditor') }}</v-toolbar-title>
                 </v-toolbar>
                 <image-cropper :src="'/uploads/' + selection" :width="width"
-                               :height="height" @crop="onCrop" :crop-data="cropData" v-if="selection">
+                               :height="height" @crop="onCrop" :crop-data="cropData"
+                               v-if="showImageEditor && selection">
                 </image-cropper>
             </v-card>
         </v-dialog>
@@ -95,7 +96,11 @@
 
             closeImageEditor() {
                 this.showImageEditor = false;
-                this.selection = null;
+
+                // If no cropped version was already set, unset selection as cropped version is still missing.
+                if (!this.croppedImage) {
+                    this.selection = null;
+                }
             },
 
             onSelectFile(file) {
