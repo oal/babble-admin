@@ -6,6 +6,9 @@ export default {
     password: 'Password',
     invalidLogin: 'Invalid username and / or password.',
 
+    confirm: 'Confirm',
+    invalidPassword: 'The password is invalid or the two passwords do not match.',
+
     welcome: 'Welcome',
     manageContent: 'Manage website content',
 

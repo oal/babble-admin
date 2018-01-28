@@ -6,6 +6,9 @@ export default {
     password: 'Passord',
     invalidLogin: 'Ugyldig brukernavn og / eller passord.',
 
+    confirm: 'Bekreft',
+    invalidPassword: 'Passordet er ugyldig, eller de to passordene er ulike.',
+
     welcome: 'Velkommen',
     manageContent: 'Rediger innhold',
 

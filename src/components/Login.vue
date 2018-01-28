@@ -30,7 +30,7 @@
         methods: {
             onLogin() {
                 this.showLoginDialog = false;
-                this.$router.replace({name: 'Panel'});
+                this.$router.replace({name: 'Index'});
             }
         }
     }

@@ -1,33 +1,25 @@
 <template>
-    <div class="field">
-        <label>{{ label }}</label>
+    <div>
+        <v-chip :href="'/uploads/' + selection" close v-if="selection" @input="onDeselectFile">
+            {{ label }}:
+            {{ selection }}
+        </v-chip>
 
-        <div v-if="selection">
-            <div class="field">
-                <div class="ui buttons">
-                    <a :href="'/uploads/' + selection" class="button" target="_blank">{{ selection }}</a>
-                    <div class="blue icon button" @click="onOpenFileManager">
-                        <i class="folder icon"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <v-btn dark color="blue-grey" v-else @click="onOpenFileManager">
+            {{ $t('choose') }} {{ label }}
+            <v-icon right>add_a_photo</v-icon>
+        </v-btn>
 
-        <div class="blue labeled icon button" v-else-if="!openFileManager" @click="onOpenFileManager">
-            <i class="folder icon"></i>
-            {{ $t('chooseFile') }}
-        </div>
-
-        <v-dialog fullscreen transition="dialog-bottom-transition" v-model="openFileManager">
+        <v-dialog fullscreen transition="dialog-bottom-transition" v-model="showFileManager">
             <v-card>
                 <v-toolbar dark color="primary">
-                    <v-btn icon @click.native="openFileManager = false" dark>
+                    <v-btn icon @click.native="showFileManager = false" dark>
                         <v-icon>close</v-icon>
                     </v-btn>
                     <v-toolbar-title>{{ $t('fileManager') }}</v-toolbar-title>
                 </v-toolbar>
                 <v-card-text>
-                    <file-manager @input="onSelectFile"></file-manager>
+                    <file-manager @input="onSelectFile" v-if="showFileManager"></file-manager>
                 </v-card-text>
             </v-card>
         </v-dialog>
@@ -58,16 +50,20 @@
             }
         },
 
+        watch: {
+            selection() {
+                this.$emit('input', this.selection);
+            }
+        },
+
         methods: {
             onOpenFileManager() {
-                this.selection = null;
                 this.showFileManager = true;
             },
 
             onSelectFile(file) {
                 this.selection = file;
-                this.$emit('input', this.selection);
-                this.croppedImage = null;
+                this.showFileManager = false;
             },
 
             onDeselectFile() {

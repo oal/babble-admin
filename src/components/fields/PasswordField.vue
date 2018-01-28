@@ -1,16 +1,14 @@
 <template>
-    <div class="field">
-        <div class="two fields">
-            <div class="field">
-                <label>{{ label }}</label>
-                <input type="password" v-bind:value="value" v-on:input="onInput">
-            </div>
-            <div class="field">
-                <label>Confirm</label>
-                <input type="password" v-bind:value="confirmValue">
-            </div>
-        </div>
-    </div>
+    <v-layout wrap>
+        <v-flex>
+            <v-text-field :label="label" type="password" v-model="value">
+            </v-text-field>
+        </v-flex>
+        <v-flex>
+            <v-text-field :label="$t('confirm')" type="password" v-model="confirmValue" :rules="[validate]">
+            </v-text-field>
+        </v-flex>
+    </v-layout>
 </template>
 
 <script>
@@ -28,10 +26,23 @@
             }
         },
 
+        watch: {
+            value() {
+                this.emit();
+            },
+            confirmValue() {
+                this.emit();
+            }
+        },
+
         methods: {
-            onInput(event) {
-                let value = event.target.value;
-                this.$emit('input', value);
+            emit() {
+                this.$emit('input', this.value);
+            },
+            validate() {
+                if(this.value === this.confirmValue) return true;
+
+                return this.$t('invalidPassword');
             }
         }
     }
