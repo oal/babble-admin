@@ -66,6 +66,7 @@
 
 <script>
     import {get} from 'lodash';
+    import FieldList from '@/components/fields/helpers/FieldList.vue';
 
     export default {
         props: [
@@ -79,7 +80,7 @@
 
         beforeCreate: function () {
             // Relevant: https://vuejs.org/v2/guide/components.html#Recursive-Components
-            this.$options.components.FieldList = require('./helpers/FieldList.vue')
+            this.$options.components.FieldList = FieldList
         },
 
         data() {
