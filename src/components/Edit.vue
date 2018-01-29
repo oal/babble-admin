@@ -164,7 +164,13 @@
                 if (this.errors.id) {
                     return this.errors.id;
                 }
-                if (value && !value.match(/^([a-z0-9-_]+)$/)) {
+
+                let validChars = 'a-z0-9-_';
+                if (this.model.hierarchical) {
+                    validChars = validChars + '/';
+                }
+
+                if (value && !value.match(new RegExp(`^([${validChars}]+)$`, 'g'))) {
                     return this.$t('invalidIdError');
                 }
                 return true;
