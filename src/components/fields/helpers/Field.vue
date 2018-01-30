@@ -1,5 +1,5 @@
 <template>
-    <v-flex v-if="hasTypeComponent()">
+    <v-flex md12 v-if="hasTypeComponent()">
         <component :is="type + '-field'"
                    :value="value"
                    :label="label"

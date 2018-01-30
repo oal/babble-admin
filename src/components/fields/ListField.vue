@@ -69,6 +69,8 @@
     import FieldList from '@/components/fields/helpers/FieldList.vue';
 
     export default {
+        name: 'list-field',
+
         props: [
             'value',
             'name',
@@ -139,7 +141,7 @@
                     return {
                         ...blockData,
                         fields: block.fields,
-                        key: index
+                        key: (Math.random() * 9999999) | 0
                     };
                 })
             },

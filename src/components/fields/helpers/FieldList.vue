@@ -1,5 +1,5 @@
 <template>
-    <v-layout align-end wrap>
+    <v-layout wrap>
         <field :type="field.type"
                :label="field.name"
                :name="field.key"
@@ -21,6 +21,8 @@
     import Field from '@/components/fields/helpers/Field';
 
     export default {
+        name: 'field-list',
+
         props: [
             'fields',
             'data',
