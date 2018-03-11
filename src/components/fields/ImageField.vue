@@ -14,10 +14,15 @@
             </v-layout>
         </div>
 
-        <v-btn dark color="blue-grey" v-else @click="onOpenFileManager">
-            {{ $t('choose') }} {{ label }}
-            <v-icon right>add_a_photo</v-icon>
-        </v-btn>
+        <div v-else class="image-card">
+            <img :src="`/uploads/${selection}`" v-if="selection && !hasCropper">
+
+            <v-btn dark color="blue-grey" @click="onOpenFileManager">
+                <span v-if="selection">{{ $t('chooseAnotherFile') }}</span>
+                <span v-else>{{ $t('choose') }} {{ label }}</span>
+                <v-icon right>add_a_photo</v-icon>
+            </v-btn>
+        </div>
 
         <v-dialog fullscreen transition="dialog-bottom-transition" v-model="showFileManager">
             <v-card>
@@ -41,7 +46,7 @@
                     </v-btn>
                     <v-toolbar-title>{{ $t('imageEditor') }}</v-toolbar-title>
                 </v-toolbar>
-                <image-cropper :src="'/uploads/' + selection" :width="width"
+                <image-cropper :src="`/uploads/${selection}`" :width="width"
                                :height="height" @crop="onCrop" :crop-data="cropData"
                                v-if="showImageEditor && selection">
                 </image-cropper>
