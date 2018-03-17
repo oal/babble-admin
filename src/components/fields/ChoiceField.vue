@@ -1,11 +1,7 @@
 <template>
-    <div class="field">
-        <label>{{ label }}</label>
-        <input disabled v-if="loading">
-        <select class="ui dropdown" v-model="choice" v-else>
-            <option v-for="choice in choices" :value="choice.value" :key="choice.key">{{ choice.label }}</option>
-        </select>
-    </div>
+    <v-select :label="label" v-model="choice" :items="choices" item-value="value" item-text="label"
+              :loading="loading">
+    </v-select>
 </template>
 
 <script>
@@ -30,7 +26,7 @@
 
         created() {
             this.choices = this.choicesToArray();
-            if(!this.choices.length) {
+            if (!this.choices.length) {
                 this.loadModel();
             }
         },
