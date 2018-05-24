@@ -19,6 +19,10 @@
             }
         },
 
+        mounted() {
+            if(this.value !== this.state) this.$emit('input', this.state);
+        },
+
         watch: {
             value() {
                 this.state = this.value
