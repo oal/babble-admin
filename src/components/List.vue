@@ -17,6 +17,7 @@
                 v-bind:headers="headers"
                 :items="models"
                 hide-actions
+                :pagination.sync="pagination"
                 class="elevation-1">
             <template slot="items" slot-scope="props">
                 <td v-for="column in listDisplay" :key="column.key" :class="{highlight: column.key === 'id'}">
@@ -71,7 +72,11 @@
                 loading: true,
                 model: {},
                 models: [],
-                sort: 'id'
+                pagination: {
+                    sortBy: 'id',
+                    descending: true,
+                    rowsPerPage: -1
+                }
             }
         },
 
@@ -89,6 +94,17 @@
 
                 let modelPromise = this.$http.options('/models/' + this.modelType).then(response => {
                     this.model = response.data.model;
+                    if (this.options.sort) {
+                        let sort = this.options.sort;
+                        let isDescending = sort[0] === '-';
+                        if (isDescending) sort = sort.substr(1);
+
+                        this.pagination = {
+                            ...this.pagination,
+                            sortBy: sort,
+                            descending: isDescending
+                        };
+                    }
                 });
 
                 Promise.all([modelPromise, this.fetchRecords()]).then(() => {
@@ -131,14 +147,6 @@
                     this.fetchData();
                 });
             },
-            sortBy(columnKey) {
-                if (this.sort === columnKey) {
-                    this.sort = '-' + columnKey;
-                } else {
-                    this.sort = columnKey;
-                }
-                this.fetchRecords();
-            }
         },
 
         computed: {

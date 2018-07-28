@@ -1,5 +1,5 @@
 <template>
-    <v-select v-model="tags" :label="label" chips tags></v-select>
+    <v-combobox v-model="tags" :label="label" chips multiple/>
 </template>
 
 <script>
@@ -13,7 +13,6 @@
         ],
 
         data() {
-
             return {
                 tags: []
             }
