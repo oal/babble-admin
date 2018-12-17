@@ -42,10 +42,15 @@
             <v-toolbar-title v-if="$root.user" class="hidden-sm-and-down pr-3">
                 {{ $t('welcome') }}, {{ $root.user.id }}!
             </v-toolbar-title>
+
+            <v-btn color="green" large depressed :loading="building" @click="build" class="build-button" v-if="canBuildViaAPI">
+                <v-icon left>publish</v-icon>
+                {{ $t('publish') }}
+            </v-btn>
             <v-toolbar-items align-center>
                 <v-btn flat @click="logout">
                     {{ $t('logout') }}
-                    <i class="sign out icon"></i>
+                    <v-icon right>logout</v-icon>
                 </v-btn>
             </v-toolbar-items>
         </v-toolbar>
@@ -74,6 +79,7 @@
 </template>
 
 <script>
+    import {get} from 'lodash';
     import LoginForm from '@/components/LoginForm';
 
     export default {
@@ -88,8 +94,17 @@
 
             this.$http.get('/login').then(response => {
                 this.$root.user = response.data;
-                this.$http.options('/models').then(response => {
-                    this.models = response.data;
+
+                let promises = [
+                    this.$http.options('/models').then(response => {
+                        this.models = response.data;
+                    }),
+                    this.$http.get('/config').then(response => {
+                        this.config = response.data;
+                    })
+                ];
+
+                Promise.all(promises).then(() => {
                     this.loading = false;
                 });
             }).catch(() => {
@@ -108,8 +123,10 @@
         data() {
             return {
                 loading: false,
+                building: false,
                 drawer: true,
                 showLoginDialog: false,
+                config: {},
                 models: []
             }
         },
@@ -121,6 +138,26 @@
             },
             onLogin() {
                 this.showLoginDialog = false;
+            },
+            build() {
+                this.building = true;
+                this.$http.post('build').then(response => {
+                    this.$root.addMessage(this.$t('publishSuccess'));
+                }).finally(() => {
+                    this.building = false;
+                });
+            }
+        },
+
+        computed: {
+            canBuildViaAPI() {
+                if (!this.config) return false;
+
+                try {
+                    return this.config.api.build;
+                } catch (e) {
+                    return false;
+                }
             }
         }
     }
@@ -136,5 +173,9 @@
         background: rgba(25, 25, 25, 0.8);
         z-index: 1;
         display: flex;
+    }
+
+    .build-button {
+        padding: 0 24px 0 20px;
     }
 </style>

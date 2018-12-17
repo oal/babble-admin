@@ -12,6 +12,9 @@ export default {
     welcome: 'Welcome',
     manageContent: 'Manage website content',
 
+    publish: 'Publish',
+    publishSuccess: 'Publish successful.',
+
     allRecords: 'All',
     addRecord: 'Add new',
 

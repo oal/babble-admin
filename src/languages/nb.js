@@ -12,6 +12,9 @@ export default {
     welcome: 'Velkommen',
     manageContent: 'Rediger innhold',
 
+    publish: 'Publiser',
+    publishSuccess: 'Publisering vellykket.',
+
     allRecords: 'Alle',
     addRecord: 'Opprett ny',
 
