@@ -105,6 +105,10 @@
         min-height: 50px;
     }
 
+    .html-field .CodeMirror {
+        z-index: 1;
+    }
+
     .html-field .medium-editor-element {
         padding: 0.9rem 1.25rem;
     }

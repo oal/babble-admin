@@ -71,6 +71,7 @@
         border: 2px solid rgba(0, 0, 0, .54);
         height: auto;
         min-height: 50px;
+        z-index: 1;
     }
 
     .markdown-field .CodeMirror-gutters {
