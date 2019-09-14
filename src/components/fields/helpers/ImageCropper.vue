@@ -2,24 +2,24 @@
     <v-layout column>
         <v-card style="flex: 0">
             <v-layout wrap>
-                <v-btn flat color="teal" @click="flipHorizontal">
+                <v-btn text color="teal" @click="flipHorizontal">
                     <v-icon left>swap_horiz</v-icon>
                     {{ $t('flipHorizontal') }}
                 </v-btn>
-                <v-btn flat color="teal" @click="flipVertical">
+                <v-btn text color="teal" @click="flipVertical">
                     <v-icon left>swap_vert</v-icon>
                     {{ $t('flipVertical') }}
                 </v-btn>
-                <v-btn color="indigo" flat @click="rotateRight">
+                <v-btn text color="indigo" @click="rotateRight">
                     <v-icon left>rotate_right</v-icon>
                     {{ $t('rotateRight') }}
                 </v-btn>
-                <v-btn color="indigo" flat @click="rotateLeft">
+                <v-btn text color="indigo" @click="rotateLeft">
                     <v-icon left>rotate_left</v-icon>
                     {{ $t('rotateLeft') }}
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn flat color="primary" @click="onConfirmCrop">
+                <v-btn text color="primary" @click="onConfirmCrop">
                     <v-icon left>crop</v-icon>
                     {{ $t('confirmCrop') }}
                 </v-btn>

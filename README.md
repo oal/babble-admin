@@ -1,33 +1,29 @@
-# Babble CMS Admin
+# babble-admin
 
-## Using Babble Admin
+## Project setup
 ```
-cd my-babble-project
-mkdir assets
-cd assets
-git clone https://github.com/oal/babble-admin.git admin
-
-cd admin
 npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
 npm run build
 ```
 
-The admin files will appear in `my-babble-project/public/admin`, so go to `http://localhost:8000/admin` to manage your site's content.
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+### Run your tests
+```
+npm run test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

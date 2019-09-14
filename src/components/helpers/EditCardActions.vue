@@ -1,14 +1,16 @@
 <template>
     <v-card-actions>
-        <v-btn flat dark color="green" v-on:click="save" v-if="!error">
+        <v-btn text dark color="green" v-on:click="save" v-if="!error">
             <v-icon left>save</v-icon>
             {{ $t('save') }} {{ model.name }}
         </v-btn>
         <v-tooltip right v-else>
-            <v-btn flat dark color="red" slot="activator">
-                <v-icon left>error</v-icon>
-                {{ $t('save') }} {{ model.name }}
-            </v-btn>
+            <template v-slot:activator="{ on }">
+                <v-btn text dark color="red" v-on="on">
+                    <v-icon left>error</v-icon>
+                    {{ $t('save') }} {{ model.name }}
+                </v-btn>
+            </template>
             <span>{{ error }}</span>
         </v-tooltip>
     </v-card-actions>

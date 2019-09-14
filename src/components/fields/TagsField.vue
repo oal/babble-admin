@@ -1,24 +1,20 @@
 <template>
-    <v-select v-model="tags" :label="label" chips tags></v-select>
+    <v-combobox v-model="tags" :label="label" chips multiple/>
 </template>
 
 <script>
     export default {
         name: 'tags-field',
-
         props: [
             'options',
             'value',
             'label'
         ],
-
         data() {
-
             return {
                 tags: []
             }
         },
-
         mounted() {
             if (!Array.isArray(this.value)) {
                 let value = [];
@@ -28,7 +24,6 @@
                 this.tags = [...this.value];
             }
         },
-
         watch: {
             value(value) {
                 this.$emit('input', value);

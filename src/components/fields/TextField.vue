@@ -1,5 +1,7 @@
 <template>
-    <v-text-field :label="label" :value="value" @input="onInput" :textarea="!!getOption('admin.multiline')" :error-messages="error">
+    <v-textarea :label="label" :value="value" @input="onInput" v-if="!!getOption('admin.multiline')" :error-messages="error">
+    </v-textarea>
+    <v-text-field :label="label" :value="value" @input="onInput" v-else :error-messages="error">
     </v-text-field>
 </template>
 

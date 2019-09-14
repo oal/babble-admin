@@ -64,9 +64,9 @@
                 this.loading = true;
                 let modelType = this.options.model;
 
-                this.$http.options('/models/' + modelType).then(response => {
+                this.axios.options('/models/' + modelType).then(response => {
                     let previewField = response.data.model.fields[0].key; // TODO: Allow overriding this.
-                    this.$http.get('/models/' + modelType).then(response => {
+                    this.axios.get('/models/' + modelType).then(response => {
                         this.choices = response.data.map(record => {
                             return {
                                 value: record.id,

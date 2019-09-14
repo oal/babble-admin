@@ -7,7 +7,7 @@
                 </v-flex>
                 <v-spacer></v-spacer>
                 <div>
-                    <v-btn flat color="green" v-for="block in blockObjects" @click="addBlock(block.type)"
+                    <v-btn text color="green" v-for="block in blockObjects" @click="addBlock(block.type)"
                            :key="block.type">
                         <v-icon left>add_circle</v-icon>
                         {{ block.name }}

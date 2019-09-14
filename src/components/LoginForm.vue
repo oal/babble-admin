@@ -1,6 +1,6 @@
 <template>
     <v-form @keypress.native.enter="login">
-        <v-text-field
+        <v-text-field class="mt-3"
                 :label="$t('username')"
                 v-model="username"
                 required
@@ -11,7 +11,7 @@
                 type="password"
                 required
         ></v-text-field>
-        <v-btn large block color="primary" :loading="loading" @click="login">
+        <v-btn large block color="blue-grey" dark :loading="loading" @click="login">
             {{ $t('login') }}
         </v-btn>
     </v-form>
@@ -36,10 +36,10 @@
                     username: this.username,
                     password: this.password,
                 };
-                this.$http.get('/models/User/' + this.username, {
+                this.axios.get('/models/User/' + this.username, {
                     auth: auth
                 }).then(response => {
-                    this.$http.defaults.auth = auth;
+                    this.axios.defaults.auth = auth;
                     this.$root.user = response.data;
                     this.loading = false;
                     this.$emit('login');
