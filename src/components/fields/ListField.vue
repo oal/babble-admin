@@ -20,7 +20,7 @@
 
         <v-card-text class="pt-0" v-if="blocksWithFields.length > 0">
             <v-layout :column="!displayAsCards" wrap>
-                <v-flex v-for="(block, $index) in blocksWithFields" :key="block.key" v-if="block">
+                <v-flex :md4="displayAsCards" v-for="(block, $index) in blocksWithFields" :key="block.key" v-if="block">
                     <v-card>
                         <v-card-text>
                             <v-layout align-center>
