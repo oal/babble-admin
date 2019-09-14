@@ -16,8 +16,18 @@ function loadLocaleMessages() {
     return messages
 }
 
+let locales = loadLocaleMessages();
+let locale = process.env.VUE_APP_I18N_LOCALE;
+for(let i = 0; i < navigator.languages.length; i++) {
+    let language = navigator.languages[i];
+    if(locales[language]) {
+        locale = language;
+        break;
+    }
+}
+
 export default new VueI18n({
-    locale: process.env.VUE_APP_I18N_LOCALE || 'en',
-    fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
-    messages: loadLocaleMessages()
+    locale: locale,
+    fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE,
+    messages: locales
 })

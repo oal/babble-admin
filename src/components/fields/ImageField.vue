@@ -1,8 +1,11 @@
 <template>
-    <div>
-        <div v-if="croppedImage" class="image-card">
-            <img :src="croppedImage">
-            <v-layout wrap v-if="selection">
+    <v-card outlined>
+        <div class="image-field-preview grey darken-4">
+            <img :src="previewImage" v-if="previewImage" class="elevation-3">
+        </div>
+
+        <div class="grey lighten-5">
+            <v-card-actions v-if="croppedImage && selection">
                 <v-btn text color="primary" @click="onReCrop" v-if="croppedImage && hasCropper">
                     <v-icon left>crop</v-icon>
                     {{ $t('reCrop') }} {{ label }}
@@ -11,17 +14,15 @@
                     <v-icon left>folder</v-icon>
                     {{ $t('chooseAnotherFile') }}
                 </v-btn>
-            </v-layout>
-        </div>
+            </v-card-actions>
 
-        <div v-else class="image-card">
-            <img :src="`/uploads/${selection}`" v-if="selection && !hasCropper">
-
-            <v-btn dark color="blue-grey" @click="onOpenFileManager">
-                <v-icon left>add_a_photo</v-icon>
-                <span v-if="selection">{{ $t('chooseAnotherFile') }}</span>
-                <span v-else>{{ $t('choose') }} {{ label }}</span>
-            </v-btn>
+            <v-card-actions v-else>
+                <v-btn dark color="blue-grey" @click="onOpenFileManager">
+                    <v-icon left>add_a_photo</v-icon>
+                    <span v-if="selection">{{ $t('chooseAnotherFile') }}</span>
+                    <span v-else>{{ $t('choose') }} {{ label }}</span>
+                </v-btn>
+            </v-card-actions>
         </div>
 
         <v-dialog fullscreen transition="dialog-bottom-transition" v-model="showFileManager">
@@ -38,26 +39,15 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog fullscreen transition="dialog-bottom-transition" v-model="showImageEditor">
-            <v-card style="display: flex; flex-direction: column">
-                <v-toolbar dark color="primary">
-                    <v-btn icon @click.native="closeImageEditor" dark>
-                        <v-icon>close</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>{{ $t('imageEditor') }}</v-toolbar-title>
-                </v-toolbar>
-                <image-cropper :src="`/uploads/${selection}`" :width="width"
-                               :height="height" @crop="onCrop" :crop-data="cropData"
-                               v-if="showImageEditor && selection">
-                </image-cropper>
-            </v-card>
-        </v-dialog>
-    </div>
+        <image-editor-dialog @preview="croppedImage = $event" v-model="showImageEditor" :image="value"
+                             @image="syncInput" :options="options"/>
+    </v-card>
 </template>
 
 <script>
     import FileManager from './helpers/FileManager';
     import ImageCropper from './helpers/ImageCropper';
+    import ImageEditorDialog from './helpers/ImageEditorDialog';
 
     export default {
         name: 'image-field',
@@ -69,7 +59,8 @@
         ],
         components: {
             FileManager,
-            ImageCropper
+            ImageCropper,
+            ImageEditorDialog
         },
         data() {
             let croppedImage = null;
@@ -88,6 +79,14 @@
             }
         },
         methods: {
+            syncInput(value) {
+                this.$emit('input', value);
+            },
+            setFile(filename) {
+                this.$emit('input', {
+                    filename: filename
+                });
+            },
             onOpenFileManager() {
                 this.showFileManager = true;
             },
@@ -95,60 +94,41 @@
                 this.showImageEditor = false;
                 // If no cropped version was already set, unset selection as cropped version is still missing.
                 if (!this.croppedImage) {
-                    this.selection = null;
+                    this.setFile(null);
                 }
             },
             onSelectFile(file) {
-                this.selection = file;
                 this.croppedImage = null;
-                this.$emit('input', {
-                    filename: this.selection
-                });
+                this.setFile(file);
                 this.showFileManager = false;
                 if (this.hasCropper) {
                     this.showImageEditor = true;
                 }
             },
             onDeselectFile() {
-                this.selection = null;
                 this.croppedImage = null;
                 this.showFileManager = true;
-                this.$emit('input', {
-                    filename: this.selection
-                });
+                this.setFile(null);
             },
             onReCrop() {
                 this.showImageEditor = true;
             },
-            onCrop(previewCanvas, cropData) {
-                previewCanvas.toBlob(blob => {
-                    let reader = new FileReader();
-                    reader.onload = () => {
-                        this.croppedImage = reader.result;
-                        this.$emit('input', {
-                            filename: this.selection,
-                            crop: cropData
-                        });
-                        this.showImageEditor = false;
-                    };
-                    reader.readAsDataURL(blob);
-                });
-            }
+
         },
         computed: {
             hasCropper() {
                 return this.options && this.options.admin && this.options.admin.crop;
             },
-            width() {
-                if (this.options && this.options.width) return this.options.width;
-                return null;
-            },
-            height() {
-                if (this.options && this.options.height) return this.options.height;
-                return null;
-            },
-            cropData() {
-                if (this.value && this.value.crop) return this.value.crop;
+            previewImage() {
+                if (this.croppedImage) {
+                    return this.croppedImage;
+                }
+                if (this.value && this.value.filename) {
+                    if (this.value.url) {
+                        return `/uploads/${this.value.url}`;
+                    }
+                    return `/uploads/${this.value.filename}`;
+                }
                 return null;
             }
         }
@@ -156,11 +136,18 @@
 </script>
 
 <style lang="scss" type="text/scss" scoped>
-    .image-card {
-        max-width: 500px;
+    .image-field-preview {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.8rem;
 
         img {
             max-width: 100%;
+            max-height: 320px;
+            display: block;
+            border: 1px solid rgba(#fff, 0.2);
+            background-clip: padding-box;
         }
     }
 </style>

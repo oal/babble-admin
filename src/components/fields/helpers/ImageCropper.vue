@@ -52,6 +52,7 @@
         },
 
         mounted() {
+            console.log('Mounted cropper!');
             // setTimeout so that the cropper gets initialized to the correct size.
             setTimeout(() => {
                 this.cropper = new Cropper(this.$refs.image, {
