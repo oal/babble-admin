@@ -6,8 +6,10 @@
             v-for="message in $root.messages"
             :key="message.key"
             :timeout="5000"
+            :color="message.type"
             v-model="message.visible"
-            bottom>
+            class="mr-2 mb-1"
+            bottom right>
       {{ message.message }}
       <v-btn dark icon @click.native="message.visible = false">
         <v-icon>close</v-icon>
