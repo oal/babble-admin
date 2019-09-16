@@ -55,14 +55,14 @@
                             </v-card-text>
                         </v-card>
                     </div>
-                    <v-card-text>
+                    <div class="pa-sm-2">
                         <field-list :fields="mainFields"
                                     :data="data"
                                     :errors="errors"
                                     :blocks="blocks"
                                     @input="onFieldInput">
                         </field-list>
-                    </v-card-text>
+                    </div>
                     <edit-card-actions :class="{'hidden-md-and-down': sidebarFields.length > 0}"
                                        :error="saveError" :model="model" @save="save">
                     </edit-card-actions>
