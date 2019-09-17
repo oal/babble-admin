@@ -50,12 +50,12 @@
 
                         <v-card-text>
                             <!-- TODO: Send errors -->
-                            <field-list :fields="block.fields"
-                                        :data="blockData[$index].value"
-                                        :errors="{}"
-                                        :blocks="blocks"
-                                        @input="onFieldInput($index, $event)">
-                            </field-list>
+                            <FieldList :fields="block.fields"
+                                       :data="blockData[$index].value"
+                                       :errors="{}"
+                                       :blocks="blocks"
+                                       @input="onFieldInput($index, $event)"/>
+
                         </v-card-text>
                     </v-card>
                 </v-flex>

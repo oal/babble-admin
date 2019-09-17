@@ -28,7 +28,7 @@
     import TagsField from '@/components/fields/TagsField';
 
     export default {
-        name: 'field',
+        name: 'field-wrapper',
 
         props: [
             'type',

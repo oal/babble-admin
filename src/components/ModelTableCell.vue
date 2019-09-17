@@ -12,7 +12,7 @@
                     <v-icon>edit</v-icon>
                 </v-btn>
                 <template v-slot:input>
-                    <Field :type="column.type"
+                    <field-wrapper :type="column.type"
                            :label="column.name"
                            :name="column.key"
                            :options="column.options"
@@ -36,7 +36,6 @@
     import DatetimePreview from '../components/previews/DatetimePreview';
     import ChoicePreview from '../components/previews/ChoicePreview';
     import TagsPreview from '../components/previews/TagsPreview';
-    import Field from '../components/fields/helpers/Field';
 
     export default {
         components: {
@@ -45,7 +44,6 @@
             DatetimePreview,
             ChoicePreview,
             TagsPreview,
-            Field
         },
 
         props: {

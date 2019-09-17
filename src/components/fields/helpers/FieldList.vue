@@ -1,6 +1,6 @@
 <template>
     <v-layout wrap>
-        <Field :type="field.type"
+        <field-wrapper :type="field.type"
                :label="field.name"
                :name="field.key"
                :options="field.options"
@@ -17,10 +17,8 @@
 </template>
 
 <script>
-    import Field from './Field';
-
     export default {
-        name: 'field-list',
+        name: 'FieldList',
 
         props: [
             'fields',
@@ -28,10 +26,6 @@
             'errors',
             'blocks'
         ],
-
-        components: {
-            Field
-        },
 
         methods: {
             onInput(field, value) {

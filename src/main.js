@@ -12,6 +12,9 @@ Vue.config.productionTip = false;
 axios.defaults.baseURL = '/api/';
 Vue.use(VueAxios, axios);
 
+import FieldWrapper from './components/fields/helpers/FieldWrapper';
+Vue.component('field-wrapper', FieldWrapper);
+
 new Vue({
     router,
     vuetify,
