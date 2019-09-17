@@ -1,9 +1,9 @@
 <template>
     <v-layout fill-height justify-center align-center v-if="loading">
-        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        <v-progress-circular indeterminate color="primary"/>
     </v-layout>
     <div v-else>
-        <main-toolbar>
+        <MainToolbar>
             <template slot="title">
                 {{ model.name_plural }}
             </template>
@@ -12,34 +12,14 @@
                 <v-icon :left="$vuetify.breakpoint.smAndUp">add</v-icon>
                 <span class="hidden-xs-only">{{ $t('addRecord') }} {{ model.name }}</span>
             </v-btn>
-        </main-toolbar>
+        </MainToolbar>
         <v-container fluid class="pa-0">
             <v-data-table
                     :headers="headers"
                     hide-default-footer>
                 <template v-slot:body="{ items }">
                     <tbody>
-                    <tr v-for="item in models">
-                        <td v-for="column in listDisplay" :key="column.key" :class="{highlight: column.key === 'id'}">
-                            <component :is="column.type + '-preview'"
-                                       :value="getColumnValue(column, item)"
-                                       :field="column"
-                                       v-if="hasPreviewComponent(column)"></component>
-                            <div v-else>{{ getColumnValue(column, item) }}</div>
-                        </td>
-
-                        <td class="text-xs-right text-no-wrap">
-                            <v-btn left color="green" dark
-                                   :to="{name: 'Edit', params: {modelType: model.type, id: item.id}}">
-                                <v-icon left>edit</v-icon>
-                                {{ $t('edit') }}
-                            </v-btn>
-                            <v-btn left text color="red" dark @click="remove(item)">
-                                <v-icon left>delete</v-icon>
-                                {{ $t('delete') }}
-                            </v-btn>
-                        </td>
-                    </tr>
+                        <ModelTableRow :record="item" v-for="item in models" :list-display="listDisplay" :model="model"/>
                     </tbody>
                 </template>
             </v-data-table>
@@ -48,24 +28,14 @@
 </template>
 
 <script>
-    import {camelCase, upperFirst} from 'lodash';
     import MainToolbar from '../components/MainToolbar';
-    import IdPreview from '../components/previews/IdPreview';
-    import BooleanPreview from '../components/previews/BooleanPreview';
-    import DatetimePreview from '../components/previews/DatetimePreview';
-    import ChoicePreview from '../components/previews/ChoicePreview';
-    import TagsPreview from '../components/previews/TagsPreview';
-
+    import ModelTableRow from '../components/ModelTableRow';
     export default {
         name: 'panel',
 
         components: {
             MainToolbar,
-            IdPreview,
-            BooleanPreview,
-            DatetimePreview,
-            ChoicePreview,
-            TagsPreview
+            ModelTableRow,
         },
 
         props: [
@@ -120,13 +90,6 @@
                     // there is no more requests waiting at this time.
                     if (!wasLoading) this.loading = false;
                 });
-            },
-            getColumnValue(column, record) {
-                return record[column.key];
-            },
-            hasPreviewComponent(column) {
-                let componentName = upperFirst(`${camelCase(column.type)}Preview`);
-                return !!this.$options.components[componentName];
             },
             remove(record) {
                 let ok = confirm('Do you really want to delete this item?');

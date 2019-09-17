@@ -60,7 +60,7 @@
                         <v-toolbar-title>{{ $t('login') }}</v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
-                        <login-form @login="onLogin"></login-form>
+                        <LoginForm @login="onLogin"></LoginForm>
                     </v-card-text>
                 </v-card>
             </v-dialog>

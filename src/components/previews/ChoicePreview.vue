@@ -33,6 +33,14 @@
             }
         },
 
+        watch: {
+            value(oldValue, newValue) {
+                if (this.isModelChoiceField && oldValue !== newValue) {
+                    this.loadData();
+                }
+            }
+        },
+
         computed: {
             relatedModelName() {
                 return this.field.options.model;

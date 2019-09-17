@@ -1,10 +1,10 @@
 <template>
     <div>
-        <main-toolbar>
+        <MainToolbar>
             <template slot="title">
                 {{ $t('manageContent') }}
             </template>
-        </main-toolbar>
+        </MainToolbar>
         <v-progress-circular indeterminate v-if="loading"/>
         <v-container fluid grid-list-md v-if="!loading">
             <v-layout row wrap>

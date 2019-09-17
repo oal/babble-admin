@@ -1,10 +1,10 @@
 <template>
     <div>
-        <main-toolbar>
+        <MainToolbar>
             <template slot="title">
                 {{ $t('fileManager') }}
             </template>
-        </main-toolbar>
+        </MainToolbar>
         <v-container fluid class="pa-0">
             <file-manager @input="select" ref="file-manager"/>
 

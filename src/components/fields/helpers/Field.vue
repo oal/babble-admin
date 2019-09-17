@@ -1,6 +1,6 @@
 <template>
     <v-flex md12 v-if="hasTypeComponent()">
-        <component :is="type + '-field'"
+        <component :is="type + 'Field'"
                    :value="value"
                    :label="label"
                    :name="name"

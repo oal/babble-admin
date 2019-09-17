@@ -1,9 +1,9 @@
 <template>
     <v-layout fill-height justify-center align-center v-if="loading">
-        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        <v-progress-circular indeterminate color="primary"/>
     </v-layout>
     <v-form class="fill-height" v-else>
-        <main-toolbar>
+        <MainToolbar>
             <template slot="title">
                 <span class="blue-grey--text text--lighten-3" v-if="isNew && !model.single">{{ $t('new') }}</span>
                 <span class="blue-grey--text text--lighten-3" v-else>{{ $t('edit') }}</span>
@@ -43,25 +43,24 @@
                     </v-btn>
                 </v-flex>
             </v-layout>
-        </main-toolbar>
+        </MainToolbar>
         <v-container fluid grid-list-lg class="fill-height pa-0">
             <v-layout wrap class="pl-2">
                 <v-flex style="flex-basis: 240px">
                     <div v-if="!model.single && (isNew || editId)">
                         <v-card>
                             <v-card-text>
-                                <v-text-field label="ID" v-model="changedId" :rules="[validateId]" required>
-                                </v-text-field>
+                                <v-text-field label="ID" v-model="changedId" :rules="[validateId]" required/>
                             </v-card-text>
                         </v-card>
                     </div>
                     <div class="pa-sm-2">
-                        <field-list :fields="mainFields"
+                        <FieldList :fields="mainFields"
                                     :data="data"
                                     :errors="errors"
                                     :blocks="blocks"
                                     @input="onFieldInput">
-                        </field-list>
+                        </FieldList>
                     </div>
                     <edit-card-actions :class="{'hidden-md-and-down': sidebarFields.length > 0}"
                                        :error="saveError" :model="model" @save="save">
@@ -71,12 +70,12 @@
                 <v-flex v-if="sidebarFields.length > 0" style="max-width: 460px" class="pa-0">
                     <div class="fill-height blue-grey lighten-5">
                         <v-card-text class="pa-5">
-                            <field-list :fields="sidebarFields"
+                            <FieldList :fields="sidebarFields"
                                         :data="data"
                                         :errors="errors"
                                         :blocks="blocks"
                                         @input="onFieldInput">
-                            </field-list>
+                            </FieldList>
                         </v-card-text>
                         <edit-card-actions class="hidden-md-and-up" :error="saveError" :model="model"
                                            @save="save">

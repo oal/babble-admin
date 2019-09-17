@@ -1,6 +1,6 @@
 <template>
     <v-layout wrap>
-        <field :type="field.type"
+        <Field :type="field.type"
                :label="field.name"
                :name="field.key"
                :options="field.options"
@@ -12,13 +12,12 @@
                @input="onInput(field.key, $event)"
 
                v-for="field in fields"
-               :key="field.key">
-        </field>
+               :key="field.key"/>
     </v-layout>
 </template>
 
 <script>
-    import Field from '@/components/fields/helpers/Field';
+    import Field from './Field';
 
     export default {
         name: 'field-list',

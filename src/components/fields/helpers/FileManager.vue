@@ -11,7 +11,7 @@
                 </v-breadcrumbs-item>
             </v-breadcrumbs>
 
-            <v-spacer></v-spacer>
+            <v-spacer/>
 
             <v-flex shrink>
                 <v-btn color="secondary" @click="onRenameDirectory(path.length)" :disabled="!path.length || loading">
@@ -35,20 +35,20 @@
 
         <v-divider/>
 
-        <v-progress-linear v-model="progress" v-if="progress < 100"></v-progress-linear>
+        <v-progress-linear v-model="progress" v-if="progress < 100"/>
 
         <v-layout justify-center class="pa-4" v-if="loading">
-            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            <v-progress-circular indeterminate color="primary"/>
         </v-layout>
         <v-list two-line v-else>
             <template v-for="file in allFiles">
-                <v-list-item v-bind:key="file.title" @click="selectFile(file)" :disabled="!file.type">
+                <v-list-item :key="file.title" @click="selectFile(file)" :disabled="!file.type">
                     <v-list-item-avatar v-if="file.type">
-                        <img v-bind:src="`/uploads/${getURL(file)}`" v-if="file.type.indexOf('image') === 0"/>
+                        <img :src="`/uploads/${getURL(file)}`" v-if="file.type.indexOf('image') === 0"/>
                         <v-icon v-else>{{ getIconClass(file.type) }}</v-icon>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                        <v-list-item-title v-html="file.name"></v-list-item-title>
+                        <v-list-item-title v-html="file.name"/>
                         <v-list-item-subtitle>
                             <span v-if="file.type == 'directory'">{{ $t('directory') }}</span>
                             <span v-else-if="file.size">{{ prettyBytes(file.size) }}</span>
@@ -95,7 +95,6 @@
             path() {
                 this.files = [];
                 this.loadFiles();
-                console.log(this.path);
             }
         },
 
