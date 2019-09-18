@@ -36,6 +36,8 @@
     import DatetimePreview from '../components/previews/DatetimePreview';
     import ChoicePreview from '../components/previews/ChoicePreview';
     import TagsPreview from '../components/previews/TagsPreview';
+    import ImagePreview from "./previews/ImagePreview";
+    import FilePreview from "./previews/FilePreview";
 
     export default {
         components: {
@@ -44,6 +46,8 @@
             DatetimePreview,
             ChoicePreview,
             TagsPreview,
+            ImagePreview,
+            FilePreview
         },
 
         props: {

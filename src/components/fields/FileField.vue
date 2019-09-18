@@ -1,13 +1,15 @@
 <template>
     <div>
-        <v-chip :href="'/uploads/' + selection" close v-if="selection" @input="onDeselectFile">
-            {{ label }}:
-            {{ selection }}
+        <v-chip close v-if="value" @click:close="onDeselectFile">
+            {{ label }}:&nbsp;
+            <a :href="'/uploads/' + value" target="_blank" download class="blue-grey--text text--darken-2">
+                {{ value }}
+            </a>
         </v-chip>
 
         <v-btn dark color="blue-grey" v-else @click="onOpenFileManager">
+            <v-icon left>insert_drive_file</v-icon>
             {{ $t('choose') }} {{ label }}
-            <v-icon right>add_a_photo</v-icon>
         </v-btn>
 
         <v-dialog fullscreen transition="dialog-bottom-transition" v-model="showFileManager">
@@ -27,7 +29,7 @@
 </template>
 
 <script>
-    import FileManager from '@/components/fields/helpers/FileManager';
+    import FileManager from '../fields/helpers/FileManager';
 
     export default {
         name: 'file-field',
@@ -45,14 +47,7 @@
 
         data() {
             return {
-                showFileManager: false,
-                selection: this.value || null
-            }
-        },
-
-        watch: {
-            selection() {
-                this.$emit('input', this.selection);
+                showFileManager: false
             }
         },
 
@@ -62,12 +57,12 @@
             },
 
             onSelectFile(file) {
-                this.selection = file;
+                this.$emit('input', file);
                 this.showFileManager = false;
             },
 
             onDeselectFile() {
-                this.selection = null;
+                this.$emit('input', null);
             },
         }
     }
