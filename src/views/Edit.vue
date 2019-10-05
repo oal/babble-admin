@@ -225,7 +225,9 @@
                 });
             },
             onFieldInput(event) {
-                this.data[event.key] = event.value;
+                let updatedData = {...this.data};
+                updatedData[event.key] = event.value;
+                this.data = updatedData;
             },
             initEmptyFields() {
                 this.model.fields.forEach(field => {

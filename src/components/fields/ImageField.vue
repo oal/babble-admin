@@ -63,22 +63,31 @@
             ImageEditorDialog
         },
         data() {
-            let croppedImage = null;
-            if (this.value && this.value.url) {
-                croppedImage = this.value.url;
-            }
-            let filename = (this.value ? this.value.filename : null) || null;
-            let directory = '/';
-            if (filename) directory = '/' + filename.split('/').slice(0, -1).join('/');
             return {
                 showFileManager: false,
                 showImageEditor: false,
-                selection: filename,
-                directory: directory,
-                croppedImage: croppedImage,
+                selection: null,
+                directory: null,
+                croppedImage: null,
             }
         },
+        created() {
+            this.reset();
+        },
         methods: {
+            reset() {
+                let croppedImage = null;
+                if (this.value && this.value.url) {
+                    croppedImage = this.value.url;
+                }
+                let filename = (this.value ? this.value.filename : null) || null;
+                let directory = '/';
+                if (filename) directory = '/' + filename.split('/').slice(0, -1).join('/');
+
+                this.selection = filename;
+                this.directory = directory;
+                this.croppedImage = croppedImage;
+            },
             syncInput(value) {
                 this.$emit('input', value);
             },
@@ -113,8 +122,17 @@
             onReCrop() {
                 this.showImageEditor = true;
             },
-
         },
+
+        watch: {
+            value() {
+                if (!this.value) {
+                    // Reset state when value is set to null or undefined (happens in ListField when moved).
+                    this.reset();
+                }
+            }
+        },
+
         computed: {
             hasCropper() {
                 return this.options && this.options.admin && this.options.admin.crop;

@@ -21,43 +21,9 @@
         <v-card-text class="pt-0" v-if="blocksWithFields.length > 0">
             <v-layout :column="!displayAsCards" wrap>
                 <v-flex :md4="displayAsCards" v-for="(block, $index) in blocksWithFields" :key="block.key" v-if="block">
-                    <v-card>
-                        <v-card-text>
-                            <v-layout align-center>
-                                <v-flex>
-                                    <h3 class="subheading">
-                                        {{ getBlockName(block.type) }}
-                                    </h3>
-                                </v-flex>
-                                <v-spacer></v-spacer>
-                                <div>
-                                    <v-btn color="primary" small icon @click="moveBlock($index, -1)" class="ml-0"
-                                           v-if="$index > 0">
-                                        <v-icon v-if="displayAsCards">keyboard_arrow_left</v-icon>
-                                        <v-icon v-else>keyboard_arrow_up</v-icon>
-                                    </v-btn>
-                                    <v-btn color="primary" small icon @click="moveBlock($index, 1)" class="ml-0"
-                                           v-if="$index < blocksWithFields.length-1">
-                                        <v-icon v-if="displayAsCards">keyboard_arrow_right</v-icon>
-                                        <v-icon v-else>keyboard_arrow_down</v-icon>
-                                    </v-btn>
-                                    <v-btn color="red" dark small icon @click="removeBlockAt($index)" class="ml-0">
-                                        <v-icon>clear</v-icon>
-                                    </v-btn>
-                                </div>
-                            </v-layout>
-                        </v-card-text>
-
-                        <v-card-text>
-                            <!-- TODO: Send errors -->
-                            <FieldList :fields="block.fields"
-                                       :data="blockData[$index].value"
-                                       :errors="{}"
-                                       :blocks="blocks"
-                                       @input="onFieldInput($index, $event)"/>
-
-                        </v-card-text>
-                    </v-card>
+                    <ListFieldBlock :block="block.block" :blocks="blocks" :value="block.value" :is-first="$index === 0"
+                                    :is-last="$index === blocksWithFields.length-1" :display-as-cards="displayAsCards"
+                                    @input="onFieldInput($index, $event)" @move="moveBlock($index, $event)" @remove="removeBlockAt($index)"/>
                 </v-flex>
             </v-layout>
         </v-card-text>
@@ -66,82 +32,78 @@
 
 <script>
     import {get} from 'lodash';
-    import FieldList from '@/components/fields/helpers/FieldList.vue';
+    import ListFieldBlock from "./helpers/ListFieldBlock";
 
     export default {
         name: 'list-field',
-
-        props: [
-            'value',
-            'name',
-            'label',
-            'options',
-            'blocks',
-            'error'
-        ],
-
-        beforeCreate: function () {
-            // Relevant: https://vuejs.org/v2/guide/components.html#Recursive-Components
-            this.$options.components.FieldList = FieldList
+        components: {
+            ListFieldBlock
         },
 
-        data() {
-            return {
-                blockData: this.value ? [...this.value] : []
-            }
+        props: {
+            value: {
+                type: Array,
+                default: () => {
+                    return [];
+                }
+            },
+            name: String,
+            label: String,
+            options: Object,
+            blocks: Object,
+            error: Object
         },
 
         methods: {
-            getBlock(blockType) {
-                return this.blockObjects.filter(block => block.type === blockType)[0];
-            },
-            getBlockName(blockType) {
-                return this.getBlock(blockType).name;
-            },
             addBlock(type) {
-                this.blockData.push({
-                    type: type,
-                    value: {},
-                    key: (Math.random() * 9999999) | 0
-                });
-                this.emitInput();
+                this.$emit('input', [
+                    ...this.value,
+                    {
+                        type: type,
+                        value: {}
+                    }
+                ]);
             },
 
             moveBlock(index, movement) {
+                let newValue = [...this.value];
                 // Swap.
-                let temp = this.blockData[index + movement];
-                this.blockData[index + movement] = this.blockData[index];
-                this.blockData[index] = temp;
+                let temp = newValue[index + movement];
+                newValue[index + movement] = newValue[index];
+                newValue[index] = temp;
 
-                // Trigger change.
-                this.blockData = [...this.blockData];
-                this.emitInput();
+                this.$emit('input', newValue);
             },
+
             removeBlockAt(index) {
-                this.blockData.splice(index, 1);
-                this.emitInput();
+                let newValue = [...this.value];
+                newValue.splice(index, 1);
+
+                this.$emit('input', newValue);
             },
 
             onFieldInput(blockIndex, event) {
-                this.blockData[blockIndex].value[event.key] = event.value;
-                this.emitInput();
-            },
-            emitInput() {
-                this.$emit('input', [...this.blockData]);
+                let newFieldValue = {...this.value[blockIndex]};
+                newFieldValue.value[event.key] = event.value;
+
+                let newValue = [...this.value];
+                newValue[blockIndex] = newFieldValue;
+
+                this.$emit('input', newValue);
             }
         },
 
         computed: {
             blocksWithFields() {
                 if (!this.blocks) return [];
-                return this.blockData.map((blockData, index) => {
-                    let block = this.getBlock(blockData.type);
+                return this.value.map((blockData, index) => {
+                    let block = this.blocks[blockData.type];
                     if (!block) return null;
 
                     return {
-                        ...blockData,
-                        fields: block.fields,
-                        key: (Math.random() * 9999999) | 0
+                        value: blockData,
+                        block: block,
+                        key: index
                     };
                 })
             },
