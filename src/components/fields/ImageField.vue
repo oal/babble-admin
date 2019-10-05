@@ -1,7 +1,7 @@
 <template>
     <v-card outlined>
-        <div class="image-field-preview grey darken-4">
-            <img :src="previewImage" v-if="previewImage" class="elevation-3">
+        <div class="image-field-preview grey darken-4" v-if="previewImage">
+            <img :src="previewImage" class="elevation-3">
         </div>
 
         <div class="grey lighten-5">
