@@ -23,7 +23,8 @@
                 <v-flex :md4="displayAsCards" v-for="(block, $index) in blocksWithFields" :key="block.key" v-if="block">
                     <ListFieldBlock :block="block.block" :blocks="blocks" :value="block.value" :is-first="$index === 0"
                                     :is-last="$index === blocksWithFields.length-1" :display-as-cards="displayAsCards"
-                                    @input="onFieldInput($index, $event)" @move="moveBlock($index, $event)" @remove="removeBlockAt($index)"/>
+                                    @input="onFieldInput($index, $event)" @move="moveBlock($index, $event)"
+                                    @remove="removeBlockAt($index)"/>
                 </v-flex>
             </v-layout>
         </v-card-text>
@@ -52,6 +53,15 @@
             options: Object,
             blocks: Object,
             error: Object
+        },
+
+        created() {
+            // Set an internal key on field init for all data blocks for reordering etc. to work nicely.
+            if (Array.isArray(this.value)) {
+                this.value.forEach(item => {
+                    item._key = Math.floor(Math.random() * 99999999).toString(16);
+                })
+            }
         },
 
         methods: {
@@ -96,14 +106,14 @@
         computed: {
             blocksWithFields() {
                 if (!this.blocks) return [];
-                return this.value.map((blockData, index) => {
+                return this.value.map(blockData => {
                     let block = this.blocks[blockData.type];
                     if (!block) return null;
 
                     return {
                         value: blockData,
                         block: block,
-                        key: index
+                        key: blockData._key
                     };
                 })
             },
