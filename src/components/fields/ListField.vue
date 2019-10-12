@@ -1,5 +1,5 @@
 <template>
-    <v-card color="grey lighten-3">
+    <v-card color="grey lighten-5">
         <v-card-title>
             <v-layout>
                 <v-flex>

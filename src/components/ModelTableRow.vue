@@ -30,6 +30,12 @@
             record: Object,
             model: Object,
             listDisplay: Array,
+        },
+
+        methods: {
+            remove() {
+                this.$emit('remove');
+            }
         }
     }
 </script>

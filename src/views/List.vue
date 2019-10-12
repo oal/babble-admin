@@ -19,7 +19,7 @@
                     hide-default-footer>
                 <template v-slot:body="{ items }">
                     <tbody>
-                        <ModelTableRow :record="item" v-for="item in models" :list-display="listDisplay" :model="model"/>
+                        <ModelTableRow :record="item" v-for="item in models" :list-display="listDisplay" :model="model" @remove="remove(item)"/>
                     </tbody>
                 </template>
             </v-data-table>

@@ -237,7 +237,7 @@
                 });
 
                 // Automatic ID if enabled in model options.
-                if (this.autoIdField) {
+                if (!this.data.id && this.autoIdField) {
                     this.data = {...this.data}; // Allows us to watch for changes.
 
                     let watchKey = 'data.' + this.autoIdField;
