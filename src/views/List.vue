@@ -5,7 +5,7 @@
     <div v-else>
         <MainToolbar>
             <template slot="title">
-                {{ model.name_plural }} {{ sortColumn }} {{ sortDesc }}
+                {{ model.name_plural }}
             </template>
 
             <v-btn color="green" :to="{name: 'Create', params: {modelType: model.type}}">
