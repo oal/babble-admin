@@ -5,7 +5,7 @@
     <div v-else>
         <MainToolbar>
             <template slot="title">
-                {{ model.name_plural }}
+                {{ model.name_plural }} {{ sortColumn }} {{ sortDesc }}
             </template>
 
             <v-btn color="green" :to="{name: 'Create', params: {modelType: model.type}}">
@@ -16,6 +16,10 @@
         <v-container fluid class="pa-0">
             <v-data-table
                     :headers="headers"
+                    @update:sort-by="updateSortBy"
+                    @update:sort-desc="updateSortDesc"
+                    :sort-by="sortColumn"
+                    :sort-desc="sortDesc"
                     hide-default-footer>
                 <template v-slot:body="{ items }">
                     <tbody>
@@ -55,16 +59,13 @@
             this.fetchData();
         },
 
-        watch: {
-            '$route': 'fetchData'
-        },
-
         methods: {
             fetchData() {
                 this.loading = true;
 
                 let modelPromise = this.axios.options('/models/' + this.modelType).then(response => {
                     this.model = response.data.model;
+                    this.sort = this.options['sort'] || 'id'
                 });
 
                 Promise.all([modelPromise, this.fetchRecords()]).then(() => {
@@ -100,6 +101,19 @@
                     this.fetchData();
                 });
             },
+            updateSortBy(column) {
+                if(Array.isArray(column)) {
+                    column = column[0];
+                }
+                this.sort = column;
+            },
+            updateSortDesc(desc) {
+                if(desc) {
+                    this.sort = `-${this.sort}`;
+                } else {
+                    this.sort = this.sortColumn; // Without - prefix.
+                }
+            },
             sortBy(columnKey) {
                 if (this.sort === columnKey) {
                     this.sort = '-' + columnKey;
@@ -110,11 +124,22 @@
             }
         },
 
+        watch: {
+            '$route': 'fetchData',
+            sort() {
+                this.fetchData();
+            }
+        },
+
         computed: {
             options: function () {
                 let options = this.model.options.admin || {};
-                if (!options.list_display) options.list_display = [this.model.fields[0].key];
-
+                if (!options.list_display) {
+                    options.list_display = [this.model.fields[0].key];
+                }
+                if(!options.sort) {
+                    options.sort = this.model.fields[0].key;
+                }
                 return options;
             },
             fieldsByKey() {
@@ -154,6 +179,16 @@
                     }),
                     buttonHeader
                 ];
+            },
+            sortColumn() {
+                if(this.sort && this.sort.substr(0, 1) === '-') {
+                    return this.sort.substr(1, this.sort.length);
+                }
+                return this.sort;
+            },
+            sortDesc() {
+                if(!this.sort) return false;
+                return this.sort.substr(0, 1) === '-';
             }
         }
     }
