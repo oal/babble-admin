@@ -5,26 +5,32 @@
         </div>
         <v-layout row wrap>
             <v-flex>
-                <v-menu full-width>
-                    <v-text-field
-                            slot="activator"
-                            :label="$t('date')"
-                            v-model="date"
-                            prepend-icon="event"
-                            readonly>
-                    </v-text-field>
-                    <v-date-picker class="mt-3" v-model="date"></v-date-picker>
+                <v-menu ref="menu" v-model="menuDate" :close-on-content-click="false"
+                        transition="scale-transition" offset-y min-width="290px">
+                    <template v-slot:activator="{ on }">
+                        <v-text-field
+                                slot="activator"
+                                :label="$t('date')"
+                                v-model="date"
+                                prepend-icon="event"
+                                readonly v-on="on">
+                        </v-text-field>
+                    </template>
+                    <v-date-picker v-model="date"></v-date-picker>
                 </v-menu>
             </v-flex>
             <v-flex>
-                <v-menu full-width>
-                    <v-text-field
-                            slot="activator"
-                            :label="$t('time')"
-                            v-model="time"
-                            prepend-icon="schedule"
-                            readonly>
-                    </v-text-field>
+                <v-menu ref="menu" v-model="menuTime" :close-on-content-click="false"
+                        transition="scale-transition" offset-y min-width="290px">
+                    <template v-slot:activator="{ on }">
+                        <v-text-field
+                                slot="activator"
+                                :label="$t('time')"
+                                v-model="time"
+                                prepend-icon="schedule"
+                                readonly v-on="on">
+                        </v-text-field>
+                    </template>
                     <v-time-picker format="24hr" v-model="time"></v-time-picker>
                 </v-menu>
             </v-flex>
@@ -49,6 +55,9 @@
             else dateTime = moment();
 
             return {
+                menuDate: false,
+                menuTime: false,
+
                 date: dateTime.format('YYYY-MM-DD'),
                 time: dateTime.format('HH:mm')
             }
