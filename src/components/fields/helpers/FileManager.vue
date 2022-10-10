@@ -149,10 +149,10 @@
                     onUploadProgress: event => {
                         this.progress = (event.loaded / event.total) * 100;
                     }
-                }).then(response => {
+                }).then(() => {
                     event.target.value = '';
                     this.loadFiles();
-                }).catch(response => {
+                }).catch(() => {
                     console.log('fail');
                 });
             },
@@ -163,9 +163,9 @@
 
                 let apiPath = ['/files', ...this.path].join('/');
 
-                this.axios.post(apiPath, {name: name}).then(response => {
+                this.axios.post(apiPath, {name: name}).then(() => {
                     this.loadFiles();
-                }).catch(response => {
+                }).catch(() => {
                     console.log('fail');
                 });
             },
@@ -176,10 +176,10 @@
 
                 let apiPath = ['/files', ...this.path.slice(0, index + 1)].join('/');
 
-                this.axios.put(apiPath, {name: name}).then(response => {
+                this.axios.put(apiPath, {name: name}).then(() => {
                     this.path = [...this.path.slice(0, index), name]; // Move up to the directory that contains the renamed directory.
                     this.loadFiles();
-                }).catch(response => {
+                }).catch(() => {
                     console.log('fail');
                 });
                 console.log('Rename ', this.path[index], apiPath);

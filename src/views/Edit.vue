@@ -88,7 +88,7 @@
 </template>
 
 <script>
-    import {upperFirst, camelCase, get} from 'lodash';
+    import {get} from 'lodash';
     import slug from 'slug';
 
     import FieldList from '../components/fields/helpers/FieldList';

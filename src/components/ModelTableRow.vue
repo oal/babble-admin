@@ -18,7 +18,6 @@
 </template>
 
 <script>
-    import {camelCase, upperFirst} from 'lodash';
     import ModelTableCell from '../components/ModelTableCell';
 
     export default {

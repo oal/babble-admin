@@ -43,7 +43,7 @@
                     this.$root.user = response.data;
                     this.loading = false;
                     this.$emit('login');
-                }).catch(response => {
+                }).catch(() => {
                     this.$root.addMessage(this.$t('invalidLogin'), 'error');
                     this.loading = false;
                 });

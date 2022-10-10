@@ -5,8 +5,6 @@
 </template>
 
 <script>
-    import {get} from 'lodash';
-
     export default {
         name: 'choice-field',
 

@@ -46,7 +46,6 @@
 
 <script>
     import FileManager from './helpers/FileManager';
-    import ImageCropper from './helpers/ImageCropper';
     import ImageEditorDialog from './helpers/ImageEditorDialog';
 
     export default {
@@ -59,7 +58,6 @@
         ],
         components: {
             FileManager,
-            ImageCropper,
             ImageEditorDialog
         },
         data() {

@@ -71,11 +71,11 @@
                 }
 
                 this.loading = true;
-                this.axios.delete('/files/' + this.selection).then(response => {
+                this.axios.delete('/files/' + this.selection).then(() => {
                     this.$refs['file-manager'].loadFiles();
                     this.close();
                     this.loading = false;
-                }).catch(response => {
+                }).catch(() => {
                     console.log('fail');
                     this.loading = false;
                 });

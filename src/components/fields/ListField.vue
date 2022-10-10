@@ -20,7 +20,7 @@
 
         <v-card-text class="pt-0" v-if="blocksWithFields.length > 0">
             <v-layout :column="!displayAsCards" wrap>
-                <v-flex :md4="displayAsCards" v-for="(block, $index) in blocksWithFields" :key="block.key" v-if="block">
+                <v-flex :md4="displayAsCards" v-for="(block, $index) in blocksWithFields" :key="block.key">
                     <ListFieldBlock :block="block.block" :blocks="blocks" :value="block.value" :is-first="$index === 0"
                                     :is-last="$index === blocksWithFields.length-1" :display-as-cards="displayAsCards"
                                     @input="onFieldInput($index, $event)" @move="moveBlock($index, $event)"
@@ -115,7 +115,7 @@
                         block: block,
                         key: blockData._key
                     };
-                })
+                }).filter(it => !!it)
             },
 
             displayAsCards() {
