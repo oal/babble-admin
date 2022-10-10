@@ -28,17 +28,17 @@
     import TagsField from '@/components/fields/TagsField';
 
     export default {
-        name: 'field-wrapper',
+        name: 'FieldWrapper',
 
-        props: [
-            'type',
-            'label',
-            'name',
-            'value',
-            'options',
-            'blocks',
-            'error'
-        ],
+        props: {
+          type: String,
+          label: String,
+          name: String,
+          value: Object,
+          options: Object,
+          blocks: Array,
+          error: Object
+        },
 
         components: {
             BooleanField,

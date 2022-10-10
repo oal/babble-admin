@@ -39,7 +39,7 @@
             </v-card>
         </v-dialog>
 
-        <image-editor-dialog @preview="croppedImage = $event" v-model="showImageEditor" :image="value"
+        <ImageEditorDialog @preview="croppedImage = $event" v-model="showImageEditor" :image="value"
                              @image="syncInput" :options="options"/>
     </v-card>
 </template>
@@ -49,13 +49,13 @@
     import ImageEditorDialog from './helpers/ImageEditorDialog';
 
     export default {
-        name: 'image-field',
-        props: [
-            'value',
-            'name',
-            'label',
-            'options'
-        ],
+        name: 'ImageField',
+        props: {
+            value: Object,
+            name: String,
+            label: String,
+            options: Object
+        },
         components: {
             FileManager,
             ImageEditorDialog

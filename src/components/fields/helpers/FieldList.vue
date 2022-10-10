@@ -20,12 +20,12 @@
     export default {
         name: 'FieldList',
 
-        props: [
-            'fields',
-            'data',
-            'errors',
-            'blocks'
-        ],
+        props: {
+          fields: Array,
+          data: Object,
+          errors: Object,
+          blocks: Array
+        },
 
         methods: {
             onInput(field, value) {

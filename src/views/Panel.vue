@@ -6,7 +6,9 @@
                 <v-list-item class="blue-grey py-3">
                     <v-list-item-content>
                         <v-list-item-title class="title">
-                            <router-link tag="div" :to="{name: 'Index'}">Babble Admin</router-link>
+                            <router-link :to="{name: 'Index'}" custom v-slot="{ navigate }">
+                              <div @click="navigate" @keypress.enter="navigate" role="link">Babble Admin</div>
+                            </router-link>
                         </v-list-item-title>
                         <v-list-item-subtitle v-if="$root.user" class="pt-1">
                             {{ $t('welcome') }}, {{ $root.user.id }}!
@@ -45,7 +47,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <v-content>
+        <v-main>
             <v-container fill-height v-if="loading">
                 <v-layout justify-center align-center>
                     <v-progress-circular indeterminate color="primary"></v-progress-circular>
@@ -64,7 +66,7 @@
                     </v-card-text>
                 </v-card>
             </v-dialog>
-        </v-content>
+        </v-main>
     </v-app>
 </template>
 

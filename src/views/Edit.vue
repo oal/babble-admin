@@ -7,7 +7,9 @@
             <template slot="title">
                 <span class="blue-grey--text text--lighten-3" v-if="isNew && !model.single">{{ $t('new') }}</span>
                 <span class="blue-grey--text text--lighten-3" v-else>{{ $t('edit') }}</span>
-                <router-link tag="span" class="pl-2" :to="{name: 'List', params: {modelType: model.type}}">{{ model.name }}</router-link>
+                <router-link :to="{name: 'List', params: {modelType: model.type}}" custom v-slot="{ navigate }">
+                  <span @click="navigate" @keypress.enter="navigate" role="link" class="pl-2">{{ model.name }}</span>
+                </router-link>
             </template>
 
             <v-layout shrink wrap align-center>
