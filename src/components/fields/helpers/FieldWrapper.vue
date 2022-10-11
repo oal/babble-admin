@@ -34,9 +34,9 @@
           type: String,
           label: String,
           name: String,
-          value: Object,
+          value: {},
           options: Object,
-          blocks: Array,
+          blocks: Object,
           error: Object
         },
 

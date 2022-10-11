@@ -24,7 +24,7 @@
           fields: Array,
           data: Object,
           errors: Object,
-          blocks: Array
+          blocks: Object
         },
 
         methods: {
