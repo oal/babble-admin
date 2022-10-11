@@ -21,12 +21,12 @@
     export default {
         name: 'TextField',
 
-        props: [
-            'options',
-            'value',
-            'label',
-            'error'
-        ],
+        props: {
+            options: Object,
+            value: String,
+            label: String,
+            error: String
+        },
 
         methods: {
             getOption(path) {

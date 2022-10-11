@@ -12,10 +12,10 @@
 
 <script>
     export default {
-        props: [
-            'value',
-            'field'
-        ],
+        props: {
+            value: String,
+            field: Object
+        },
 
         data() {
             return {

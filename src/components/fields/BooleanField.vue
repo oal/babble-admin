@@ -8,11 +8,11 @@
 <script>
     export default {
         name: 'BooleanField',
-        props: [
-            'value',
-            'name',
-            'label'
-        ],
+        props: {
+            value: Boolean,
+            name: String,
+            label: String
+        },
         data() {
             return {
                 state: !!this.value

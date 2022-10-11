@@ -22,9 +22,9 @@
     export default {
         name: 'PasswordField',
 
-        props: [
-            'label'
-        ],
+        props: {
+            label: String
+        },
 
         data() {
             return {

@@ -64,10 +64,10 @@
     export default {
         name: 'DatetimeField',
 
-        props: [
-            'value',
-            'label'
-        ],
+        props: {
+            value: [String, Date],
+            label: String
+        },
 
         data() {
             let dateTime;

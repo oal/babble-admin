@@ -10,11 +10,11 @@
 <script>
     export default {
         name: 'TagsField',
-        props: [
-            'options',
-            'value',
-            'label'
-        ],
+        props: {
+            options: Object,
+            value: [String, Array],
+            label: String
+        },
         data() {
             return {
                 tags: []

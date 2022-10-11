@@ -36,10 +36,10 @@
 
 <script>
     export default {
-        props: [
-            'model',
-            'error'
-        ],
+        props: {
+            model: Object,
+            error: String
+        },
 
         methods: {
             save() {

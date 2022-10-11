@@ -25,11 +25,11 @@
     export default {
         name: 'MarkdownField',
 
-        props: [
-            'options',
-            'value',
-            'label'
-        ],
+        props: {
+            options: Object,
+            value: String,
+            label: String
+        },
 
         data() {
             return {

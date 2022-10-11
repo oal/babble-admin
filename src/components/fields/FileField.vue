@@ -68,12 +68,12 @@
             FileManager
         },
 
-        props: [
-            'value',
-            'name',
-            'label',
-            'options'
-        ],
+        props: {
+            value: String,
+            name: String,
+            label: String,
+            options: Object
+        },
 
         data() {
             return {

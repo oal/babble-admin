@@ -17,10 +17,8 @@
 
 <script>
     export default {
-
-        props: [
-            'value'
-        ]
-
+        props: {
+            value: Boolean
+        }
     }
 </script>

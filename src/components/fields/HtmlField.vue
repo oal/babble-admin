@@ -28,11 +28,11 @@
     export default {
         name: 'HtmlField',
 
-        props: [
-            'options',
-            'value',
-            'label'
-        ],
+        props: {
+            options: Object,
+            value: String,
+            label: String
+        },
 
         data() {
             return {

@@ -7,9 +7,9 @@
     import moment from 'moment';
 
     export default {
-        props: [
-            'value'
-        ],
+        props: {
+            value: [Date, String]
+        },
 
         computed: {
             datetime() {
