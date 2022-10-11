@@ -1,8 +1,13 @@
 <template>
-    <div>
-        <router-link :to="modelEditRoute" v-if="modelEditRoute">{{ preview }}</router-link>
-        <span v-else>{{ preview }}</span>
-    </div>
+  <div>
+    <router-link
+      v-if="modelEditRoute"
+      :to="modelEditRoute"
+    >
+      {{ preview }}
+    </router-link>
+    <span v-else>{{ preview }}</span>
+  </div>
 </template>
 
 <script>
@@ -12,32 +17,9 @@
             'field'
         ],
 
-        created() {
-            if (this.isModelChoiceField) {
-                this.loadData();
-            }
-        },
-
         data() {
             return {
                 modelInstance: null
-            }
-        },
-
-        methods: {
-            loadData() {
-                let model = this.relatedModelName;
-                this.axios.get(`/models/${model}/${this.value}`).then(response => {
-                    this.modelInstance = response.data;
-                })
-            }
-        },
-
-        watch: {
-            value(oldValue, newValue) {
-                if (this.isModelChoiceField && oldValue !== newValue) {
-                    this.loadData();
-                }
             }
         },
 
@@ -60,6 +42,29 @@
             modelEditRoute() {
                 if (!this.modelInstance) return;
                 return {name: 'Edit', params: {modelType: this.relatedModelName, id: this.modelInstance.id}};
+            }
+        },
+
+        watch: {
+            value(oldValue, newValue) {
+                if (this.isModelChoiceField && oldValue !== newValue) {
+                    this.loadData();
+                }
+            }
+        },
+
+        created() {
+            if (this.isModelChoiceField) {
+                this.loadData();
+            }
+        },
+
+        methods: {
+            loadData() {
+                let model = this.relatedModelName;
+                this.axios.get(`/models/${model}/${this.value}`).then(response => {
+                    this.modelInstance = response.data;
+                })
             }
         }
     }

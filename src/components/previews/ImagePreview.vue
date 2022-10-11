@@ -1,18 +1,32 @@
 <template>
-    <div>
-        <v-menu bottom nudge-bottom="32px" class="pa-0">
-            <template v-slot:activator="{ on }">
-                <v-chip v-on="on" outlined label color="blue-grey darken-1">
-                    <v-icon left>image</v-icon>
-                    {{ value.filename }}
-                </v-chip>
-            </template>
+  <div>
+    <v-menu
+      bottom
+      nudge-bottom="32px"
+      class="pa-0"
+    >
+      <template v-slot:activator="{ on }">
+        <v-chip
+          outlined
+          label
+          color="blue-grey darken-1"
+          v-on="on"
+        >
+          <v-icon left>
+            image
+          </v-icon>
+          {{ value.filename }}
+        </v-chip>
+      </template>
 
-            <v-card class="pa-1 blue-grey darken-3">
-                <img :src="value.url" class="preview-image-preview"/>
-            </v-card>
-        </v-menu>
-    </div>
+      <v-card class="pa-1 blue-grey darken-3">
+        <img
+          :src="value.url"
+          class="preview-image-preview"
+        >
+      </v-card>
+    </v-menu>
+  </div>
 </template>
 
 <script>

@@ -1,32 +1,50 @@
 <template>
-    <td>
-        <div class="model-table-cell">
-            <component :is="column.type + 'Preview'"
-                       :value="value"
-                       :field="column"
-                       v-if="hasPreviewComponent"/>
-            <div v-else>{{ value }}</div>
-            <v-edit-dialog large @save="save" @cancel="cancel" @open="open" @close="close"
-                           :cancel-text="$t('close')" :save-text="$t('save')">
-                <v-btn icon color="orange" class="model-table-cell-edit" v-if="column.type !== 'id'">
-                    <v-icon>edit</v-icon>
-                </v-btn>
-                <template v-slot:input>
-                    <field-wrapper :type="column.type"
-                           :label="column.name"
-                           :name="column.key"
-                           :options="column.options"
-                           :class="column.classes"
-                           :blocks="[]"
-                           :error="errors['fields.' + column.key]"
+  <td>
+    <div class="model-table-cell">
+      <component
+        :is="column.type + 'Preview'"
+        v-if="hasPreviewComponent"
+        :value="value"
+        :field="column"
+      />
+      <div v-else>
+        {{ value }}
+      </div>
+      <v-edit-dialog
+        large
+        :cancel-text="$t('close')"
+        :save-text="$t('save')"
+        @save="save"
+        @cancel="cancel"
+        @open="open"
+        @close="close"
+      >
+        <v-btn
+          v-if="column.type !== 'id'"
+          icon
+          color="orange"
+          class="model-table-cell-edit"
+        >
+          <v-icon>edit</v-icon>
+        </v-btn>
+        <template v-slot:input>
+          <field-wrapper
+            :type="column.type"
+            :label="column.name"
+            :name="column.key"
+            :options="column.options"
+            :class="column.classes"
+            :blocks="[]"
+            :error="errors['fields.' + column.key]"
 
-                           :value="changedValue"
-                           @input="onInput"
-                           class="pt-3"/>
-                </template>
-            </v-edit-dialog>
-        </div>
-    </td>
+            :value="changedValue"
+            class="pt-3"
+            @input="onInput"
+          />
+        </template>
+      </v-edit-dialog>
+    </div>
+  </td>
 </template>
 
 <script>
@@ -64,6 +82,16 @@
             }
         },
 
+        computed: {
+            hasPreviewComponent() {
+                let componentName = upperFirst(`${camelCase(this.column.type)}Preview`);
+                return !!this.$options.components[componentName];
+            },
+            value() {
+                return this.record[this.column.key];
+            }
+        },
+
         methods: {
             onInput(value) {
                 console.log(value);
@@ -89,16 +117,6 @@
             },
             close() {
                 this.changedValue = null;
-            }
-        },
-
-        computed: {
-            hasPreviewComponent() {
-                let componentName = upperFirst(`${camelCase(this.column.type)}Preview`);
-                return !!this.$options.components[componentName];
-            },
-            value() {
-                return this.record[this.column.key];
             }
         }
 

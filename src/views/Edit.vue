@@ -1,92 +1,175 @@
 <template>
-    <v-layout fill-height justify-center align-center v-if="loading">
-        <v-progress-circular indeterminate color="primary"/>
-    </v-layout>
-    <v-form class="fill-height" v-else>
-        <MainToolbar>
-            <template slot="title">
-                <span class="blue-grey--text text--lighten-3" v-if="isNew && !model.single">{{ $t('new') }}</span>
-                <span class="blue-grey--text text--lighten-3" v-else>{{ $t('edit') }}</span>
-                <router-link :to="{name: 'List', params: {modelType: model.type}}" custom v-slot="{ navigate }">
-                  <span @click="navigate" @keypress.enter="navigate" role="link" class="pl-2">{{ model.name }}</span>
-                </router-link>
-            </template>
+  <v-layout
+    v-if="loading"
+    fill-height
+    justify-center
+    align-center
+  >
+    <v-progress-circular
+      indeterminate
+      color="primary"
+    />
+  </v-layout>
+  <v-form
+    v-else
+    class="fill-height"
+  >
+    <MainToolbar>
+      <template slot="title">
+        <span
+          v-if="isNew && !model.single"
+          class="blue-grey--text text--lighten-3"
+        >{{ $t('new') }}</span>
+        <span
+          v-else
+          class="blue-grey--text text--lighten-3"
+        >{{ $t('edit') }}</span>
+        <router-link
+          v-slot="{ navigate }"
+          :to="{name: 'List', params: {modelType: model.type}}"
+          custom
+        >
+          <span
+            role="link"
+            class="pl-2"
+            @click="navigate"
+            @keypress.enter="navigate"
+          >{{ model.name }}</span>
+        </router-link>
+      </template>
 
-            <v-layout shrink wrap align-center>
-                <v-flex shrink v-if="!model.single">
-                    <v-card class="d-flex align-center mr-3" light>
-                        <div class="hidden-xs-only px-3">
-                            <span v-if="data._permalink">
-                                <strong class="blue-grey--text">{{ $t('permalink') }}</strong>: {{ data._permalink }}
-                            </span>
-                            <span v-else>
-                                <strong class="blue-grey--text">ID</strong>: {{ data.id }}
-                            </span>
-                        </div>
+      <v-layout
+        shrink
+        wrap
+        align-center
+      >
+        <v-flex
+          v-if="!model.single"
+          shrink
+        >
+          <v-card
+            class="d-flex align-center mr-3"
+            light
+          >
+            <div class="hidden-xs-only px-3">
+              <span v-if="data._permalink">
+                <strong class="blue-grey--text">{{ $t('permalink') }}</strong>: {{ data._permalink }}
+              </span>
+              <span v-else>
+                <strong class="blue-grey--text">ID</strong>: {{ data.id }}
+              </span>
+            </div>
 
-                        <v-divider vertical class="hidden-xs-only"/>
+            <v-divider
+              vertical
+              class="hidden-xs-only"
+            />
 
-                        <v-btn text color="blue-grey" @click="editId = !editId">
-                            <v-icon :left="$vuetify.breakpoint.smAndUp">link</v-icon>
-                            <span class="hidden-xs-only">{{ $t('edit') }}</span>
-                        </v-btn>
-                    </v-card>
-                </v-flex>
-                <v-flex shrink>
-                    <v-btn outlined v-if="data._permalink" tag="a" :href="data._permalink"
-                           target="_blank">
-                        <v-icon :left="$vuetify.breakpoint.smAndUp">open_in_browser</v-icon>
-                        <span class="hidden-xs-only">{{ $t('view') }} {{ model.name }}</span>
-                    </v-btn>
+            <v-btn
+              text
+              color="blue-grey"
+              @click="editId = !editId"
+            >
+              <v-icon :left="$vuetify.breakpoint.smAndUp">
+                link
+              </v-icon>
+              <span class="hidden-xs-only">{{ $t('edit') }}</span>
+            </v-btn>
+          </v-card>
+        </v-flex>
+        <v-flex shrink>
+          <v-btn
+            v-if="data._permalink"
+            outlined
+            tag="a"
+            :href="data._permalink"
+            target="_blank"
+          >
+            <v-icon :left="$vuetify.breakpoint.smAndUp">
+              open_in_browser
+            </v-icon>
+            <span class="hidden-xs-only">{{ $t('view') }} {{ model.name }}</span>
+          </v-btn>
 
-                    <v-btn dark color="green" v-on:click="save" class="hidden-md-and-down ml-3">
-                        <v-icon left>save</v-icon>
-                        {{ $t('save') }} {{ model.name }}
-                    </v-btn>
-                </v-flex>
-            </v-layout>
-        </MainToolbar>
-        <v-container fluid grid-list-lg class="fill-height pa-0">
-            <v-layout wrap class="pl-2">
-                <v-flex style="flex-basis: 240px">
-                    <div v-if="!model.single && (isNew || editId)">
-                        <v-card>
-                            <v-card-text>
-                                <v-text-field label="ID" v-model="changedId" :rules="[validateId]" required/>
-                            </v-card-text>
-                        </v-card>
-                    </div>
-                    <div class="pa-sm-2">
-                        <FieldList :fields="mainFields"
-                                    :data="data"
-                                    :errors="errors"
-                                    :blocks="blocks"
-                                    @input="onFieldInput">
-                        </FieldList>
-                    </div>
-                    <edit-card-actions :class="{'hidden-md-and-down': sidebarFields.length > 0}"
-                                       :error="saveError" :model="model" @save="save">
-                    </edit-card-actions>
-                </v-flex>
-                <v-divider vertical/>
-                <v-flex v-if="sidebarFields.length > 0" style="max-width: 460px" class="pa-0">
-                    <div class="fill-height blue-grey lighten-5">
-                        <v-card-text class="pa-5">
-                            <FieldList :fields="sidebarFields"
-                                        :data="data"
-                                        :errors="errors"
-                                        :blocks="blocks"
-                                        @input="onFieldInput">
-                            </FieldList>
-                        </v-card-text>
-                        <edit-card-actions class="hidden-md-and-up" :error="saveError" :model="model"
-                                           @save="save">
-                        </edit-card-actions>
-                    </div>
-                </v-flex>
-            </v-layout>
-        </v-container>
-    </v-form>
+          <v-btn
+            dark
+            color="green"
+            class="hidden-md-and-down ml-3"
+            @click="save"
+          >
+            <v-icon left>
+              save
+            </v-icon>
+            {{ $t('save') }} {{ model.name }}
+          </v-btn>
+        </v-flex>
+      </v-layout>
+    </MainToolbar>
+    <v-container
+      fluid
+      grid-list-lg
+      class="fill-height pa-0"
+    >
+      <v-layout
+        wrap
+        class="pl-2"
+      >
+        <v-flex style="flex-basis: 240px">
+          <div v-if="!model.single && (isNew || editId)">
+            <v-card>
+              <v-card-text>
+                <v-text-field
+                  v-model="changedId"
+                  label="ID"
+                  :rules="[validateId]"
+                  required
+                />
+              </v-card-text>
+            </v-card>
+          </div>
+          <div class="pa-sm-2">
+            <FieldList
+              :fields="mainFields"
+              :data="data"
+              :errors="errors"
+              :blocks="blocks"
+              @input="onFieldInput"
+            />
+          </div>
+          <edit-card-actions
+            :class="{'hidden-md-and-down': sidebarFields.length > 0}"
+            :error="saveError"
+            :model="model"
+            @save="save"
+          />
+        </v-flex>
+        <v-divider vertical />
+        <v-flex
+          v-if="sidebarFields.length > 0"
+          style="max-width: 460px"
+          class="pa-0"
+        >
+          <div class="fill-height blue-grey lighten-5">
+            <v-card-text class="pa-5">
+              <FieldList
+                :fields="sidebarFields"
+                :data="data"
+                :errors="errors"
+                :blocks="blocks"
+                @input="onFieldInput"
+              />
+            </v-card-text>
+            <edit-card-actions
+              class="hidden-md-and-up"
+              :error="saveError"
+              :model="model"
+              @save="save"
+            />
+          </div>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </v-form>
 </template>
 
 <script>
@@ -98,7 +181,7 @@
     import MainToolbar from '../components/MainToolbar';
 
     export default {
-        name: 'panel',
+        name: 'Panel',
 
         components: {
             FieldList,
@@ -125,12 +208,51 @@
             }
         },
 
-        created() {
-            this.fetchData();
+        computed: {
+            mainFields() {
+                return this.model.fields.filter(field => {
+                    return !get(field, 'options.admin.sidebar');
+                }).map(field => {
+                    let numColumns = get(field, 'options.admin.columns') || 12;
+                    field.classes = 'md' + numColumns;
+                    return field;
+                });
+            },
+            sidebarFields() {
+                return this.model.fields.filter(field => {
+                    return get(field, 'options.admin.sidebar') === true;
+                });
+            },
+            dataPath() {
+                let path = '/models/' + this.modelType;
+
+                if (this.model.single) return path;
+                if (!this.changedId) return null;
+
+                return path + '/' + this.changedId;
+            },
+
+            autoIdField() {
+                let field = get(this.model, 'options.admin.id');
+                if (!field) return null;
+
+                let fieldKeys = this.model.fields.map(field => field.key);
+                if (fieldKeys.indexOf(field) === -1) return null;
+
+                return field;
+            },
+
+            saveError() {
+                return this.dataPath ? null : this.$t('missingIdError');
+            }
         },
 
         watch: {
             '$route': 'fetchData',
+        },
+
+        created() {
+            this.fetchData();
         },
 
         methods: {
@@ -249,48 +371,6 @@
                     });
                 }
             }
-        },
-
-        computed: {
-            mainFields() {
-                return this.model.fields.filter(field => {
-                    return !get(field, 'options.admin.sidebar');
-                }).map(field => {
-                    let numColumns = get(field, 'options.admin.columns') || 12;
-                    field.classes = 'md' + numColumns;
-                    return field;
-                });
-            },
-            sidebarFields() {
-                return this.model.fields.filter(field => {
-                    return get(field, 'options.admin.sidebar') === true;
-                });
-            },
-            dataPath() {
-                let path = '/models/' + this.modelType;
-
-                if (this.model.single) return path;
-                if (!this.changedId) return null;
-
-                return path + '/' + this.changedId;
-            },
-
-            autoIdField() {
-                let field = get(this.model, 'options.admin.id');
-                if (!field) return null;
-
-                let fieldKeys = this.model.fields.map(field => field.key);
-                if (fieldKeys.indexOf(field) === -1) return null;
-
-                return field;
-            },
-
-            saveError() {
-                return this.dataPath ? null : this.$t('missingIdError');
-            }
         }
     }
 </script>
-
-<style>
-</style>

@@ -1,41 +1,65 @@
 <template>
-    <v-layout fill-height justify-center align-center v-if="loading">
-        <v-progress-circular indeterminate color="primary"/>
-    </v-layout>
-    <div v-else>
-        <MainToolbar>
-            <template slot="title">
-                {{ model.name_plural }}
-            </template>
+  <v-layout
+    v-if="loading"
+    fill-height
+    justify-center
+    align-center
+  >
+    <v-progress-circular
+      indeterminate
+      color="primary"
+    />
+  </v-layout>
+  <div v-else>
+    <MainToolbar>
+      <template slot="title">
+        {{ model.name_plural }}
+      </template>
 
-            <v-btn color="green" :to="{name: 'Create', params: {modelType: model.type}}">
-                <v-icon :left="$vuetify.breakpoint.smAndUp">add</v-icon>
-                <span class="hidden-xs-only">{{ $t('addRecord') }} {{ model.name }}</span>
-            </v-btn>
-        </MainToolbar>
-        <v-container fluid class="pa-0">
-            <v-data-table
-                    :headers="headers"
-                    @update:sort-by="updateSortBy"
-                    @update:sort-desc="updateSortDesc"
-                    :sort-by="sortColumn"
-                    :sort-desc="sortDesc"
-                    hide-default-footer>
-                <template v-slot:body="{ items }">
-                    <tbody>
-                        <ModelTableRow :record="item" v-for="item in models" :key="item.id" :list-display="listDisplay" :model="model" @remove="remove(item)"/>
-                    </tbody>
-                </template>
-            </v-data-table>
-        </v-container>
-    </div>
+      <v-btn
+        color="green"
+        :to="{name: 'Create', params: {modelType: model.type}}"
+      >
+        <v-icon :left="$vuetify.breakpoint.smAndUp">
+          add
+        </v-icon>
+        <span class="hidden-xs-only">{{ $t('addRecord') }} {{ model.name }}</span>
+      </v-btn>
+    </MainToolbar>
+    <v-container
+      fluid
+      class="pa-0"
+    >
+      <v-data-table
+        :headers="headers"
+        :sort-by="sortColumn"
+        :sort-desc="sortDesc"
+        hide-default-footer
+        @update:sort-by="updateSortBy"
+        @update:sort-desc="updateSortDesc"
+      >
+        <template v-slot:body="{ items }">
+          <tbody>
+            <ModelTableRow
+              v-for="item in models"
+              :key="item.id"
+              :record="item"
+              :list-display="listDisplay"
+              :model="model"
+              @remove="remove(item)"
+            />
+          </tbody>
+        </template>
+      </v-data-table>
+    </v-container>
+  </div>
 </template>
 
 <script>
     import MainToolbar from '../components/MainToolbar';
     import ModelTableRow from '../components/ModelTableRow';
     export default {
-        name: 'panel',
+        name: 'Panel',
 
         components: {
             MainToolbar,
@@ -52,6 +76,74 @@
                 model: {},
                 models: [],
                 sort: 'id'
+            }
+        },
+
+        computed: {
+            options: function () {
+                let options = this.model.options.admin || {};
+                if (!options.list_display) {
+                    options.list_display = [this.model.fields[0].key];
+                }
+                if(!options.sort) {
+                    options.sort = this.model.fields[0].key;
+                }
+                return options;
+            },
+            fieldsByKey() {
+                let fields = {};
+                this.model.fields.forEach(field => fields[field.key] = field);
+                return fields;
+            },
+            listDisplay() {
+                let columnKeys = this.options['list_display'];
+
+                let columns = columnKeys.filter(fieldKey => fieldKey !== 'id').map(fieldKey => this.fieldsByKey[fieldKey]);
+
+                let idIndex = columnKeys.indexOf('id');
+                if (idIndex !== -1) {
+                    columns = [
+                        {
+                            key: 'id',
+                            name: 'ID',
+                            type: 'id',
+                            options: []
+                        },
+                        ...columns
+                    ];
+                }
+
+                return columns;
+            },
+            headers() {
+                let buttonHeader = {text: '', value: null, sortable: false, width: '1px'};
+                return [
+                    ...this.listDisplay.map(column => {
+                        return {
+                            text: column.name,
+                            value: column.key,
+                            align: 'left'
+                        }
+                    }),
+                    buttonHeader
+                ];
+            },
+            sortColumn() {
+                if(this.sort && this.sort.substr(0, 1) === '-') {
+                    return this.sort.substr(1, this.sort.length);
+                }
+                return this.sort;
+            },
+            sortDesc() {
+                if(!this.sort) return false;
+                return this.sort.substr(0, 1) === '-';
+            }
+        },
+
+        watch: {
+            '$route': 'fetchData',
+            sort() {
+                this.fetchData();
             }
         },
 
@@ -121,74 +213,6 @@
                     this.sort = columnKey;
                 }
                 this.fetchRecords();
-            }
-        },
-
-        watch: {
-            '$route': 'fetchData',
-            sort() {
-                this.fetchData();
-            }
-        },
-
-        computed: {
-            options: function () {
-                let options = this.model.options.admin || {};
-                if (!options.list_display) {
-                    options.list_display = [this.model.fields[0].key];
-                }
-                if(!options.sort) {
-                    options.sort = this.model.fields[0].key;
-                }
-                return options;
-            },
-            fieldsByKey() {
-                let fields = {};
-                this.model.fields.forEach(field => fields[field.key] = field);
-                return fields;
-            },
-            listDisplay() {
-                let columnKeys = this.options['list_display'];
-
-                let columns = columnKeys.filter(fieldKey => fieldKey !== 'id').map(fieldKey => this.fieldsByKey[fieldKey]);
-
-                let idIndex = columnKeys.indexOf('id');
-                if (idIndex !== -1) {
-                    columns = [
-                        {
-                            key: 'id',
-                            name: 'ID',
-                            type: 'id',
-                            options: []
-                        },
-                        ...columns
-                    ];
-                }
-
-                return columns;
-            },
-            headers() {
-                let buttonHeader = {text: '', value: null, sortable: false, width: '1px'};
-                return [
-                    ...this.listDisplay.map(column => {
-                        return {
-                            text: column.name,
-                            value: column.key,
-                            align: 'left'
-                        }
-                    }),
-                    buttonHeader
-                ];
-            },
-            sortColumn() {
-                if(this.sort && this.sort.substr(0, 1) === '-') {
-                    return this.sort.substr(1, this.sort.length);
-                }
-                return this.sort;
-            },
-            sortDesc() {
-                if(!this.sort) return false;
-                return this.sort.substr(0, 1) === '-';
             }
         }
     }

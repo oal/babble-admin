@@ -1,39 +1,41 @@
 <template>
-    <v-layout wrap>
-        <field-wrapper :type="field.type"
-               :label="field.name"
-               :name="field.key"
-               :options="field.options"
-               :class="field.classes"
-               :blocks="blocks"
-               :error="errors['fields.' + field.key]"
+  <v-layout wrap>
+    <field-wrapper
+      v-for="field in fields"
+      :key="field.key"
+      :type="field.type"
+      :label="field.name"
+      :name="field.key"
+      :options="field.options"
+      :class="field.classes"
 
-               :value="data[field.key]"
-               @input="onInput(field.key, $event)"
+      :blocks="blocks"
+      :error="errors['fields.' + field.key]"
 
-               v-for="field in fields"
-               :key="field.key"/>
-    </v-layout>
+      :value="data[field.key]"
+      @input="onInput(field.key, $event)"
+    />
+  </v-layout>
 </template>
 
 <script>
-    export default {
-        name: 'FieldList',
+export default {
+  name: 'FieldList',
 
-        props: {
-          fields: Array,
-          data: Object,
-          errors: Object,
-          blocks: Object
-        },
+  props: {
+    fields: Array,
+    data: Object,
+    errors: Object,
+    blocks: Object
+  },
 
-        methods: {
-            onInput(field, value) {
-                this.$emit('input', {
-                    key: field,
-                    value: value
-                });
-            }
-        }
+  methods: {
+    onInput(field, value) {
+      this.$emit('input', {
+        key: field,
+        value: value
+      });
     }
+  }
+}
 </script>

@@ -1,48 +1,68 @@
 <template>
-    <div>
-        <div class="pb-3 input-group input-group--text-field">
-            <label>{{ label }}</label>
-        </div>
-        <v-layout row wrap>
-            <v-flex>
-                <v-menu ref="menu" v-model="menuDate" :close-on-content-click="false"
-                        transition="scale-transition" offset-y min-width="290px">
-                    <template v-slot:activator="{ on }">
-                        <v-text-field
-                                slot="activator"
-                                :label="$t('date')"
-                                v-model="date"
-                                prepend-icon="event"
-                                readonly v-on="on">
-                        </v-text-field>
-                    </template>
-                    <v-date-picker v-model="date"></v-date-picker>
-                </v-menu>
-            </v-flex>
-            <v-flex>
-                <v-menu ref="menu" v-model="menuTime" :close-on-content-click="false"
-                        transition="scale-transition" offset-y min-width="290px">
-                    <template v-slot:activator="{ on }">
-                        <v-text-field
-                                slot="activator"
-                                :label="$t('time')"
-                                v-model="time"
-                                prepend-icon="schedule"
-                                readonly v-on="on">
-                        </v-text-field>
-                    </template>
-                    <v-time-picker format="24hr" v-model="time"></v-time-picker>
-                </v-menu>
-            </v-flex>
-        </v-layout>
+  <div>
+    <div class="pb-3 input-group input-group--text-field">
+      <label>{{ label }}</label>
     </div>
+    <v-layout
+      row
+      wrap
+    >
+      <v-flex>
+        <v-menu
+          ref="menu"
+          v-model="menuDate"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              slot="activator"
+              v-model="date"
+              :label="$t('date')"
+              prepend-icon="event"
+              readonly
+              v-on="on"
+            />
+          </template>
+          <v-date-picker v-model="date" />
+        </v-menu>
+      </v-flex>
+      <v-flex>
+        <v-menu
+          ref="menu"
+          v-model="menuTime"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              slot="activator"
+              v-model="time"
+              :label="$t('time')"
+              prepend-icon="schedule"
+              readonly
+              v-on="on"
+            />
+          </template>
+          <v-time-picker
+            v-model="time"
+            format="24hr"
+          />
+        </v-menu>
+      </v-flex>
+    </v-layout>
+  </div>
 </template>
 
 <script>
     import moment from 'moment';
 
     export default {
-        name: 'datetime-field',
+        name: 'DatetimeField',
 
         props: [
             'value',
@@ -63,10 +83,6 @@
             }
         },
 
-        mounted() {
-            this.emitInput();
-        },
-
         watch: {
             date() {
                 this.emitInput();
@@ -74,6 +90,10 @@
             time() {
                 this.emitInput();
             }
+        },
+
+        mounted() {
+            this.emitInput();
         },
 
         methods: {

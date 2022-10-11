@@ -1,47 +1,93 @@
 <template>
-    <v-card outlined>
-        <div class="image-field-preview grey darken-4" v-if="previewImage">
-            <img :src="previewImage" class="elevation-3">
-        </div>
+  <v-card outlined>
+    <div
+      v-if="previewImage"
+      class="image-field-preview grey darken-4"
+    >
+      <img
+        :src="previewImage"
+        class="elevation-3"
+      >
+    </div>
 
-        <div class="grey lighten-5">
-            <v-card-actions v-if="croppedImage && selection">
-                <v-btn text color="primary" @click="onReCrop" v-if="croppedImage && hasCropper">
-                    <v-icon left>crop</v-icon>
-                    {{ $t('reCrop') }} {{ label }}
-                </v-btn>
-                <v-btn text color="blue-grey" dark @click="onDeselectFile">
-                    <v-icon left>folder</v-icon>
-                    {{ $t('chooseAnotherFile') }}
-                </v-btn>
-            </v-card-actions>
+    <div class="grey lighten-5">
+      <v-card-actions v-if="croppedImage && selection">
+        <v-btn
+          v-if="croppedImage && hasCropper"
+          text
+          color="primary"
+          @click="onReCrop"
+        >
+          <v-icon left>
+            crop
+          </v-icon>
+          {{ $t('reCrop') }} {{ label }}
+        </v-btn>
+        <v-btn
+          text
+          color="blue-grey"
+          dark
+          @click="onDeselectFile"
+        >
+          <v-icon left>
+            folder
+          </v-icon>
+          {{ $t('chooseAnotherFile') }}
+        </v-btn>
+      </v-card-actions>
 
-            <v-card-actions v-else>
-                <v-btn dark color="blue-grey" @click="onOpenFileManager">
-                    <v-icon left>add_a_photo</v-icon>
-                    <span v-if="selection">{{ $t('chooseAnotherFile') }}</span>
-                    <span v-else>{{ $t('choose') }} {{ label }}</span>
-                </v-btn>
-            </v-card-actions>
-        </div>
+      <v-card-actions v-else>
+        <v-btn
+          dark
+          color="blue-grey"
+          @click="onOpenFileManager"
+        >
+          <v-icon left>
+            add_a_photo
+          </v-icon>
+          <span v-if="selection">{{ $t('chooseAnotherFile') }}</span>
+          <span v-else>{{ $t('choose') }} {{ label }}</span>
+        </v-btn>
+      </v-card-actions>
+    </div>
 
-        <v-dialog fullscreen transition="dialog-bottom-transition" v-model="showFileManager">
-            <v-card>
-                <v-toolbar dark color="primary">
-                    <v-btn icon @click.native="showFileManager = false" dark>
-                        <v-icon>close</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>{{ $t('fileManager') }}</v-toolbar-title>
-                </v-toolbar>
-                <v-card-text>
-                    <file-manager @input="onSelectFile" :directory="directory" v-if="showFileManager"></file-manager>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
+    <v-dialog
+      v-model="showFileManager"
+      fullscreen
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar
+          dark
+          color="primary"
+        >
+          <v-btn
+            icon
+            dark
+            @click.native="showFileManager = false"
+          >
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ $t('fileManager') }}</v-toolbar-title>
+        </v-toolbar>
+        <v-card-text>
+          <file-manager
+            v-if="showFileManager"
+            :directory="directory"
+            @input="onSelectFile"
+          />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
 
-        <ImageEditorDialog @preview="croppedImage = $event" v-model="showImageEditor" :image="value"
-                             @image="syncInput" :options="options"/>
-    </v-card>
+    <ImageEditorDialog
+      v-model="showImageEditor"
+      :image="value"
+      :options="options"
+      @preview="croppedImage = $event"
+      @image="syncInput"
+    />
+  </v-card>
 </template>
 
 <script>
@@ -50,15 +96,15 @@
 
     export default {
         name: 'ImageField',
+        components: {
+            FileManager,
+            ImageEditorDialog
+        },
         props: {
             value: Object,
             name: String,
             label: String,
             options: Object
-        },
-        components: {
-            FileManager,
-            ImageEditorDialog
         },
         data() {
             return {
@@ -67,6 +113,33 @@
                 selection: null,
                 directory: null,
                 croppedImage: null,
+            }
+        },
+
+        computed: {
+            hasCropper() {
+                return this.options && this.options.admin && this.options.admin.crop;
+            },
+            previewImage() {
+                if (this.croppedImage) {
+                    return this.croppedImage;
+                }
+                if (this.value && this.value.filename) {
+                    if (this.value.url) {
+                        return `/uploads/${this.value.url}`;
+                    }
+                    return `/uploads/${this.value.filename}`;
+                }
+                return null;
+            }
+        },
+
+        watch: {
+            value() {
+                if (!this.value) {
+                    // Reset state when value is set to null or undefined (happens in ListField when moved).
+                    this.reset();
+                }
             }
         },
         created() {
@@ -120,33 +193,6 @@
             onReCrop() {
                 this.showImageEditor = true;
             },
-        },
-
-        watch: {
-            value() {
-                if (!this.value) {
-                    // Reset state when value is set to null or undefined (happens in ListField when moved).
-                    this.reset();
-                }
-            }
-        },
-
-        computed: {
-            hasCropper() {
-                return this.options && this.options.admin && this.options.admin.crop;
-            },
-            previewImage() {
-                if (this.croppedImage) {
-                    return this.croppedImage;
-                }
-                if (this.value && this.value.filename) {
-                    if (this.value.url) {
-                        return `/uploads/${this.value.url}`;
-                    }
-                    return `/uploads/${this.value.filename}`;
-                }
-                return null;
-            }
         }
     }
 </script>

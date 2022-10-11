@@ -1,42 +1,75 @@
 <template>
-    <v-layout column>
-        <v-card style="flex: 0">
-            <v-layout wrap>
-                <v-btn text color="teal" @click="flipHorizontal">
-                    <v-icon left>swap_horiz</v-icon>
-                    {{ $t('flipHorizontal') }}
-                </v-btn>
-                <v-btn text color="teal" @click="flipVertical">
-                    <v-icon left>swap_vert</v-icon>
-                    {{ $t('flipVertical') }}
-                </v-btn>
-                <v-btn text color="indigo" @click="rotateRight">
-                    <v-icon left>rotate_right</v-icon>
-                    {{ $t('rotateRight') }}
-                </v-btn>
-                <v-btn text color="indigo" @click="rotateLeft">
-                    <v-icon left>rotate_left</v-icon>
-                    {{ $t('rotateLeft') }}
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="onConfirmCrop">
-                    <v-icon left>crop</v-icon>
-                    {{ $t('confirmCrop') }}
-                </v-btn>
-            </v-layout>
-        </v-card>
+  <v-layout column>
+    <v-card style="flex: 0">
+      <v-layout wrap>
+        <v-btn
+          text
+          color="teal"
+          @click="flipHorizontal"
+        >
+          <v-icon left>
+            swap_horiz
+          </v-icon>
+          {{ $t('flipHorizontal') }}
+        </v-btn>
+        <v-btn
+          text
+          color="teal"
+          @click="flipVertical"
+        >
+          <v-icon left>
+            swap_vert
+          </v-icon>
+          {{ $t('flipVertical') }}
+        </v-btn>
+        <v-btn
+          text
+          color="indigo"
+          @click="rotateRight"
+        >
+          <v-icon left>
+            rotate_right
+          </v-icon>
+          {{ $t('rotateRight') }}
+        </v-btn>
+        <v-btn
+          text
+          color="indigo"
+          @click="rotateLeft"
+        >
+          <v-icon left>
+            rotate_left
+          </v-icon>
+          {{ $t('rotateLeft') }}
+        </v-btn>
+        <v-spacer />
+        <v-btn
+          text
+          color="primary"
+          @click="onConfirmCrop"
+        >
+          <v-icon left>
+            crop
+          </v-icon>
+          {{ $t('confirmCrop') }}
+        </v-btn>
+      </v-layout>
+    </v-card>
 
-        <v-flex>
-            <img ref="image" :src="src" class="editor-target">
-        </v-flex>
-    </v-layout>
-
+    <v-flex>
+      <img
+        ref="image"
+        :src="src"
+        class="editor-target"
+      >
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
     import Cropper from 'cropperjs';
     import 'cropperjs/dist/cropper.min.css';
-
+ 
     export default {
         props: [
             'src',
@@ -48,6 +81,13 @@
         data() {
             return {
                 cropper: null,
+            }
+        },
+
+        computed: {
+            aspectRatio() {
+                if (!this.width || !this.height) return 0;
+                return this.width / this.height;
             }
         },
 
@@ -95,13 +135,6 @@
             rotateRight() {
                 this.cropper.rotate(90);
                 this.cropper.move(0);
-            }
-        },
-
-        computed: {
-            aspectRatio() {
-                if (!this.width || !this.height) return 0;
-                return this.width / this.height;
             }
         }
     }

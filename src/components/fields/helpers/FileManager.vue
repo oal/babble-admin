@@ -1,74 +1,139 @@
 <template>
-    <v-container grid-list-md class="pa-0">
-        <v-layout wrap align-center class="pr-3">
-            <v-breadcrumbs divider="-" large>
-                <v-icon slot="divider">chevron_right</v-icon>
-                <v-breadcrumbs-item @click.native="popToDir(0)">
-                    {{ $t('uploads') }}
-                </v-breadcrumbs-item>
-                <v-breadcrumbs-item v-for="(dir, $index) in path" :key="dir" @click.native="popToDir($index+1)">
-                    {{ dir }}
-                </v-breadcrumbs-item>
-            </v-breadcrumbs>
+  <v-container
+    grid-list-md
+    class="pa-0"
+  >
+    <v-layout
+      wrap
+      align-center
+      class="pr-3"
+    >
+      <v-breadcrumbs
+        divider="-"
+        large
+      >
+        <v-icon slot="divider">
+          chevron_right
+        </v-icon>
+        <v-breadcrumbs-item @click.native="popToDir(0)">
+          {{ $t('uploads') }}
+        </v-breadcrumbs-item>
+        <v-breadcrumbs-item
+          v-for="(dir, $index) in path"
+          :key="dir"
+          @click.native="popToDir($index+1)"
+        >
+          {{ dir }}
+        </v-breadcrumbs-item>
+      </v-breadcrumbs>
 
-            <v-spacer/>
+      <v-spacer />
 
-            <v-flex shrink>
-                <v-btn color="secondary" @click="onRenameDirectory(path.length)" :disabled="!path.length || loading">
-                    <v-icon left>edit</v-icon>
-                    {{ $t('renameDirectory') }}
-                </v-btn>
-            </v-flex>
-            <v-flex shrink>
-                <v-btn class="cursor-pointer" tag="label" :for="uploadId" dark color="blue-grey" :disabled="loading">
-                    <v-icon left>file_upload</v-icon>
-                    {{ $t('uploadFile') }}
-                </v-btn>
-            </v-flex>
-            <v-flex shrink>
-                <v-btn dark color="green" @click="onCreateDirectory" :disabled="loading">
-                    <v-icon left>create_new_folder</v-icon>
-                    {{ $t('createDirectory') }}
-                </v-btn>
-            </v-flex>
-        </v-layout>
+      <v-flex shrink>
+        <v-btn
+          color="secondary"
+          :disabled="!path.length || loading"
+          @click="onRenameDirectory(path.length)"
+        >
+          <v-icon left>
+            edit
+          </v-icon>
+          {{ $t('renameDirectory') }}
+        </v-btn>
+      </v-flex>
+      <v-flex shrink>
+        <v-btn
+          class="cursor-pointer"
+          tag="label"
+          :for="uploadId"
+          dark
+          color="blue-grey"
+          :disabled="loading"
+        >
+          <v-icon left>
+            file_upload
+          </v-icon>
+          {{ $t('uploadFile') }}
+        </v-btn>
+      </v-flex>
+      <v-flex shrink>
+        <v-btn
+          dark
+          color="green"
+          :disabled="loading"
+          @click="onCreateDirectory"
+        >
+          <v-icon left>
+            create_new_folder
+          </v-icon>
+          {{ $t('createDirectory') }}
+        </v-btn>
+      </v-flex>
+    </v-layout>
 
-        <v-divider/>
+    <v-divider />
 
-        <v-progress-linear v-model="progress" v-if="progress < 100"/>
+    <v-progress-linear
+      v-if="progress < 100"
+      v-model="progress"
+    />
 
-        <v-layout justify-center class="pa-4" v-if="loading">
-            <v-progress-circular indeterminate color="primary"/>
-        </v-layout>
-        <v-list two-line v-else>
-            <template v-for="file in allFiles">
-                <v-list-item :key="file.title" @click="selectFile(file)" :disabled="!file.type">
-                    <v-list-item-avatar v-if="file.type">
-                        <img :src="`/uploads/${getURL(file)}`" v-if="file.type.indexOf('image') === 0"/>
-                        <v-icon v-else>{{ getIconClass(file.type) }}</v-icon>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title v-html="file.name"/>
-                        <v-list-item-subtitle>
-                            <span v-if="file.type == 'directory'">{{ $t('directory') }}</span>
-                            <span v-else-if="file.size">{{ prettyBytes(file.size) }}</span>
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-            </template>
-        </v-list>
+    <v-layout
+      v-if="loading"
+      justify-center
+      class="pa-4"
+    >
+      <v-progress-circular
+        indeterminate
+        color="primary"
+      />
+    </v-layout>
+    <v-list
+      v-else
+      two-line
+    >
+      <template v-for="file in allFiles">
+        <v-list-item
+          :key="file.title"
+          :disabled="!file.type"
+          @click="selectFile(file)"
+        >
+          <v-list-item-avatar v-if="file.type">
+            <img
+              v-if="file.type.indexOf('image') === 0"
+              :src="`/uploads/${getURL(file)}`"
+            >
+            <v-icon v-else>
+              {{ getIconClass(file.type) }}
+            </v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title v-html="file.name" />
+            <v-list-item-subtitle>
+              <span v-if="file.type == 'directory'">{{ $t('directory') }}</span>
+              <span v-else-if="file.size">{{ prettyBytes(file.size) }}</span>
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+    </v-list>
 
-        <!-- Triggered by file upload button. -->
-        <input type="file" multiple :id="uploadId" @change="onUploadChange"
-               style="position: absolute; top: -99999px">
-    </v-container>
+    <!-- Triggered by file upload button. -->
+    <input
+      :id="uploadId"
+      type="file"
+      multiple
+      style="position: absolute; top: -99999px"
+      @change="onUploadChange"
+    >
+  </v-container>
 </template>
 
 <script>
     import prettyBytes from 'pretty-bytes';
 
     export default {
-        name: 'file-manager',
+        name: 'FileManager',
 
         props: [
             'directory'
@@ -87,8 +152,15 @@
             }
         },
 
-        created() {
-            this.loadFiles();
+        computed: {
+            uploadId() {
+                return 'upload-' + ((Math.random() * 99999) | 0).toString(16);
+            },
+
+            allFiles() {
+                if (this.files.length) return this.files;
+                return [{name: this.$t('noFilesFound')}]
+            }
         },
 
         watch: {
@@ -96,6 +168,10 @@
                 this.files = [];
                 this.loadFiles();
             }
+        },
+
+        created() {
+            this.loadFiles();
         },
 
         methods: {
@@ -192,17 +268,6 @@
                 if (contentType.indexOf('audio') === 0) return 'audiotrack';
                 if (contentType === 'application/pdf') return 'picture_as_pdf';
                 return 'insert_drive_file';
-            }
-        },
-
-        computed: {
-            uploadId() {
-                return 'upload-' + ((Math.random() * 99999) | 0).toString(16);
-            },
-
-            allFiles() {
-                if (this.files.length) return this.files;
-                return [{name: this.$t('noFilesFound')}]
             }
         }
     }

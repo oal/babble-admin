@@ -1,7 +1,10 @@
 <template>
-    <div>
-        <span v-for="part in parts" :key="part">{{ part }}</span>
-    </div>
+  <div>
+    <span
+      v-for="part in parts"
+      :key="part"
+    >{{ part }}</span>
+  </div>
 </template>
 
 <script>

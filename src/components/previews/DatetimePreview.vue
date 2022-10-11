@@ -1,5 +1,5 @@
 <template>
-    <span>{{ datetime }}</span>
+  <span>{{ datetime }}</span>
 </template>
 
 

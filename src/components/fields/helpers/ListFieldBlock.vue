@@ -1,40 +1,69 @@
 <template>
-    <v-card>
-        <v-card-text>
-            <v-layout align-center>
-                <v-flex>
-                    <h3 class="subheading">
-                        {{ blockName }}
-                    </h3>
-                </v-flex>
-                <v-spacer></v-spacer>
-                <div>
-                    <v-btn color="primary" small icon @click="moveBlock(-1)" class="ml-0"
-                           v-if="!isFirst">
-                        <v-icon v-if="displayAsCards">keyboard_arrow_left</v-icon>
-                        <v-icon v-else>keyboard_arrow_up</v-icon>
-                    </v-btn>
-                    <v-btn color="primary" small icon @click="moveBlock(1)" class="ml-0"
-                           v-if="!isLast">
-                        <v-icon v-if="displayAsCards">keyboard_arrow_right</v-icon>
-                        <v-icon v-else>keyboard_arrow_down</v-icon>
-                    </v-btn>
-                    <v-btn color="red" dark small icon @click="removeBlock()" class="ml-0">
-                        <v-icon>clear</v-icon>
-                    </v-btn>
-                </div>
-            </v-layout>
-        </v-card-text>
+  <v-card>
+    <v-card-text>
+      <v-layout align-center>
+        <v-flex>
+          <h3 class="subheading">
+            {{ blockName }}
+          </h3>
+        </v-flex>
+        <v-spacer />
+        <div>
+          <v-btn
+            v-if="!isFirst"
+            color="primary"
+            small
+            icon
+            class="ml-0"
+            @click="moveBlock(-1)"
+          >
+            <v-icon v-if="displayAsCards">
+              keyboard_arrow_left
+            </v-icon>
+            <v-icon v-else>
+              keyboard_arrow_up
+            </v-icon>
+          </v-btn>
+          <v-btn
+            v-if="!isLast"
+            color="primary"
+            small
+            icon
+            class="ml-0"
+            @click="moveBlock(1)"
+          >
+            <v-icon v-if="displayAsCards">
+              keyboard_arrow_right
+            </v-icon>
+            <v-icon v-else>
+              keyboard_arrow_down
+            </v-icon>
+          </v-btn>
+          <v-btn
+            color="red"
+            dark
+            small
+            icon
+            class="ml-0"
+            @click="removeBlock()"
+          >
+            <v-icon>clear</v-icon>
+          </v-btn>
+        </div>
+      </v-layout>
+    </v-card-text>
 
-        <v-card-text>
-            <!-- TODO: Send errors -->
-            <FieldList :fields="block.fields"
-                       :data="value.value"
-                       :errors="{}"
-                       :blocks="blocks"
-                       @input="onFieldInput($event)"/>
-        </v-card-text>
-    </v-card>
+    <v-card-text>
+      <!-- TODO: Send errors -->
+      <FieldList
+        :fields="block.fields"
+        :data="value.value"
+        :errors="{}"
+        :blocks="blocks"
+        @input="onFieldInput($event)"
+      />
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -59,6 +88,12 @@
             }
         },
 
+        computed: {
+            blockName() {
+                return this.block.name;
+            }
+        },
+
         beforeCreate: function () {
             // Relevant: https://vuejs.org/v2/guide/components.html#Recursive-Components
             this.$options.components.FieldList = FieldList
@@ -73,12 +108,6 @@
             },
             onFieldInput(value) {
                 this.$emit('input', value);
-            }
-        },
-
-        computed: {
-            blockName() {
-                return this.block.name;
             }
         }
     }

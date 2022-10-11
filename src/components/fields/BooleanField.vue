@@ -1,10 +1,13 @@
 <template>
-    <v-checkbox :label="label" v-model="state"/>
+  <v-checkbox
+    v-model="state"
+    :label="label"
+  />
 </template>
 
 <script>
     export default {
-        name: 'boolean-field',
+        name: 'BooleanField',
         props: [
             'value',
             'name',
@@ -15,9 +18,6 @@
                 state: !!this.value
             }
         },
-        mounted() {
-            if (this.value !== this.state) this.$emit('input', this.state);
-        },
         watch: {
             value() {
                 this.state = this.value
@@ -25,6 +25,9 @@
             state() {
                 this.$emit('input', this.state);
             }
+        },
+        mounted() {
+            if (this.value !== this.state) this.$emit('input', this.state);
         },
     }
 </script>

@@ -1,7 +1,14 @@
 <template>
-    <div>
-        <v-chip small disabled v-for="tag in value" :key="tag">{{ tag }}</v-chip>
-    </div>
+  <div>
+    <v-chip
+      v-for="tag in value"
+      :key="tag"
+      small
+      disabled
+    >
+      {{ tag }}
+    </v-chip>
+  </div>
 </template>
 
 <script>

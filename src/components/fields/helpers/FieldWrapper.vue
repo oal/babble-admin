@@ -1,15 +1,19 @@
 <template>
-    <v-flex md12 v-if="hasTypeComponent()">
-        <component :is="type + 'Field'"
-                   :value="value"
-                   :label="label"
-                   :name="name"
-                   :options="options"
-                   :error="error"
-                   :blocks="blocks"
-                   @input="onFieldInput">
-        </component>
-    </v-flex>
+  <v-flex
+    v-if="hasTypeComponent()"
+    md12
+  >
+    <component
+      :is="type + 'Field'"
+      :value="value"
+      :label="label"
+      :name="name"
+      :options="options"
+      :error="error"
+      :blocks="blocks"
+      @input="onFieldInput"
+    />
+  </v-flex>
 </template>
 
 <script>
@@ -30,16 +34,6 @@
     export default {
         name: 'FieldWrapper',
 
-        props: {
-          type: String,
-          label: String,
-          name: String,
-          value: {},
-          options: Object,
-          blocks: Object,
-          error: Object
-        },
-
         components: {
             BooleanField,
             DatetimeField,
@@ -52,6 +46,16 @@
             MarkdownField,
             ChoiceField,
             TagsField
+        },
+
+        props: {
+          type: String,
+          label: String,
+          name: String,
+          value: {},
+          options: Object,
+          blocks: Object,
+          error: Object
         },
 
         methods: {

@@ -1,20 +1,28 @@
 <template>
-    <v-form @keypress.native.enter="login">
-        <v-text-field class="mt-3"
-                :label="$t('username')"
-                v-model="username"
-                required
-        ></v-text-field>
-        <v-text-field
-                :label="$t('password')"
-                v-model="password"
-                type="password"
-                required
-        ></v-text-field>
-        <v-btn large block color="blue-grey" dark :loading="loading" @click="login">
-            {{ $t('login') }}
-        </v-btn>
-    </v-form>
+  <v-form @keypress.native.enter="login">
+    <v-text-field
+      v-model="username"
+      class="mt-3"
+      :label="$t('username')"
+      required
+    />
+    <v-text-field
+      v-model="password"
+      :label="$t('password')"
+      type="password"
+      required
+    />
+    <v-btn
+      large
+      block
+      color="blue-grey"
+      dark
+      :loading="loading"
+      @click="login"
+    >
+      {{ $t('login') }}
+    </v-btn>
+  </v-form>
 </template>
 
 <script>
@@ -51,4 +59,3 @@
         }
     }
 </script>
-

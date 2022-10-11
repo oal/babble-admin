@@ -1,17 +1,23 @@
 <template>
   <v-app id="app">
-    <router-view></router-view>
+    <router-view />
 
     <v-snackbar
-            v-for="message in $root.messages"
-            :key="message.key"
-            :timeout="5000"
-            :color="message.type"
-            v-model="message.visible"
-            class="mr-2 mb-1"
-            bottom right>
+      v-for="message in $root.messages"
+      :key="message.key"
+      v-model="message.visible"
+      :timeout="5000"
+      :color="message.type"
+      class="mr-2 mb-1"
+      bottom
+      right
+    >
       {{ message.message }}
-      <v-btn dark icon @click.native="message.visible = false">
+      <v-btn
+        dark
+        icon
+        @click.native="message.visible = false"
+      >
         <v-icon>close</v-icon>
       </v-btn>
     </v-snackbar>

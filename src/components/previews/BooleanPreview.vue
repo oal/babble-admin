@@ -1,8 +1,18 @@
 <template>
-    <div>
-        <v-icon color="green" v-if="value">check</v-icon>
-        <v-icon color="red" v-else>clear</v-icon>
-    </div>
+  <div>
+    <v-icon
+      v-if="value"
+      color="green"
+    >
+      check
+    </v-icon>
+    <v-icon
+      v-else
+      color="red"
+    >
+      clear
+    </v-icon>
+  </div>
 </template>
 
 <script>

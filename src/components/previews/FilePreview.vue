@@ -1,8 +1,15 @@
 <template>
-    <v-chip v-on="on" outlined label color="blue-grey darken-1">
-        <v-icon left>insert_drive_file</v-icon>
-        {{ value }}
-    </v-chip>
+  <v-chip
+    outlined
+    label
+    color="blue-grey darken-1"
+    v-on="on"
+  >
+    <v-icon left>
+      insert_drive_file
+    </v-icon>
+    {{ value }}
+  </v-chip>
 </template>
 
 <script>

@@ -1,34 +1,65 @@
 <template>
-    <v-card color="grey lighten-5">
-        <v-card-title>
-            <v-layout>
-                <v-flex>
-                    <h2 class="headline mb-0">{{ label }}</h2>
-                </v-flex>
-                <v-spacer></v-spacer>
-                <div>
-                    <v-btn text color="green" v-for="block in blockObjects" @click="addBlock(block.type)"
-                           :key="block.type">
-                        <v-icon left>add_circle</v-icon>
-                        {{ block.name }}
-                    </v-btn>
-                </div>
-            </v-layout>
-        </v-card-title>
+  <v-card color="grey lighten-5">
+    <v-card-title>
+      <v-layout>
+        <v-flex>
+          <h2 class="headline mb-0">
+            {{ label }}
+          </h2>
+        </v-flex>
+        <v-spacer />
+        <div>
+          <v-btn
+            v-for="block in blockObjects"
+            :key="block.type"
+            text
+            color="green"
+            @click="addBlock(block.type)"
+          >
+            <v-icon left>
+              add_circle
+            </v-icon>
+            {{ block.name }}
+          </v-btn>
+        </div>
+      </v-layout>
+    </v-card-title>
 
-        <v-card-text v-if="error" class="red--text">{{ error }}</v-card-text>
+    <v-card-text
+      v-if="error"
+      class="red--text"
+    >
+      {{ error }}
+    </v-card-text>
 
-        <v-card-text class="pt-0" v-if="blocksWithFields.length > 0">
-            <v-layout :column="!displayAsCards" wrap>
-                <v-flex :md4="displayAsCards" v-for="(block, $index) in blocksWithFields" :key="block.key">
-                    <ListFieldBlock :block="block.block" :blocks="blocks" :value="block.value" :is-first="$index === 0"
-                                    :is-last="$index === blocksWithFields.length-1" :display-as-cards="displayAsCards"
-                                    @input="onFieldInput($index, $event)" @move="moveBlock($index, $event)"
-                                    @remove="removeBlockAt($index)"/>
-                </v-flex>
-            </v-layout>
-        </v-card-text>
-    </v-card>
+    <v-card-text
+      v-if="blocksWithFields.length > 0"
+      class="pt-0"
+    >
+      <v-layout
+        :column="!displayAsCards"
+        wrap
+      >
+        <v-flex
+          v-for="(block, $index) in blocksWithFields"
+          :key="block.key"
+          :md4="displayAsCards"
+        >
+          <ListFieldBlock
+            :block="block.block"
+            :blocks="blocks"
+            :value="block.value"
+            :is-first="$index === 0"
+            :is-last="$index === blocksWithFields.length-1"
+            :display-as-cards="displayAsCards"
+            @input="onFieldInput($index, $event)"
+            @move="moveBlock($index, $event)"
+            @remove="removeBlockAt($index)"
+          />
+        </v-flex>
+      </v-layout>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -36,7 +67,7 @@
     import ListFieldBlock from "./helpers/ListFieldBlock";
 
     export default {
-        name: 'list-field',
+        name: 'ListField',
         components: {
             ListFieldBlock
         },
@@ -53,6 +84,35 @@
             options: Object,
             blocks: Object,
             error: Object
+        },
+
+        computed: {
+            blocksWithFields() {
+                if (!this.blocks) return [];
+                return this.value.map(blockData => {
+                    let block = this.blocks[blockData.type];
+                    if (!block) return null;
+
+                    return {
+                        value: blockData,
+                        block: block,
+                        key: blockData._key
+                    };
+                }).filter(it => !!it)
+            },
+
+            displayAsCards() {
+                return get(this.options, 'admin.cards') === true;
+            },
+
+            blockObjects() {
+                let blockTypes = this.options.blocks;
+                let blocks = [];
+                blockTypes.forEach(type => {
+                    blocks.push(this.blocks[type]);
+                });
+                return blocks;
+            }
         },
 
         created() {
@@ -100,35 +160,6 @@
                 newValue[blockIndex] = newFieldValue;
 
                 this.$emit('input', newValue);
-            }
-        },
-
-        computed: {
-            blocksWithFields() {
-                if (!this.blocks) return [];
-                return this.value.map(blockData => {
-                    let block = this.blocks[blockData.type];
-                    if (!block) return null;
-
-                    return {
-                        value: blockData,
-                        block: block,
-                        key: blockData._key
-                    };
-                }).filter(it => !!it)
-            },
-
-            displayAsCards() {
-                return get(this.options, 'admin.cards') === true;
-            },
-
-            blockObjects() {
-                let blockTypes = this.options.blocks;
-                let blocks = [];
-                blockTypes.forEach(type => {
-                    blocks.push(this.blocks[type]);
-                });
-                return blocks;
             }
         }
     }

@@ -1,11 +1,14 @@
 <template>
-    <div class="html-field">
-        <div class="input-group">
-            <label>{{ label }}</label>
-        </div>
-
-        <textarea ref="editor" v-bind:value="value"></textarea>
+  <div class="html-field">
+    <div class="input-group">
+      <label>{{ label }}</label>
     </div>
+
+    <textarea
+      ref="editor"
+      :value="value"
+    />
+  </div>
 </template>
 
 <script>
@@ -23,7 +26,7 @@
     import {get} from 'lodash';
 
     export default {
-        name: 'html-field',
+        name: 'HtmlField',
 
         props: [
             'options',

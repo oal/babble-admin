@@ -1,19 +1,26 @@
 <template>
-    <v-layout wrap>
-        <v-flex>
-            <v-text-field :label="label" type="password" v-model="value">
-            </v-text-field>
-        </v-flex>
-        <v-flex>
-            <v-text-field :label="$t('confirm')" type="password" v-model="confirmValue" :rules="[validate]">
-            </v-text-field>
-        </v-flex>
-    </v-layout>
+  <v-layout wrap>
+    <v-flex>
+      <v-text-field
+        v-model="value"
+        :label="label"
+        type="password"
+      />
+    </v-flex>
+    <v-flex>
+      <v-text-field
+        v-model="confirmValue"
+        :label="$t('confirm')"
+        type="password"
+        :rules="[validate]"
+      />
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
     export default {
-        name: 'password-field',
+        name: 'PasswordField',
 
         props: [
             'label'

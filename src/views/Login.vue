@@ -1,16 +1,27 @@
 <template>
-    <v-container class="blue-grey darken-3" fluid fill-height>
-        <v-dialog persistent v-model="showLoginDialog" max-width="300px">
-            <v-card>
-                <v-toolbar dark color="blue-grey darken-2">
-                    <v-toolbar-title>{{ $t('login') }}</v-toolbar-title>
-                </v-toolbar>
-                <v-card-text>
-                    <LoginForm @login="onLogin"></LoginForm>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-    </v-container>
+  <v-container
+    class="blue-grey darken-3"
+    fluid
+    fill-height
+  >
+    <v-dialog
+      v-model="showLoginDialog"
+      persistent
+      max-width="300px"
+    >
+      <v-card>
+        <v-toolbar
+          dark
+          color="blue-grey darken-2"
+        >
+          <v-toolbar-title>{{ $t('login') }}</v-toolbar-title>
+        </v-toolbar>
+        <v-card-text>
+          <LoginForm @login="onLogin" />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script>

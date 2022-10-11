@@ -1,12 +1,17 @@
 <template>
-    <v-select :label="label" v-model="choice" :items="choices" item-value="value" item-text="label"
-              :loading="loading">
-    </v-select>
+  <v-select
+    v-model="choice"
+    :label="label"
+    :items="choices"
+    item-value="value"
+    item-text="label"
+    :loading="loading"
+  />
 </template>
 
 <script>
     export default {
-        name: 'choice-field',
+        name: 'ChoiceField',
 
         props: [
             'options',
@@ -20,6 +25,12 @@
                 choices: [],
                 choice: this.value
             };
+        },
+
+        watch: {
+            choice(value) {
+                this.$emit('input', value);
+            }
         },
 
         created() {
@@ -71,12 +82,6 @@
                         this.loading = false;
                     });
                 })
-            }
-        },
-
-        watch: {
-            choice(value) {
-                this.$emit('input', value);
             }
         },
 

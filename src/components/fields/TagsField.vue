@@ -1,10 +1,15 @@
 <template>
-    <v-combobox v-model="tags" :label="label" chips multiple/>
+  <v-combobox
+    v-model="tags"
+    :label="label"
+    chips
+    multiple
+  />
 </template>
 
 <script>
     export default {
-        name: 'tags-field',
+        name: 'TagsField',
         props: [
             'options',
             'value',
@@ -15,6 +20,14 @@
                 tags: []
             }
         },
+        watch: {
+            value(value) {
+                this.$emit('input', value);
+            },
+            tags(value) {
+                this.$emit('input', value);
+            }
+        },
         mounted() {
             if (!Array.isArray(this.value)) {
                 let value = [];
@@ -22,14 +35,6 @@
                 this.tags = value;
             } else {
                 this.tags = [...this.value];
-            }
-        },
-        watch: {
-            value(value) {
-                this.$emit('input', value);
-            },
-            tags(value) {
-                this.$emit('input', value);
             }
         }
     }
