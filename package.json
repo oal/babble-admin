@@ -2,11 +2,11 @@
   "name": "babble-admin",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^1.1.2",
@@ -27,20 +27,15 @@
   },
   "devDependencies": {
     "@intlify/vue-i18n-loader": "^1.1.0",
-    "@vue/cli-plugin-babel": "^4.5.19",
-    "@vue/cli-plugin-eslint": "^4.5.19",
-    "@vue/cli-plugin-pwa": "^4.5.19",
-    "@vue/cli-service": "^4.5.19",
+    "@vitejs/plugin-vue2": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "css-loader": "^3.6.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.3",
     "material-design-icons-iconfont": "^5.0.1",
     "sass": "^1.55.0",
-    "sass-loader": "^7.3.1",
-    "vue-cli-plugin-i18n": "^0.6.1",
-    "vue-cli-plugin-vuetify": "^0.6.3",
-    "vue-template-compiler": "^2.7.10",
-    "vuetify-loader": "^1.9.2"
+    "unplugin-vue-components": "^0.22.8",
+    "vite": "^3.1.0",
+    "vue-template-compiler": "^2.7.10"
   }
 }

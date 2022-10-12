@@ -176,9 +176,9 @@
     import {get} from 'lodash';
     import slug from 'slug';
 
-    import FieldList from '../components/fields/helpers/FieldList';
-    import EditCardActions from '../components/helpers/EditCardActions';
-    import MainToolbar from '../components/MainToolbar';
+    import FieldList from '../components/fields/helpers/FieldList.vue';
+    import EditCardActions from '../components/helpers/EditCardActions.vue';
+    import MainToolbar from '../components/MainToolbar.vue';
 
     export default {
         name: 'Panel',
@@ -189,10 +189,10 @@
             MainToolbar
         },
 
-        props: [
-            'modelType',
-            'id'
-        ],
+        props: {
+            modelType: String,
+            id: String
+        },
 
         data() {
             return {
@@ -355,7 +355,7 @@
             },
             initEmptyFields() {
                 this.model.fields.forEach(field => {
-                    if (!this.data[field.key]) {
+                    if (typeof this.data[field.key] === 'undefined') {
                         this.data[field.key] = '';
                     }
                 });

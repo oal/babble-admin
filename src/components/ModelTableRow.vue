@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import ModelTableCell from '../components/ModelTableCell';
+    import ModelTableCell from '../components/ModelTableCell.vue';
 
     export default {
         components: {

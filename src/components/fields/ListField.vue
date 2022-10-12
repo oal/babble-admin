@@ -64,7 +64,7 @@
 
 <script>
     import {get} from 'lodash';
-    import ListFieldBlock from "./helpers/ListFieldBlock";
+    import ListFieldBlock from "./helpers/ListFieldBlock.vue";
 
     export default {
         name: 'ListField',

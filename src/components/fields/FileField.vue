@@ -59,7 +59,7 @@
 </template>
 
 <script>
-    import FileManager from '../fields/helpers/FileManager';
+    import FileManager from '../fields/helpers/FileManager.vue';
 
     export default {
         name: 'FileField',

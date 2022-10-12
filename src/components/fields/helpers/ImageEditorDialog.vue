@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import ImageCropper from './ImageCropper';
+    import ImageCropper from './ImageCropper.vue';
 
     export default {
         components: {

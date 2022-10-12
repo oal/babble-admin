@@ -56,8 +56,8 @@
 </template>
 
 <script>
-    import MainToolbar from '../components/MainToolbar';
-    import ModelTableRow from '../components/ModelTableRow';
+    import MainToolbar from '../components/MainToolbar.vue';
+    import ModelTableRow from '../components/ModelTableRow.vue';
     export default {
         name: 'Panel',
 

@@ -66,8 +66,8 @@
 </template>
 
 <script>
-    import MainToolbar from '../components/MainToolbar';
-    import FileManager from '../components/fields/helpers/FileManager';
+    import MainToolbar from '../components/MainToolbar.vue';
+    import FileManager from '../components/fields/helpers/FileManager.vue';
 
     export default {
         components: {

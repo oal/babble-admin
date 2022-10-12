@@ -12,7 +12,7 @@ Vue.config.productionTip = false;
 axios.defaults.baseURL = '/api/';
 Vue.use(VueAxios, axios);
 
-import FieldWrapper from './components/fields/helpers/FieldWrapper';
+import FieldWrapper from '@/components/fields/helpers/FieldWrapper.vue';
 Vue.component('field-wrapper', FieldWrapper);
 
 new Vue({

@@ -91,8 +91,8 @@
 </template>
 
 <script>
-    import FileManager from './helpers/FileManager';
-    import ImageEditorDialog from './helpers/ImageEditorDialog';
+    import FileManager from './helpers/FileManager.vue';
+    import ImageEditorDialog from './helpers/ImageEditorDialog.vue';
 
     export default {
         name: 'ImageField',

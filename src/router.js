@@ -8,46 +8,46 @@ export default new Router({
         {
             path: '/login',
             name: 'Login',
-            component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
+            component: () => import('./views/Login.vue')
         },
         {
             path: '/',
-            component: () => import(/* webpackChunkName: "panel" */ './views/Panel.vue'),
+            component: () => import('./views/Panel.vue'),
             children: [
                 {
                     path: '/',
                     name: 'Index',
-                    component: () => import(/* webpackChunkName: "panel" */ './views/Index.vue'),
+                    component: () => import('./views/Index.vue'),
                     props: true
                 },
                 {
                     path: '/models/:modelType',
                     name: 'List',
-                    component: () => import(/* webpackChunkName: "panel" */ './views/List.vue'),
+                    component: () => import('./views/List.vue'),
                     props: true
                 },
                 {
                     path: '/models/:modelType/create',
                     name: 'Create',
-                    component: () => import(/* webpackChunkName: "panel" */ './views/Edit.vue'),
+                    component: () => import('./views/Edit.vue'),
                     props: true
                 },
                 {
                     path: '/models/:modelType/edit/:id',
                     name: 'Edit',
-                    component: () => import(/* webpackChunkName: "panel" */ './views/Edit.vue'),
+                    component: () => import('./views/Edit.vue'),
                     props: true
                 },
                 {
                     path: '/models/:modelType/edit',
                     name: 'EditSingle',
-                    component: () => import(/* webpackChunkName: "panel" */ './views/Edit.vue'),
+                    component: () => import('./views/Edit.vue'),
                     props: true
                 },
                 {
                     path: '/files',
                     name: 'Files',
-                    component: () => import(/* webpackChunkName: "panel" */ './views/Files.vue'),
+                    component: () => import('./views/Files.vue'),
                     props: true
                 }
             ]

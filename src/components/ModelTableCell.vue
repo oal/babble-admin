@@ -49,13 +49,13 @@
 
 <script>
     import {camelCase, upperFirst} from 'lodash';
-    import IdPreview from '../components/previews/IdPreview';
-    import BooleanPreview from '../components/previews/BooleanPreview';
-    import DatetimePreview from '../components/previews/DatetimePreview';
-    import ChoicePreview from '../components/previews/ChoicePreview';
-    import TagsPreview from '../components/previews/TagsPreview';
-    import ImagePreview from "./previews/ImagePreview";
-    import FilePreview from "./previews/FilePreview";
+    import IdPreview from '../components/previews/IdPreview.vue';
+    import BooleanPreview from '../components/previews/BooleanPreview.vue';
+    import DatetimePreview from '../components/previews/DatetimePreview.vue';
+    import ChoicePreview from '../components/previews/ChoicePreview.vue';
+    import TagsPreview from '../components/previews/TagsPreview.vue';
+    import ImagePreview from "./previews/ImagePreview.vue";
+    import FilePreview from "./previews/FilePreview.vue";
 
     export default {
         components: {

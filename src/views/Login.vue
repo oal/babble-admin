@@ -25,7 +25,7 @@
 </template>
 
 <script>
-    import LoginForm from '@/components/LoginForm';
+    import LoginForm from '@/components/LoginForm.vue';
 
     export default {
         components: {

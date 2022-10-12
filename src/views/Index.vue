@@ -86,7 +86,7 @@
 </template>
 
 <script>
-    import MainToolbar from '../components/MainToolbar';
+    import MainToolbar from '../components/MainToolbar.vue';
 
     export default {
         components: {
