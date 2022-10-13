@@ -92,9 +92,11 @@
       v-else
       two-line
     >
-      <template v-for="file in allFiles">
+      <template
+        v-for="file in allFiles"
+        :key="file.title"
+      >
         <v-list-item
-          :key="file.title"
           :disabled="!file.type"
           @click="selectFile(file)"
         >
