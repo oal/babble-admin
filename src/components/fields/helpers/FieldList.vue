@@ -1,6 +1,6 @@
 <template>
   <v-layout wrap>
-    <field-wrapper
+    <FieldWrapper
       v-for="field in fields"
       :key="field.key"
       :type="field.type"

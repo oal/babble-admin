@@ -1,7 +1,7 @@
 <template>
-  <v-flex
+  <v-col
     v-if="hasTypeComponent()"
-    md12
+    :md="12"
   >
     <component
       :is="type + 'Field'"
@@ -13,7 +13,7 @@
       :blocks="blocks"
       @input="onFieldInput"
     />
-  </v-flex>
+  </v-col>
 </template>
 
 <script>

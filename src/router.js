@@ -27,19 +27,19 @@ export default new createRouter({
                 {
                     path: '/models/:modelType/create',
                     name: 'Create',
-                    component: () => import('./views/Edit.vue'),
+                    component: () => import('./views/EditPage.vue'),
                     props: true
                 },
                 {
                     path: '/models/:modelType/edit/:id',
                     name: 'Edit',
-                    component: () => import('./views/Edit.vue'),
+                    component: () => import('./views/EditPage.vue'),
                     props: true
                 },
                 {
                     path: '/models/:modelType/edit',
                     name: 'EditSingle',
-                    component: () => import('./views/Edit.vue'),
+                    component: () => import('./views/EditPage.vue'),
                     props: true
                 },
                 {

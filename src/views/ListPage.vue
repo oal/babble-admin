@@ -17,13 +17,11 @@
       </template>
 
       <v-btn
+        variant="flat"
         color="green"
         :to="{name: 'Create', params: {modelType: model.type}}"
+        prepend-icon="add"
       >
-        <v-icon
-          icon="add"
-          :left="smAndUp"
-        />
         <span class="hidden-xs-only">{{ $t('addRecord') }} {{ model.name }}</span>
       </v-btn>
     </MainToolbar>

@@ -26,54 +26,35 @@
           <v-card
             outlined
             class="grow"
+            :prepend-icon="model.options?.admin?.icon"
           >
-            <v-card-title
-              v-if="model.options && model.options.admin && model.options.admin.icon"
-              class="title py-3"
-            >
-              <v-icon
-                :icon="model.options.admin.icon"
-                left
-                class="hidden-sm-and-down"
-              />
-              <span>{{ model.name }}</span>
-            </v-card-title>
+            <template #title>
+              {{ model.name }}
+            </template>
             <v-card-actions class="grey lighten-4">
               <v-btn
                 v-if="!model.single"
                 color="green"
-                dark
                 :to="{name: 'Create', params: {modelType: model.type}}"
+                prepend-icon="add"
               >
-                <v-icon
-                  icon="add"
-                  left
-                />
                 {{ $t('addRecord') }}
               </v-btn>
 
               <v-btn
                 v-if="model.single"
                 color="green"
-                dark
                 :to="{name: 'EditSingle', params: {modelType: model.type}}"
+                prepend-icon="edit"
               >
-                <v-icon
-                  icon="edit"
-                  left
-                />
                 {{ $t('edit') }}
               </v-btn>
               <v-btn
                 v-else
                 color="primary"
-                text
                 :to="{name: 'List', params: {modelType: model.type}}"
+                prepend-icon="view_list"
               >
-                <v-icon
-                  icon="view_list"
-                  left
-                />
                 {{ $t('viewAll') }}
               </v-btn>
             </v-card-actions>

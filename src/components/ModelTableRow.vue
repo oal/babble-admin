@@ -11,28 +11,21 @@
 
     <td class="text-xs-right text-no-wrap">
       <v-btn
+        class="mr-2"
         left
         color="green"
-        dark
+        prepend-icon="edit"
         :to="{name: 'Edit', params: {modelType: model.type, id: record.id}}"
       >
-        <v-icon
-          icon="edit"
-          left
-        />
         {{ $t('edit') }}
       </v-btn>
       <v-btn
         left
-        text
+        variant="text"
         color="red"
-        dark
+        prepend-icon="delete"
         @click="remove(record)"
       >
-        <v-icon
-          icon="delete"
-          left
-        />
         {{ $t('delete') }}
       </v-btn>
     </td>
@@ -40,23 +33,24 @@
 </template>
 
 <script>
-    import ModelTableCell from '../components/ModelTableCell.vue';
+import ModelTableCell from '../components/ModelTableCell.vue';
 
-    export default {
-        components: {
-            ModelTableCell
-        },
+export default {
+  components: {
+    ModelTableCell
+  },
 
-        props: {
-            record: Object,
-            model: Object,
-            listDisplay: Array,
-        },
+  props: {
+    record: Object,
+    model: Object,
+    listDisplay: Array,
+  },
+  emits: ['remove'],
 
-        methods: {
-            remove() {
-                this.$emit('remove');
-            }
-        }
+  methods: {
+    remove() {
+      this.$emit('remove');
     }
+  }
+}
 </script>
