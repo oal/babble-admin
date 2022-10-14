@@ -3,11 +3,7 @@
     grid-list-md
     class="pa-0"
   >
-    <v-layout
-      wrap
-      align-center
-      class="pr-3"
-    >
+    <div class="pr-3 d-flex align-center">
       <v-breadcrumbs
         divider="-"
         large
@@ -16,13 +12,13 @@
           slot="divider"
           icon="chevron_right"
         />
-        <v-breadcrumbs-item @click.native="popToDir(0)">
+        <v-breadcrumbs-item @click="popToDir(0)">
           {{ $t('uploads') }}
         </v-breadcrumbs-item>
         <v-breadcrumbs-item
           v-for="(dir, $index) in path"
           :key="dir"
-          @click.native="popToDir($index+1)"
+          @click="popToDir($index+1)"
         >
           {{ dir }}
         </v-breadcrumbs-item>
@@ -30,50 +26,35 @@
 
       <v-spacer />
 
-      <v-flex shrink>
-        <v-btn
-          color="secondary"
-          :disabled="!path.length || loading"
-          @click="onRenameDirectory(path.length)"
-        >
-          <v-icon
-            icon="edit"
-            left
-          />
-          {{ $t('renameDirectory') }}
-        </v-btn>
-      </v-flex>
-      <v-flex shrink>
-        <v-btn
-          class="cursor-pointer"
-          tag="label"
-          :for="uploadId"
-          dark
-          color="blue-grey"
-          :disabled="loading"
-        >
-          <v-icon
-            icon="file_upload"
-            left
-          />
-          {{ $t('uploadFile') }}
-        </v-btn>
-      </v-flex>
-      <v-flex shrink>
-        <v-btn
-          dark
-          color="green"
-          :disabled="loading"
-          @click="onCreateDirectory"
-        >
-          <v-icon
-            icon="create_new_folder"
-            left
-          />
-          {{ $t('createDirectory') }}
-        </v-btn>
-      </v-flex>
-    </v-layout>
+      <v-btn
+        class="mr-3"
+        :disabled="!path.length || loading"
+        prepend-icon="edit"
+        @click="onRenameDirectory(path.length)"
+      >
+        {{ $t('renameDirectory') }}
+      </v-btn>
+      <v-btn
+        class="mr-3 cursor-pointer"
+        tag="label"
+        :for="uploadId"
+        dark
+        color="blue-grey"
+        prepend-icon="file_upload"
+        :disabled="loading"
+      >
+        {{ $t('uploadFile') }}
+      </v-btn>
+      <v-btn
+        dark
+        color="green"
+        :disabled="loading"
+        prepend-icon="create_new_folder"
+        @click="onCreateDirectory"
+      >
+        {{ $t('createDirectory') }}
+      </v-btn>
+    </div>
 
     <v-divider />
 

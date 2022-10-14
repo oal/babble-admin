@@ -30,13 +30,23 @@
       class="pa-0"
     >
       <v-table
-        :headers="headers"
         :sort-by="sortColumn"
         :sort-desc="sortDesc"
         hide-default-footer
         @update:sort-by="updateSortBy"
         @update:sort-desc="updateSortDesc"
       >
+        <thead>
+          <tr>
+            <th
+              v-for="column in headers"
+              :key="column.value"
+              :class="column.align ? `text-sm-${column.align}` : null"
+            >
+              {{ column.text }}
+            </th>
+          </tr>
+        </thead>
         <tbody>
           <ModelTableRow
             v-for="item in models"

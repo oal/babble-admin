@@ -1,7 +1,7 @@
 <template>
   <v-col
     v-if="hasTypeComponent()"
-    :cols="12"
+    :cols="options?.admin?.columns ?? 12"
   >
     <component
       :is="type + 'Field'"
