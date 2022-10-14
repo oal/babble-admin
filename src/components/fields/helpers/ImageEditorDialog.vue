@@ -14,7 +14,7 @@
           dark
           @click.native="close"
         >
-          <v-icon>close</v-icon>
+          <v-icon icon="close" />
         </v-btn>
         <v-toolbar-title>{{ $t('imageEditor') }}</v-toolbar-title>
       </v-toolbar>

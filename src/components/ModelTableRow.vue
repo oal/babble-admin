@@ -16,9 +16,10 @@
         dark
         :to="{name: 'Edit', params: {modelType: model.type, id: record.id}}"
       >
-        <v-icon left>
-          edit
-        </v-icon>
+        <v-icon
+          icon="edit"
+          left
+        />
         {{ $t('edit') }}
       </v-btn>
       <v-btn
@@ -28,9 +29,10 @@
         dark
         @click="remove(record)"
       >
-        <v-icon left>
-          delete
-        </v-icon>
+        <v-icon
+          icon="delete"
+          left
+        />
         {{ $t('delete') }}
       </v-btn>
     </td>

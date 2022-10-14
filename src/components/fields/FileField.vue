@@ -22,9 +22,10 @@
       color="blue-grey"
       @click="onOpenFileManager"
     >
-      <v-icon left>
-        insert_drive_file
-      </v-icon>
+      <v-icon
+        icon="insert_drive_file"
+        left
+      />
       {{ $t('choose') }} {{ label }}
     </v-btn>
 
@@ -43,7 +44,7 @@
             dark
             @click.native="showFileManager = false"
           >
-            <v-icon>close</v-icon>
+            <v-icon icon="close" />
           </v-btn>
           <v-toolbar-title>{{ $t('fileManager') }}</v-toolbar-title>
         </v-toolbar>

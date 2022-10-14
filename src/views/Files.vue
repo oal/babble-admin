@@ -1,7 +1,7 @@
 <template>
   <div>
     <MainToolbar>
-      <template slot="title">
+      <template #title>
         {{ $t('fileManager') }}
       </template>
     </MainToolbar>
@@ -44,9 +44,10 @@
               :href="`/uploads/${selection}`"
             >
               {{ $t('download') }}
-              <v-icon right>
-                file_download
-              </v-icon>
+              <v-icon
+                icon="file_download"
+                right
+              />
             </v-btn>
             <v-btn
               color="red"
@@ -54,9 +55,10 @@
               @click.stop="remove"
             >
               {{ $t('delete' ) }}
-              <v-icon right>
-                delete
-              </v-icon>
+              <v-icon
+                icon="delete"
+                right
+              />
             </v-btn>
           </v-card-actions>
         </v-card>

@@ -42,7 +42,7 @@
             :title="$t('logout')"
             @click="logout"
           >
-            <v-icon>exit_to_app</v-icon>
+            <v-icon icon="exit_to_app" />
           </v-btn>
         </v-list-item>
         <v-list-item
@@ -51,9 +51,10 @@
           :to="{name: 'List', params: {modelType: model.type}}"
         >
           <v-list-item-action>
-            <v-icon v-if="model.options && model.options.admin && model.options.admin.icon">
-              {{ model.options.admin.icon }}
-            </v-icon>
+            <v-icon
+              v-if="model.options && model.options.admin && model.options.admin.icon"
+              :icon="model.options.admin.icon"
+            />
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
@@ -65,7 +66,7 @@
 
         <v-list-item :to="{name: 'Files'}">
           <v-list-item-action>
-            <v-icon>folder</v-icon>
+            <v-icon icon="folder" />
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>

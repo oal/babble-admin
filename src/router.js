@@ -15,13 +15,13 @@ export default new createRouter({
                 {
                     path: '/',
                     name: 'Index',
-                    component: () => import('./views/Index.vue'),
+                    component: () => import('./views/IndexPage.vue'),
                     props: true
                 },
                 {
                     path: '/models/:modelType',
                     name: 'List',
-                    component: () => import('./views/List.vue'),
+                    component: () => import('./views/ListPage.vue'),
                     props: true
                 },
                 {

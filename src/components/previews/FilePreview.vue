@@ -5,9 +5,10 @@
     color="blue-grey darken-1"
     v-on="on"
   >
-    <v-icon left>
-      insert_drive_file
-    </v-icon>
+    <v-icon
+      icon="insert_drive_file"
+      left
+    />
     {{ value }}
   </v-chip>
 </template>

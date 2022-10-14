@@ -16,9 +16,10 @@
             color="green"
             @click="addBlock(block.type)"
           >
-            <v-icon left>
-              add_circle
-            </v-icon>
+            <v-icon
+              icon="add_circle"
+              left
+            />
             {{ block.name }}
           </v-btn>
         </div>

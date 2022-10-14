@@ -18,7 +18,7 @@
         icon
         @click.native="message.visible = false"
       >
-        <v-icon>close</v-icon>
+        <v-icon icon="close" />
       </v-btn>
     </v-snackbar>
   </v-app>

@@ -15,8 +15,11 @@ export default defineConfig({
     server: {
         cors: false,
         proxy: {
-            '/api': 'http://localhost:8000',
-            '/uploads': 'http://localhost:8000'
+            '/api': {
+                target: 'http://[::1]:8000',
+                changeOrigin: false
+            },
+            '/uploads': 'http://[::1]:8000'
         }
     }
 })

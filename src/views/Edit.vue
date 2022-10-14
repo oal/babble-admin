@@ -15,7 +15,7 @@
     class="fill-height"
   >
     <MainToolbar>
-      <template slot="title">
+      <template #title>
         <span
           v-if="isNew && !model.single"
           class="blue-grey--text text--lighten-3"
@@ -70,9 +70,10 @@
               color="blue-grey"
               @click="editId = !editId"
             >
-              <v-icon :left="$vuetify.breakpoint.smAndUp">
-                link
-              </v-icon>
+              <v-icon
+                icon="link"
+                :left="$vuetify.breakpoint.smAndUp"
+              />
               <span class="hidden-xs-only">{{ $t('edit') }}</span>
             </v-btn>
           </v-card>
@@ -85,9 +86,10 @@
             :href="data._permalink"
             target="_blank"
           >
-            <v-icon :left="$vuetify.breakpoint.smAndUp">
-              open_in_browser
-            </v-icon>
+            <v-icon
+              icon="open_in_browser"
+              :left="$vuetify.breakpoint.smAndUp"
+            />
             <span class="hidden-xs-only">{{ $t('view') }} {{ model.name }}</span>
           </v-btn>
 
@@ -97,9 +99,10 @@
             class="hidden-md-and-down ml-3"
             @click="save"
           >
-            <v-icon left>
-              save
-            </v-icon>
+            <v-icon
+              icon="save"
+              left
+            />
             {{ $t('save') }} {{ model.name }}
           </v-btn>
         </v-flex>

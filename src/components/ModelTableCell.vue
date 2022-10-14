@@ -25,9 +25,9 @@
           color="orange"
           class="model-table-cell-edit"
         >
-          <v-icon>edit</v-icon>
+          <v-icon icon="edit" />
         </v-btn>
-        <template v-slot:input>
+        <template #input>
           <field-wrapper
             :type="column.type"
             :label="column.name"

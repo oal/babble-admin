@@ -18,9 +18,10 @@
           color="primary"
           @click="onReCrop"
         >
-          <v-icon left>
-            crop
-          </v-icon>
+          <v-icon
+            icon="crop"
+            left
+          />
           {{ $t('reCrop') }} {{ label }}
         </v-btn>
         <v-btn
@@ -29,9 +30,10 @@
           dark
           @click="onDeselectFile"
         >
-          <v-icon left>
-            folder
-          </v-icon>
+          <v-icon
+            icon="folder"
+            left
+          />
           {{ $t('chooseAnotherFile') }}
         </v-btn>
       </v-card-actions>
@@ -42,9 +44,10 @@
           color="blue-grey"
           @click="onOpenFileManager"
         >
-          <v-icon left>
-            add_a_photo
-          </v-icon>
+          <v-icon
+            icon="add_a_photo"
+            left
+          />
           <span v-if="selection">{{ $t('chooseAnotherFile') }}</span>
           <span v-else>{{ $t('choose') }} {{ label }}</span>
         </v-btn>
@@ -66,7 +69,7 @@
             dark
             @click.native="showFileManager = false"
           >
-            <v-icon>close</v-icon>
+            <v-icon icon="close" />
           </v-btn>
           <v-toolbar-title>{{ $t('fileManager') }}</v-toolbar-title>
         </v-toolbar>

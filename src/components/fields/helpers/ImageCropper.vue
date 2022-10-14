@@ -7,9 +7,10 @@
           color="teal"
           @click="flipHorizontal"
         >
-          <v-icon left>
-            swap_horiz
-          </v-icon>
+          <v-icon
+            icon="swap_horiz"
+            left
+          />
           {{ $t('flipHorizontal') }}
         </v-btn>
         <v-btn
@@ -17,9 +18,10 @@
           color="teal"
           @click="flipVertical"
         >
-          <v-icon left>
-            swap_vert
-          </v-icon>
+          <v-icon
+            icon="swap_vert"
+            left
+          />
           {{ $t('flipVertical') }}
         </v-btn>
         <v-btn
@@ -27,9 +29,10 @@
           color="indigo"
           @click="rotateRight"
         >
-          <v-icon left>
-            rotate_right
-          </v-icon>
+          <v-icon
+            icon="rotate_right"
+            left
+          />
           {{ $t('rotateRight') }}
         </v-btn>
         <v-btn
@@ -37,9 +40,10 @@
           color="indigo"
           @click="rotateLeft"
         >
-          <v-icon left>
-            rotate_left
-          </v-icon>
+          <v-icon
+            icon="rotate_left"
+            left
+          />
           {{ $t('rotateLeft') }}
         </v-btn>
         <v-spacer />
@@ -48,9 +52,10 @@
           color="primary"
           @click="onConfirmCrop"
         >
-          <v-icon left>
-            crop
-          </v-icon>
+          <v-icon
+            icon="crop"
+            left
+          />
           {{ $t('confirmCrop') }}
         </v-btn>
       </v-layout>
@@ -106,7 +111,7 @@
             }, 0);
         },
 
-        beforeDestroy() {
+        beforeUnmount() {
             this.cropper.destroy();
         },
 

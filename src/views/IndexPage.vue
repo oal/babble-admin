@@ -1,30 +1,27 @@
 <template>
   <div>
     <MainToolbar>
-      <template slot="title">
+      <template #title>
         {{ $t('manageContent') }}
       </template>
     </MainToolbar>
     <v-progress-circular
       v-if="loading"
-      indeterminate
+      :indeterminate="true"
     />
     <v-container
       v-if="!loading"
       fluid
       grid-list-md
     >
-      <v-layout
-        row
-        wrap
-      >
-        <v-flex
+      <v-row>
+        <v-col
           v-for="model in models"
           :key="model.type"
           d-flex
-          xs12
-          sm6
-          md4
+          :xs="12"
+          :sm="6"
+          :md="4"
         >
           <v-card
             outlined
@@ -35,11 +32,10 @@
               class="title py-3"
             >
               <v-icon
+                :icon="model.options.admin.icon"
                 left
                 class="hidden-sm-and-down"
-              >
-                {{ model.options.admin.icon }}
-              </v-icon>
+              />
               <span>{{ model.name }}</span>
             </v-card-title>
             <v-card-actions class="grey lighten-4">
@@ -49,9 +45,10 @@
                 dark
                 :to="{name: 'Create', params: {modelType: model.type}}"
               >
-                <v-icon left>
-                  add
-                </v-icon>
+                <v-icon
+                  icon="add"
+                  left
+                />
                 {{ $t('addRecord') }}
               </v-btn>
 
@@ -61,9 +58,10 @@
                 dark
                 :to="{name: 'EditSingle', params: {modelType: model.type}}"
               >
-                <v-icon left>
-                  edit
-                </v-icon>
+                <v-icon
+                  icon="edit"
+                  left
+                />
                 {{ $t('edit') }}
               </v-btn>
               <v-btn
@@ -72,39 +70,41 @@
                 text
                 :to="{name: 'List', params: {modelType: model.type}}"
               >
-                <v-icon left>
-                  view_list
-                </v-icon>
+                <v-icon
+                  icon="view_list"
+                  left
+                />
                 {{ $t('viewAll') }}
               </v-btn>
             </v-card-actions>
           </v-card>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
 
 <script>
-    import MainToolbar from '../components/MainToolbar.vue';
+import MainToolbar from '../components/MainToolbar.vue';
 
-    export default {
-        components: {
-            MainToolbar
-        },
-        data() {
-            return {
-                loading: false,
-                models: []
-            }
-        },
-
-        created() {
-            this.loading = true;
-            this.axios.options('/models').then(response => {
-                this.models = response.data;
-                this.loading = false;
-            });
-        }
+export default {
+  name: 'IndexPage',
+  components: {
+    MainToolbar
+  },
+  data() {
+    return {
+      loading: false,
+      models: []
     }
+  },
+
+  created() {
+    this.loading = true;
+    this.axios.options('/models').then(response => {
+      this.models = response.data;
+      this.loading = false;
+    });
+  }
+}
 </script>

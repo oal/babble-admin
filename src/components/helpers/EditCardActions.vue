@@ -7,25 +7,27 @@
       color="green"
       @click="save"
     >
-      <v-icon left>
-        save
-      </v-icon>
+      <v-icon
+        icon="save"
+        left
+      />
       {{ $t('save') }} {{ model.name }}
     </v-btn>
     <v-tooltip
       v-else
       right
     >
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <v-btn
           text
           dark
           color="red"
           v-on="on"
         >
-          <v-icon left>
-            error
-          </v-icon>
+          <v-icon
+            icon="error"
+            left
+          />
           {{ $t('save') }} {{ model.name }}
         </v-btn>
       </template>

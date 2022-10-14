@@ -5,16 +5,17 @@
       nudge-bottom="32px"
       class="pa-0"
     >
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <v-chip
           outlined
           label
           color="blue-grey darken-1"
           v-on="on"
         >
-          <v-icon left>
-            image
-          </v-icon>
+          <v-icon
+            icon="image"
+            left
+          />
           {{ value.filename }}
         </v-chip>
       </template>

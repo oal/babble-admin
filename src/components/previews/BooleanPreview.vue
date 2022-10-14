@@ -2,16 +2,14 @@
   <div>
     <v-icon
       v-if="value"
+      icon="check"
       color="green"
-    >
-      check
-    </v-icon>
+    />
     <v-icon
       v-else
+      icon="clear"
       color="red"
-    >
-      clear
-    </v-icon>
+    />
   </div>
 </template>
 

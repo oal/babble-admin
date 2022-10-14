@@ -6,13 +6,13 @@
     align-center
   >
     <v-progress-circular
-      indeterminate
+      :indeterminate="true"
       color="primary"
     />
   </v-layout>
   <div v-else>
     <MainToolbar>
-      <template slot="title">
+      <template #title>
         {{ model.name_plural }}
       </template>
 
@@ -20,9 +20,10 @@
         color="green"
         :to="{name: 'Create', params: {modelType: model.type}}"
       >
-        <v-icon :left="$vuetify.breakpoint.smAndUp">
-          add
-        </v-icon>
+        <v-icon
+          icon="add"
+          :left="smAndUp"
+        />
         <span class="hidden-xs-only">{{ $t('addRecord') }} {{ model.name }}</span>
       </v-btn>
     </MainToolbar>
@@ -30,7 +31,7 @@
       fluid
       class="pa-0"
     >
-      <v-data-table
+      <v-table
         :headers="headers"
         :sort-by="sortColumn"
         :sort-desc="sortDesc"
@@ -38,19 +39,17 @@
         @update:sort-by="updateSortBy"
         @update:sort-desc="updateSortDesc"
       >
-        <template v-slot:body="{ items }">
-          <tbody>
-            <ModelTableRow
-              v-for="item in models"
-              :key="item.id"
-              :record="item"
-              :list-display="listDisplay"
-              :model="model"
-              @remove="remove(item)"
-            />
-          </tbody>
-        </template>
-      </v-data-table>
+        <tbody>
+          <ModelTableRow
+            v-for="item in models"
+            :key="item.id"
+            :record="item"
+            :list-display="listDisplay"
+            :model="model"
+            @remove="remove(item)"
+          />
+        </tbody>
+      </v-table>
     </v-container>
   </div>
 </template>
@@ -58,17 +57,25 @@
 <script>
     import MainToolbar from '../components/MainToolbar.vue';
     import ModelTableRow from '../components/ModelTableRow.vue';
+    import {useDisplay} from "vuetify";
     export default {
-        name: 'Panel',
+        name: 'ListPage',
 
         components: {
             MainToolbar,
             ModelTableRow,
         },
 
-        props: [
-            'modelType'
-        ],
+        props: {
+          modelType: String
+        },
+
+      setup() {
+          let {smAndUp} = useDisplay()
+          return {
+            smAndUp
+          }
+      },
 
         data() {
             return {

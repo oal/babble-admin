@@ -12,9 +12,10 @@
         divider="-"
         large
       >
-        <v-icon slot="divider">
-          chevron_right
-        </v-icon>
+        <v-icon
+          slot="divider"
+          icon="chevron_right"
+        />
         <v-breadcrumbs-item @click.native="popToDir(0)">
           {{ $t('uploads') }}
         </v-breadcrumbs-item>
@@ -35,9 +36,10 @@
           :disabled="!path.length || loading"
           @click="onRenameDirectory(path.length)"
         >
-          <v-icon left>
-            edit
-          </v-icon>
+          <v-icon
+            icon="edit"
+            left
+          />
           {{ $t('renameDirectory') }}
         </v-btn>
       </v-flex>
@@ -50,9 +52,10 @@
           color="blue-grey"
           :disabled="loading"
         >
-          <v-icon left>
-            file_upload
-          </v-icon>
+          <v-icon
+            icon="file_upload"
+            left
+          />
           {{ $t('uploadFile') }}
         </v-btn>
       </v-flex>
@@ -63,9 +66,10 @@
           :disabled="loading"
           @click="onCreateDirectory"
         >
-          <v-icon left>
-            create_new_folder
-          </v-icon>
+          <v-icon
+            icon="create_new_folder"
+            left
+          />
           {{ $t('createDirectory') }}
         </v-btn>
       </v-flex>
@@ -105,9 +109,10 @@
               v-if="file.type.indexOf('image') === 0"
               :src="`/uploads/${getURL(file)}`"
             >
-            <v-icon v-else>
-              {{ getIconClass(file.type) }}
-            </v-icon>
+            <v-icon
+              v-else
+              :icon="getIconClass(file.type)"
+            />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title v-html="file.name" />

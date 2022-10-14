@@ -1,6 +1,8 @@
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'vuetify/styles' // Global CSS has to be imported
 import {createApp, h} from 'vue'
 import {createVuetify, useDisplay} from 'vuetify'
+import { aliases, md } from 'vuetify/iconsets/md'
 import App from './App.vue';
 import router from './router';
 import './registerServiceWorker';
@@ -74,7 +76,14 @@ app.use(i18n)
 app.component('FieldWrapper', FieldWrapper)
 app.use(createVuetify({
     components,
-    directives
+    directives,
+    icons: {
+        defaultSet: 'md',
+        aliases,
+        sets: {
+            md,
+        }
+    },
 }))
 
 app.use(router)

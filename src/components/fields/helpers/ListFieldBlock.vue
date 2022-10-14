@@ -17,12 +17,14 @@
             class="ml-0"
             @click="moveBlock(-1)"
           >
-            <v-icon v-if="displayAsCards">
-              keyboard_arrow_left
-            </v-icon>
-            <v-icon v-else>
-              keyboard_arrow_up
-            </v-icon>
+            <v-icon
+              v-if="displayAsCards"
+              icon="keyboard_arrow_left"
+            />
+            <v-icon
+              v-else
+              icon="keyboard_arrow_up"
+            />
           </v-btn>
           <v-btn
             v-if="!isLast"
@@ -32,12 +34,14 @@
             class="ml-0"
             @click="moveBlock(1)"
           >
-            <v-icon v-if="displayAsCards">
-              keyboard_arrow_right
-            </v-icon>
-            <v-icon v-else>
-              keyboard_arrow_down
-            </v-icon>
+            <v-icon
+              v-if="displayAsCards"
+              icon="keyboard_arrow_right"
+            />
+            <v-icon
+              v-else
+              icon="keyboard_arrow_down"
+            />
           </v-btn>
           <v-btn
             color="red"
@@ -47,7 +51,7 @@
             class="ml-0"
             @click="removeBlock()"
           >
-            <v-icon>clear</v-icon>
+            <v-icon icon="clear" />
           </v-btn>
         </div>
       </v-layout>
