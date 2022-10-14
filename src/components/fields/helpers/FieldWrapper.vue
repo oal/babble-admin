@@ -55,7 +55,7 @@ export default {
     modelValue: {},
     options: Object,
     blocks: Object,
-    error: Object
+    error: String
   },
   emits: ['update:modelValue'],
 

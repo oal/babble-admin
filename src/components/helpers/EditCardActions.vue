@@ -5,12 +5,9 @@
       text
       dark
       color="green"
+      prepend-icon="save"
       @click="save"
     >
-      <v-icon
-        icon="save"
-        left
-      />
       {{ $t('save') }} {{ model.name }}
     </v-btn>
     <v-tooltip
@@ -22,12 +19,9 @@
           text
           dark
           color="red"
+          prepend-icon="error"
           v-on="on"
         >
-          <v-icon
-            icon="error"
-            left
-          />
           {{ $t('save') }} {{ model.name }}
         </v-btn>
       </template>

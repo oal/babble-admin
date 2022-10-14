@@ -10,12 +10,9 @@
           outlined
           label
           color="blue-grey darken-1"
+          prepend-icon="image"
           v-on="on"
         >
-          <v-icon
-            icon="image"
-            left
-          />
           {{ modelValue.filename }}
         </v-chip>
       </template>
