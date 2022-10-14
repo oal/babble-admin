@@ -77,7 +77,7 @@
           <file-manager
             v-if="showFileManager"
             :directory="directory"
-            @input="onSelectFile"
+            @update:model-value="onSelectFile"
           />
         </v-card-text>
       </v-card>
@@ -85,7 +85,7 @@
 
     <ImageEditorDialog
       v-model="showImageEditor"
-      :image="value"
+      :image="modelValue"
       :options="options"
       @preview="croppedImage = $event"
       @image="syncInput"
@@ -94,125 +94,126 @@
 </template>
 
 <script>
-    import FileManager from './helpers/FileManager.vue';
-    import ImageEditorDialog from './helpers/ImageEditorDialog.vue';
+import FileManager from './helpers/FileManager.vue';
+import ImageEditorDialog from './helpers/ImageEditorDialog.vue';
 
-    export default {
-        name: 'ImageField',
-        components: {
-            FileManager,
-            ImageEditorDialog
-        },
-        props: {
-            value: Object,
-            name: String,
-            label: String,
-            options: Object
-        },
-        data() {
-            return {
-                showFileManager: false,
-                showImageEditor: false,
-                selection: null,
-                directory: null,
-                croppedImage: null,
-            }
-        },
-
-        computed: {
-            hasCropper() {
-                return this.options && this.options.admin && this.options.admin.crop;
-            },
-            previewImage() {
-                if (this.croppedImage) {
-                    return this.croppedImage;
-                }
-                if (this.value && this.value.filename) {
-                    if (this.value.url) {
-                        return `/uploads/${this.value.url}`;
-                    }
-                    return `/uploads/${this.value.filename}`;
-                }
-                return null;
-            }
-        },
-
-        watch: {
-            value() {
-                if (!this.value) {
-                    // Reset state when value is set to null or undefined (happens in ListField when moved).
-                    this.reset();
-                }
-            }
-        },
-        created() {
-            this.reset();
-        },
-        methods: {
-            reset() {
-                let croppedImage = null;
-                if (this.value && this.value.url) {
-                    croppedImage = this.value.url;
-                }
-                let filename = (this.value ? this.value.filename : null) || null;
-                let directory = '/';
-                if (filename) directory = '/' + filename.split('/').slice(0, -1).join('/');
-
-                this.selection = filename;
-                this.directory = directory;
-                this.croppedImage = croppedImage;
-            },
-            syncInput(value) {
-                this.$emit('input', value);
-            },
-            setFile(filename) {
-                this.$emit('input', {
-                    filename: filename
-                });
-            },
-            onOpenFileManager() {
-                this.showFileManager = true;
-            },
-            closeImageEditor() {
-                this.showImageEditor = false;
-                // If no cropped version was already set, unset selection as cropped version is still missing.
-                if (!this.croppedImage) {
-                    this.setFile(null);
-                }
-            },
-            onSelectFile(file) {
-                this.croppedImage = null;
-                this.setFile(file);
-                this.showFileManager = false;
-                if (this.hasCropper) {
-                    this.showImageEditor = true;
-                }
-            },
-            onDeselectFile() {
-                this.croppedImage = null;
-                this.showFileManager = true;
-                this.setFile(null);
-            },
-            onReCrop() {
-                this.showImageEditor = true;
-            },
-        }
+export default {
+  name: 'ImageField',
+  components: {
+    FileManager,
+    ImageEditorDialog
+  },
+  props: {
+    modelValue: Object,
+    name: String,
+    label: String,
+    options: Object
+  },
+  emits: ['update:modelValue'],
+  data() {
+    return {
+      showFileManager: false,
+      showImageEditor: false,
+      selection: null,
+      directory: null,
+      croppedImage: null,
     }
+  },
+
+  computed: {
+    hasCropper() {
+      return this.options && this.options.admin && this.options.admin.crop;
+    },
+    previewImage() {
+      if (this.croppedImage) {
+        return this.croppedImage;
+      }
+      if (this.modelValue && this.modelValue.filename) {
+        if (this.modelValue.url) {
+          return `/uploads/${this.modelValue.url}`;
+        }
+        return `/uploads/${this.modelValue.filename}`;
+      }
+      return null;
+    }
+  },
+
+  watch: {
+    modelValue() {
+      if (!this.modelValue) {
+        // Reset state when value is set to null or undefined (happens in ListField when moved).
+        this.reset();
+      }
+    }
+  },
+  created() {
+    this.reset();
+  },
+  methods: {
+    reset() {
+      let croppedImage = null;
+      if (this.modelValue && this.modelValue.url) {
+        croppedImage = this.modelValue.url;
+      }
+      let filename = (this.modelValue ? this.modelValue.filename : null) || null;
+      let directory = '/';
+      if (filename) directory = '/' + filename.split('/').slice(0, -1).join('/');
+
+      this.selection = filename;
+      this.directory = directory;
+      this.croppedImage = croppedImage;
+    },
+    syncInput(modelValue) {
+      this.$emit('update:modelValue', modelValue);
+    },
+    setFile(filename) {
+      this.$emit('update:modelValue', {
+        filename: filename
+      });
+    },
+    onOpenFileManager() {
+      this.showFileManager = true;
+    },
+    closeImageEditor() {
+      this.showImageEditor = false;
+      // If no cropped version was already set, unset selection as cropped version is still missing.
+      if (!this.croppedImage) {
+        this.setFile(null);
+      }
+    },
+    onSelectFile(file) {
+      this.croppedImage = null;
+      this.setFile(file);
+      this.showFileManager = false;
+      if (this.hasCropper) {
+        this.showImageEditor = true;
+      }
+    },
+    onDeselectFile() {
+      this.croppedImage = null;
+      this.showFileManager = true;
+      this.setFile(null);
+    },
+    onReCrop() {
+      this.showImageEditor = true;
+    },
+  }
+}
 </script>
 
 <style lang="scss" type="text/scss" scoped>
-    .image-field-preview {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.8rem;
+.image-field-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem;
 
-        img {
-            max-width: 100%;
-            max-height: 320px;
-            display: block;
-            border: 1px solid rgba(#fff, 0.2);
-            background-clip: padding-box;
-        }
-    }
+  img {
+    max-width: 100%;
+    max-height: 320px;
+    display: block;
+    border: 1px solid rgba(#fff, 0.2);
+    background-clip: padding-box;
+  }
+}
 </style>

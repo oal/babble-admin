@@ -11,7 +11,7 @@
     >
       <file-manager
         ref="file-manager"
-        @input="select"
+        @update:model-value="select"
       />
 
       <v-dialog

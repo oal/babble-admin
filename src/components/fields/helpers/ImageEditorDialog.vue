@@ -2,7 +2,7 @@
   <v-dialog
     fullscreen
     transition="dialog-bottom-transition"
-    :value="value"
+    :model-value="value"
   >
     <v-card>
       <v-toolbar
@@ -60,7 +60,7 @@
         },
         methods: {
             close() {
-                this.$emit('input', false);
+                this.$emit('update:modelValue', false);
             },
 
             onCrop(previewCanvas, cropData) {

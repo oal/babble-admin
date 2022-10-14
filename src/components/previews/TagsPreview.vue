@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-chip
-      v-for="tag in value"
+      v-for="tag in modelValue"
       :key="tag"
       small
       disabled
@@ -12,9 +12,9 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            value: Array
-        }
-    }
+export default {
+  props: {
+    modelValue: Array
+  }
+}
 </script>

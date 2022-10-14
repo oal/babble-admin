@@ -4,17 +4,17 @@
 
 
 <script>
-    import moment from 'moment';
+import moment from 'moment';
 
-    export default {
-        props: {
-            value: [Date, String]
-        },
+export default {
+  props: {
+    modelValue: [Date, String]
+  },
 
-        computed: {
-            datetime() {
-                return moment(this.value, 'YYYY-MM-DD hh:mm').format('LLL');
-            }
-        }
+  computed: {
+    datetime() {
+      return moment(this.modelValue, 'YYYY-MM-DD hh:mm').format('LLL');
     }
+  }
+}
 </script>

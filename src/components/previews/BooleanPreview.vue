@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-icon
-      v-if="value"
+      v-if="modelValue"
       icon="check"
       color="green"
     />
@@ -14,9 +14,9 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            value: Boolean
-        }
-    }
+export default {
+  props: {
+    modelValue: Boolean
+  }
+}
 </script>

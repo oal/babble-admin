@@ -4,7 +4,7 @@
       <component
         :is="column.type + 'Preview'"
         v-if="hasPreviewComponent"
-        :value="value"
+        :model-value="value"
         :field="column"
       />
       <div v-else>
@@ -28,7 +28,7 @@
           <v-icon icon="edit" />
         </v-btn>
         <template #input>
-          <field-wrapper
+          <FieldWrapper
             :type="column.type"
             :label="column.name"
             :name="column.key"
@@ -37,9 +37,9 @@
             :blocks="[]"
             :error="errors['fields.' + column.key]"
 
-            :value="changedValue"
+            :model-value="changedValue"
             class="pt-3"
-            @input="onInput"
+            @update:model-value="onInput"
           />
         </template>
       </v-edit-dialog>

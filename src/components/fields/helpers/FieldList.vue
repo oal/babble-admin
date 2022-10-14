@@ -1,21 +1,23 @@
 <template>
-  <v-layout wrap>
-    <FieldWrapper
-      v-for="field in fields"
-      :key="field.key"
-      :type="field.type"
-      :label="field.name"
-      :name="field.key"
-      :options="field.options"
-      :class="field.classes"
+  <v-container>
+    <v-row>
+      <FieldWrapper
+        v-for="field in fields"
+        :key="field.key"
+        :type="field.type"
+        :label="field.name"
+        :name="field.key"
+        :options="field.options"
+        :class="field.classes"
 
-      :blocks="blocks"
-      :error="errors['fields.' + field.key]"
+        :blocks="blocks"
+        :error="errors['fields.' + field.key]"
 
-      :value="data[field.key]"
-      @input="onInput(field.key, $event)"
-    />
-  </v-layout>
+        :model-value="data[field.key]"
+        @update:model-value="onInput(field.key, $event)"
+      />
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -28,10 +30,11 @@ export default {
     errors: Object,
     blocks: Object
   },
+  emits: ['update:modelValue'],
 
   methods: {
     onInput(field, value) {
-      this.$emit('input', {
+      this.$emit('update:modelValue', {
         key: field,
         value: value
       });

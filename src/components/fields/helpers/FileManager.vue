@@ -216,7 +216,7 @@
                 if (file.type === 'directory') return this.goToDir(file);
 
                 this.selection = this.getURL(file);
-                this.$emit('input', this.selection);
+                this.$emit('update:modelValue', this.selection);
             },
 
             onUploadChange(event) {

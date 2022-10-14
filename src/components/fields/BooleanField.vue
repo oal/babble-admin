@@ -6,28 +6,29 @@
 </template>
 
 <script>
-    export default {
-        name: 'BooleanField',
-        props: {
-            value: Boolean,
-            name: String,
-            label: String
-        },
-        data() {
-            return {
-                state: !!this.value
-            }
-        },
-        watch: {
-            value() {
-                this.state = this.value
-            },
-            state() {
-                this.$emit('input', this.state);
-            }
-        },
-        mounted() {
-            if (this.value !== this.state) this.$emit('input', this.state);
-        },
+export default {
+  name: 'BooleanField',
+  props: {
+    modelValue: Boolean,
+    name: String,
+    label: String
+  },
+  emits: ['update:modelValue'],
+  data() {
+    return {
+      state: !!this.modelValue
     }
+  },
+  watch: {
+    modelValue() {
+      this.state = this.modelValue
+    },
+    state() {
+      this.$emit('update:modelValue', this.state);
+    }
+  },
+  mounted() {
+    if (this.modelValue !== this.state) this.$emit('update:modelValue', this.state);
+  },
+}
 </script>

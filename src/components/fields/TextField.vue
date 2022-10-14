@@ -2,39 +2,40 @@
   <v-textarea
     v-if="!!getOption('admin.multiline')"
     :label="label"
-    :value="value"
+    :model-value="modelValue"
     :error-messages="error"
-    @input="onInput"
+    @update:model-value="onInput"
   />
   <v-text-field
     v-else
     :label="label"
-    :value="value"
+    :model-value="modelValue"
     :error-messages="error"
-    @input="onInput"
+    @update:model-value="onInput"
   />
 </template>
 
 <script>
-    import {get} from 'lodash';
+import {get} from 'lodash';
 
-    export default {
-        name: 'TextField',
+export default {
+  name: 'TextField',
 
-        props: {
-            options: Object,
-            value: String,
-            label: String,
-            error: String
-        },
+  props: {
+    options: Object,
+    modelValue: String,
+    label: String,
+    error: String
+  },
+  emits: ['update:modelValue'],
 
-        methods: {
-            getOption(path) {
-                return get(this.options, path, null)
-            },
-            onInput(value) {
-                this.$emit('input', value);
-            }
-        }
+  methods: {
+    getOption(path) {
+      return get(this.options, path, null)
+    },
+    onInput(value) {
+      this.$emit('update:modelValue', value);
     }
+  }
+}
 </script>

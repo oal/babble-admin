@@ -64,7 +64,7 @@
         :data="value.value"
         :errors="{}"
         :blocks="blocks"
-        @input="onFieldInput($event)"
+        @update:model-value="onFieldInput($event)"
       />
     </v-card-text>
   </v-card>
@@ -111,7 +111,7 @@
                 this.$emit('remove');
             },
             onFieldInput(value) {
-                this.$emit('input', value);
+                this.$emit('update:modelValue', value);
             }
         }
     }

@@ -9,14 +9,14 @@
       icon="insert_drive_file"
       left
     />
-    {{ value }}
+    {{ modelValue }}
   </v-chip>
 </template>
 
 <script>
-    export default {
-        props: {
-            value: String
-        }
-    }
+export default {
+  props: {
+    modelValue: String
+  }
+}
 </script>

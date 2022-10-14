@@ -1,18 +1,18 @@
 <template>
   <div>
     <v-chip
-      v-if="value"
+      v-if="modelValue"
       close
       @click:close="onDeselectFile"
     >
       {{ label }}:&nbsp;
       <a
-        :href="'/uploads/' + value"
+        :href="'/uploads/' + modelValue"
         target="_blank"
         download
         class="blue-grey--text text--darken-2"
       >
-        {{ value }}
+        {{ modelValue }}
       </a>
     </v-chip>
 
@@ -51,7 +51,7 @@
         <v-card-text>
           <file-manager
             v-if="showFileManager"
-            @input="onSelectFile"
+            @update:model-value="onSelectFile"
           />
         </v-card-text>
       </v-card>
@@ -60,41 +60,42 @@
 </template>
 
 <script>
-    import FileManager from '../fields/helpers/FileManager.vue';
+import FileManager from '../fields/helpers/FileManager.vue';
 
-    export default {
-        name: 'FileField',
+export default {
+  name: 'FileField',
 
-        components: {
-            FileManager
-        },
+  components: {
+    FileManager
+  },
 
-        props: {
-            value: String,
-            name: String,
-            label: String,
-            options: Object
-        },
+  props: {
+    modelValue: String,
+    name: String,
+    label: String,
+    options: Object
+  },
+  emits: ['update:modelValue'],
 
-        data() {
-            return {
-                showFileManager: false
-            }
-        },
-
-        methods: {
-            onOpenFileManager() {
-                this.showFileManager = true;
-            },
-
-            onSelectFile(file) {
-                this.$emit('input', file);
-                this.showFileManager = false;
-            },
-
-            onDeselectFile() {
-                this.$emit('input', null);
-            },
-        }
+  data() {
+    return {
+      showFileManager: false
     }
+  },
+
+  methods: {
+    onOpenFileManager() {
+      this.showFileManager = true;
+    },
+
+    onSelectFile(file) {
+      this.$emit('update:modelValue', file);
+      this.showFileManager = false;
+    },
+
+    onDeselectFile() {
+      this.$emit('update:modelValue', null);
+    },
+  }
+}
 </script>

@@ -49,11 +49,11 @@
           <ListFieldBlock
             :block="block.block"
             :blocks="blocks"
-            :value="block.value"
+            :model-value="block.value"
             :is-first="$index === 0"
             :is-last="$index === blocksWithFields.length-1"
             :display-as-cards="displayAsCards"
-            @input="onFieldInput($index, $event)"
+            @update:model-value="onFieldInput($index, $event)"
             @move="moveBlock($index, $event)"
             @remove="removeBlockAt($index)"
           />
@@ -74,7 +74,7 @@
         },
 
         props: {
-            value: {
+            modelValue: {
                 type: Array,
                 default: () => {
                     return [];
@@ -86,11 +86,12 @@
             blocks: Object,
             error: Object
         },
+emits: ['update:modelValue'],
 
         computed: {
             blocksWithFields() {
                 if (!this.blocks) return [];
-                return this.value.map(blockData => {
+                return this.modelValue.map(blockData => {
                     let block = this.blocks[blockData.type];
                     if (!block) return null;
 
@@ -118,8 +119,8 @@
 
         created() {
             // Set an internal key on field init for all data blocks for reordering etc. to work nicely.
-            if (Array.isArray(this.value)) {
-                this.value.forEach(item => {
+            if (Array.isArray(this.modelValue)) {
+                this.modelValue.forEach(item => {
                     item._key = Math.floor(Math.random() * 99999999).toString(16);
                 })
             }
@@ -127,8 +128,8 @@
 
         methods: {
             addBlock(type) {
-                this.$emit('input', [
-                    ...this.value,
+                this.$emit('update:modelValue', [
+                    ...this.modelValue,
                     {
                         type: type,
                         value: {}
@@ -137,30 +138,30 @@
             },
 
             moveBlock(index, movement) {
-                let newValue = [...this.value];
+                let newValue = [...this.modelValue];
                 // Swap.
                 let temp = newValue[index + movement];
                 newValue[index + movement] = newValue[index];
                 newValue[index] = temp;
 
-                this.$emit('input', newValue);
+                this.$emit('update:modelValue', newValue);
             },
 
             removeBlockAt(index) {
-                let newValue = [...this.value];
+                let newValue = [...this.modelValue];
                 newValue.splice(index, 1);
 
-                this.$emit('input', newValue);
+                this.$emit('update:modelValue', newValue);
             },
 
             onFieldInput(blockIndex, event) {
-                let newFieldValue = {...this.value[blockIndex]};
+                let newFieldValue = {...this.modelValue[blockIndex]};
                 newFieldValue.value[event.key] = event.value;
 
-                let newValue = [...this.value];
+                let newValue = [...this.modelValue];
                 newValue[blockIndex] = newFieldValue;
 
-                this.$emit('input', newValue);
+                this.$emit('update:modelValue', newValue);
             }
         }
     }

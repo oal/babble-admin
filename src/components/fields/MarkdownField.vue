@@ -6,81 +6,83 @@
 
     <textarea
       ref="editor"
-      :value="value"
+      :value="modelValue"
     />
   </div>
 </template>
 
 <script>
-    // Editor
-    import CodeMirror from 'codemirror';
-    import 'codemirror/mode/markdown/markdown.js';
+// Editor
+import CodeMirror from 'codemirror';
+import 'codemirror/mode/markdown/markdown.js';
 
-    // Style
-    import 'codemirror/lib/codemirror.css';
+// Style
+import 'codemirror/lib/codemirror.css';
 
-    // Other imports
-    import {get} from 'lodash';
+// Other imports
+import {get} from 'lodash';
 
-    export default {
-        name: 'MarkdownField',
+export default {
+  name: 'MarkdownField',
 
-        props: {
-            options: Object,
-            value: String,
-            label: String
-        },
+  props: {
+    options: Object,
+    modelValue: String,
+    label: String
+  },
+  emits: ['update:modelValue'],
 
-        data() {
-            return {
-                codemirrorEditor: null
-            }
-        },
-
-        mounted() {
-            let codemirrorEditor = CodeMirror.fromTextArea(this.$refs.editor, {
-                lineNumbers: false,
-                mode: 'markdown',
-                lineWrapping: true,
-                viewportMargin: Infinity
-            });
-            codemirrorEditor.on('change', () => {
-                let value = codemirrorEditor.getValue();
-                this.$emit('input', value);
-            });
-            this.codemirrorEditor = codemirrorEditor;
-        },
-
-        beforeDestroy() {
-            if (this.codemirrorEditor) {
-                // No teardown needed?
-            }
-        },
-
-        methods: {
-            getOption(path) {
-                return get(this.options, path, null)
-            }
-        }
+  data() {
+    return {
+      codemirrorEditor: null
     }
+  },
+
+  mounted() {
+    let codemirrorEditor = CodeMirror.fromTextArea(this.$refs.editor, {
+      lineNumbers: false,
+      mode: 'markdown',
+      lineWrapping: true,
+      viewportMargin: Infinity
+    });
+    codemirrorEditor.on('change', () => {
+      let modelValue = codemirrorEditor.getValue();
+      this.$emit('update:modelValue', modelValue);
+    });
+    this.codemirrorEditor = codemirrorEditor;
+  },
+
+  beforeUnmount() {
+    if (this.codemirrorEditor) {
+      // No teardown needed?
+    }
+  },
+
+  methods: {
+    getOption(path) {
+      return get(this.options, path, null)
+    }
+  }
+}
 </script>
 
 <style>
-    .markdown-field {
-        min-width: 240px;
-    }
-    .markdown-field .CodeMirror {
-        border-radius: 2px;
-        border: 2px solid rgba(0, 0, 0, .54);
-        height: auto;
-        min-height: 50px;
-    }
+.markdown-field {
+  min-width: 240px;
+}
 
-    .markdown-field .CodeMirror-gutters {
-        background-color: rgba(0, 0, 0, .54);
-    }
+.markdown-field .CodeMirror {
+  border-radius: 2px;
+  border: 2px solid rgba(0, 0, 0, .54);
+  height: auto;
+  min-height: 50px;
+}
 
-    .markdown-field .CodeMirror-linenumber {
-        color: #e0e0e0
-    }
+.markdown-field .CodeMirror-gutters {
+  background-color: rgba(0, 0, 0, .54);
+}
+
+.markdown-field .CodeMirror-linenumber {
+  color: #e0e0e0
+}
 </style>

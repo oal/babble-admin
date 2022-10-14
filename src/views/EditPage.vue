@@ -54,7 +54,7 @@
             </div>
 
             <v-divider
-              vertical
+              :vertical="true"
               class="hidden-xs-only"
             />
 
@@ -101,7 +101,7 @@
         wrap
         class="pl-2"
       >
-        <v-col style="flex-basis: 240px">
+        <v-col :cols="8">
           <div v-if="!model.single && (isNew || editId)">
             <v-card>
               <v-card-text>
@@ -120,7 +120,7 @@
               :data="data"
               :errors="errors"
               :blocks="blocks"
-              @input="onFieldInput"
+              @update:model-value="onFieldInput"
             />
           </div>
           <edit-card-actions
@@ -130,10 +130,10 @@
             @save="save"
           />
         </v-col>
-        <v-divider vertical />
+        <v-divider :vertical="true" />
         <v-col
           v-if="sidebarFields.length > 0"
-          style="max-width: 460px"
+          :cols="4"
           class="pa-0"
         >
           <div class="fill-height blue-grey lighten-5">
@@ -143,7 +143,7 @@
                 :data="data"
                 :errors="errors"
                 :blocks="blocks"
-                @input="onFieldInput"
+                @update:model-value="onFieldInput"
               />
             </v-card-text>
             <edit-card-actions

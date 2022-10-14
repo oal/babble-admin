@@ -16,7 +16,7 @@
           offset-y
           min-width="290px"
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-text-field
               slot="activator"
               v-model="date"
@@ -38,7 +38,7 @@
           offset-y
           min-width="290px"
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-text-field
               slot="activator"
               v-model="time"
@@ -59,49 +59,50 @@
 </template>
 
 <script>
-    import moment from 'moment';
+import moment from 'moment';
 
-    export default {
-        name: 'DatetimeField',
+export default {
+  name: 'DatetimeField',
 
-        props: {
-            value: [String, Date],
-            label: String
-        },
+  props: {
+    modelValue: [String, Date],
+    label: String
+  },
+  emits: ['update:modelValue'],
 
-        data() {
-            let dateTime;
-            if (this.value) dateTime = moment(this.value);
-            else dateTime = moment();
+  data() {
+    let dateTime;
+    if (this.modelValue) dateTime = moment(this.modelValue);
+    else dateTime = moment();
 
-            return {
-                menuDate: false,
-                menuTime: false,
+    return {
+      menuDate: false,
+      menuTime: false,
 
-                date: dateTime.format('YYYY-MM-DD'),
-                time: dateTime.format('HH:mm')
-            }
-        },
-
-        watch: {
-            date() {
-                this.emitInput();
-            },
-            time() {
-                this.emitInput();
-            }
-        },
-
-        mounted() {
-            this.emitInput();
-        },
-
-        methods: {
-            emitInput() {
-                if (!this.date || !this.time) return null;
-                let dateTime = moment(`${this.date}T${this.time}:00`, 'YYYY-MM-DD hh:mm:ss');
-                this.$emit('input', dateTime.format())
-            }
-        }
+      date: dateTime.format('YYYY-MM-DD'),
+      time: dateTime.format('HH:mm')
     }
+  },
+
+  watch: {
+    date() {
+      this.emitInput();
+    },
+    time() {
+      this.emitInput();
+    }
+  },
+
+  mounted() {
+    this.emitInput();
+  },
+
+  methods: {
+    emitInput() {
+      if (!this.date || !this.time) return null;
+      let dateTime = moment(`${this.date}T${this.time}:00`, 'YYYY-MM-DD hh:mm:ss');
+      this.$emit('update:modelValue', dateTime.format())
+    }
+  }
+}
 </script>

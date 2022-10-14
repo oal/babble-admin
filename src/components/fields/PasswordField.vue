@@ -2,7 +2,7 @@
   <v-layout wrap>
     <v-flex>
       <v-text-field
-        v-model="value"
+        v-model="modelValue"
         :label="label"
         type="password"
       />
@@ -19,38 +19,39 @@
 </template>
 
 <script>
-    export default {
-        name: 'PasswordField',
+export default {
+  name: 'PasswordField',
 
-        props: {
-            label: String
-        },
+  props: {
+    label: String
+  },
+  emits: ['update:modelValue'],
 
-        data() {
-            return {
-                value: '',
-                confirmValue: ''
-            }
-        },
-
-        watch: {
-            value() {
-                this.emit();
-            },
-            confirmValue() {
-                this.emit();
-            }
-        },
-
-        methods: {
-            emit() {
-                this.$emit('input', this.value);
-            },
-            validate() {
-                if(this.value === this.confirmValue) return true;
-
-                return this.$t('invalidPassword');
-            }
-        }
+  data() {
+    return {
+      modelValue: '',
+      confirmValue: ''
     }
+  },
+
+  watch: {
+    modelValue() {
+      this.emit();
+    },
+    confirmValue() {
+      this.emit();
+    }
+  },
+
+  methods: {
+    emit() {
+      this.$emit('update:modelValue', this.modelValue);
+    },
+    validate() {
+      if (this.modelValue === this.confirmValue) return true;
+
+      return this.$t('invalidPassword');
+    }
+  }
+}
 </script>

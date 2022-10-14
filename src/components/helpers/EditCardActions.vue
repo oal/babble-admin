@@ -37,16 +37,17 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            model: Object,
-            error: String
-        },
+export default {
+  props: {
+    model: Object,
+    error: String
+  },
+  emits: ['save'],
 
-        methods: {
-            save() {
-                this.$emit('save');
-            }
-        }
+  methods: {
+    save() {
+      this.$emit('save');
     }
+  }
+}
 </script>
