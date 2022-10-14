@@ -12,68 +12,51 @@
         dense
         class="pt-0"
       >
-        <v-list-item class="blue-grey py-3">
-          <v-list-item-content>
-            <v-list-item-title class="title">
-              <router-link
-                v-slot="{ navigate }"
-                :to="{name: 'Index'}"
-                custom
-              >
-                <div
-                  role="link"
-                  @click="navigate"
-                  @keypress.enter="navigate"
+        <v-list-item class="py-3">
+          <div class="d-flex justify-space-between">
+            <div>
+              <v-list-item-title>
+                <router-link
+                  v-slot="{ navigate }"
+                  :to="{name: 'Index'}"
+                  custom
                 >
-                  Babble Admin
-                </div>
-              </router-link>
-            </v-list-item-title>
-            <v-list-item-subtitle
-              v-if="$root.user"
-              class="pt-1"
-            >
-              {{ $t('welcome') }}, {{ $root.user.id }}!
-            </v-list-item-subtitle>
-          </v-list-item-content>
-
-          <v-btn
-            text
-            :title="$t('logout')"
-            @click="logout"
-          >
-            <v-icon icon="exit_to_app" />
-          </v-btn>
+                  <div
+                    role="link"
+                    @click="navigate"
+                    @keypress.enter="navigate"
+                  >
+                    Babble Admin
+                  </div>
+                </router-link>
+              </v-list-item-title>
+              <v-list-item-subtitle
+                v-if="$root.user"
+                class="pt-1"
+              >
+                {{ $t('welcome') }}, {{ $root.user.id }}!
+              </v-list-item-subtitle>
+            </div>
+            <v-btn
+              size="small"
+              :title="$t('logout')"
+              icon="exit_to_app"
+              @click="logout"
+            />
+          </div>
         </v-list-item>
         <v-list-item
           v-for="model in models"
           :key="model.type"
           :to="{name: 'List', params: {modelType: model.type}}"
-        >
-          <v-list-item-action>
-            <v-icon
-              v-if="model.options && model.options.admin && model.options.admin.icon"
-              :icon="model.options.admin.icon"
-            />
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <span v-if="model.single">{{ model.name }}</span>
-              <span v-else>{{ model.name_plural }}</span>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item :to="{name: 'Files'}">
-          <v-list-item-action>
-            <v-icon icon="folder" />
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ $t('fileManager') }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          :prepend-icon="model.options?.admin?.icon"
+          :title="model.single ? model.name : model.name_plural"
+        />
+        <v-list-item
+          :to="{name: 'Files'}"
+          :title="$t('fileManager')"
+          prepend-icon="folder"
+        />
       </v-list>
     </v-navigation-drawer>
 
@@ -87,7 +70,7 @@
           align-center
         >
           <v-progress-circular
-            indeterminate
+            :indeterminate="true"
             color="primary"
           />
         </v-layout>
@@ -120,7 +103,7 @@
     import LoginForm from '../components/LoginForm.vue';
 
     export default {
-        name: 'Panel',
+        name: 'PanelWrapper',
 
         components: {
             LoginForm

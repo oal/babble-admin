@@ -10,7 +10,7 @@ export default new createRouter({
         },
         {
             path: '/',
-            component: () => import('./views/Panel.vue'),
+            component: () => import('./views/PanelWrapper.vue'),
             children: [
                 {
                     path: '/',
