@@ -24,24 +24,13 @@
 <script>
 import {camelCase, upperFirst} from 'lodash';
 import InlineEdit from './helpers/InlineEdit.vue'
-import IdPreview from '../components/previews/IdPreview.vue';
-import BooleanPreview from '../components/previews/BooleanPreview.vue';
-import DatetimePreview from '../components/previews/DatetimePreview.vue';
-import ChoicePreview from '../components/previews/ChoicePreview.vue';
-import TagsPreview from '../components/previews/TagsPreview.vue';
-import ImagePreview from "./previews/ImagePreview.vue";
-import FilePreview from "./previews/FilePreview.vue";
+import {previews} from "@/fields.js";
+
 
 export default {
   components: {
     InlineEdit,
-    IdPreview,
-    BooleanPreview,
-    DatetimePreview,
-    ChoicePreview,
-    TagsPreview,
-    ImagePreview,
-    FilePreview
+    ...previews
   },
 
   props: {
