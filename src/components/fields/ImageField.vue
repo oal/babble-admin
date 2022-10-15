@@ -16,24 +16,18 @@
           v-if="croppedImage && hasCropper"
           text
           color="primary"
+          prepend-icon="crop"
           @click="onReCrop"
         >
-          <v-icon
-            icon="crop"
-            left
-          />
           {{ $t('reCrop') }} {{ label }}
         </v-btn>
         <v-btn
           text
           color="blue-grey"
           dark
+          prepend-icon="folder"
           @click="onDeselectFile"
         >
-          <v-icon
-            icon="folder"
-            left
-          />
           {{ $t('chooseAnotherFile') }}
         </v-btn>
       </v-card-actions>
@@ -42,14 +36,15 @@
         <v-btn
           dark
           color="blue-grey"
+          prepend-icon="add_a_photo"
           @click="onOpenFileManager"
         >
-          <v-icon
-            icon="add_a_photo"
-            left
-          />
-          <span v-if="selection">{{ $t('chooseAnotherFile') }}</span>
-          <span v-else>{{ $t('choose') }} {{ label }}</span>
+          <template v-if="selection">
+            {{ $t('chooseAnotherFile') }}
+          </template>
+          <template v-else>
+            {{ $t('choose') }} {{ label }}
+          </template>
         </v-btn>
       </v-card-actions>
     </div>
@@ -65,12 +60,9 @@
           color="primary"
         >
           <v-btn
-            icon
-            dark
-            @click.native="showFileManager = false"
-          >
-            <v-icon icon="close" />
-          </v-btn>
+            icon="close"
+            @click="showFileManager = false"
+          />
           <v-toolbar-title>{{ $t('fileManager') }}</v-toolbar-title>
         </v-toolbar>
         <v-card-text>

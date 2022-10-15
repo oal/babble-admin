@@ -6,7 +6,7 @@ export default new createRouter({
         {
             path: '/login',
             name: 'Login',
-            component: () => import('./views/Login.vue')
+            component: () => import('./views/LoginPage.vue')
         },
         {
             path: '/',
@@ -45,7 +45,7 @@ export default new createRouter({
                 {
                     path: '/files',
                     name: 'Files',
-                    component: () => import('./views/Files.vue'),
+                    component: () => import('./views/FilePage.vue'),
                     props: true
                 }
             ]

@@ -2,25 +2,18 @@
   <v-card-actions>
     <v-btn
       v-if="!error"
-      text
-      dark
       color="green"
       prepend-icon="save"
       @click="save"
     >
       {{ $t('save') }} {{ model.name }}
     </v-btn>
-    <v-tooltip
-      v-else
-      right
-    >
-      <template #activator="{ on }">
+    <v-tooltip v-else>
+      <template #activator="{ props }">
         <v-btn
-          text
-          dark
           color="red"
           prepend-icon="error"
-          v-on="on"
+          v-bind="props"
         >
           {{ $t('save') }} {{ model.name }}
         </v-btn>

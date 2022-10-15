@@ -100,66 +100,66 @@
 </template>
 
 <script>
-    import LoginForm from '../components/LoginForm.vue';
+import LoginForm from '../components/LoginForm.vue';
 
-    export default {
-        name: 'PanelWrapper',
+export default {
+  name: 'PanelWrapper',
 
-        components: {
-            LoginForm
-        },
+  components: {
+    LoginForm
+  },
 
-        data() {
-            return {
-                loading: false,
-                showLoginDialog: false,
-                models: []
-            }
-        },
-
-        created: function () {
-            this.loading = true;
-
-            this.axios.get('/login').then(response => {
-                this.$root.user = response.data;
-                this.axios.options('/models').then(response => {
-                    this.models = response.data;
-                    this.loading = false;
-                });
-            }).catch(() => {
-                this.$router.push({name: 'Login'});
-                this.loading = false;
-            });
-
-            this.axios.interceptors.response.use(null, (error) => {
-                if (error.response.status === 401) {
-                    this.showLoginDialog = true;
-                }
-                return Promise.reject(error);
-            });
-        },
-
-        methods: {
-            logout() {
-                this.axios.auth = null;
-                this.$router.push({name: 'Login'});
-            },
-            onLogin() {
-                this.showLoginDialog = false;
-            }
-        }
+  data() {
+    return {
+      loading: false,
+      showLoginDialog: false,
+      models: []
     }
+  },
+
+  created: function () {
+    this.loading = true;
+
+    this.axios.get('/login').then(response => {
+      this.$root.user = response.data;
+      this.axios.options('/models').then(response => {
+        this.models = response.data;
+        this.loading = false;
+      });
+    }).catch(() => {
+      this.$router.push({name: 'Login'});
+      this.loading = false;
+    });
+
+    this.axios.interceptors.response.use(null, (error) => {
+      if (error.response.status === 401) {
+        this.showLoginDialog = true;
+      }
+      return Promise.reject(error);
+    });
+  },
+
+  methods: {
+    logout() {
+      this.axios.auth = null;
+      this.$router.push({name: 'Login'});
+    },
+    onLogin() {
+      this.showLoginDialog = false;
+    }
+  }
+}
 </script>
 
 <style>
-    #login-overlay {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background: rgba(25, 25, 25, 0.8);
-        z-index: 1;
-        display: flex;
-    }
+#login-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(25, 25, 25, 0.8);
+  z-index: 1;
+  display: flex;
+}
 </style>

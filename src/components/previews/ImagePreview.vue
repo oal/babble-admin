@@ -5,13 +5,12 @@
       nudge-bottom="32px"
       class="pa-0"
     >
-      <template #activator="{ on }">
+      <template #activator="{ props: menu }">
         <v-chip
-          outlined
-          label
-          color="blue-grey darken-1"
+          variant="outlined"
+          color="blue-grey"
           prepend-icon="image"
-          v-on="on"
+          v-bind="menu"
         >
           {{ modelValue.filename }}
         </v-chip>

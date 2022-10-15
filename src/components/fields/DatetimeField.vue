@@ -16,14 +16,13 @@
           offset-y
           min-width="290px"
         >
-          <template #activator="{ on }">
+          <template #activator="{ props: menu }">
             <v-text-field
-              slot="activator"
               v-model="date"
               :label="$t('date')"
               prepend-icon="event"
               readonly
-              v-on="on"
+              v-bind="menu"
             />
           </template>
           <v-date-picker v-model="date" />
@@ -38,14 +37,13 @@
           offset-y
           min-width="290px"
         >
-          <template #activator="{ on }">
+          <template #activator="{ props: menu }">
             <v-text-field
-              slot="activator"
               v-model="time"
               :label="$t('time')"
               prepend-icon="schedule"
               readonly
-              v-on="on"
+              v-bind="menu"
             />
           </template>
           <v-time-picker

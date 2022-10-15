@@ -25,24 +25,25 @@
 </template>
 
 <script>
-    import LoginForm from '@/components/LoginForm.vue';
+import LoginForm from '@/components/LoginForm.vue';
 
-    export default {
-        components: {
-            LoginForm
-        },
+export default {
+  name: 'LoginPage',
+  components: {
+    LoginForm
+  },
 
-        data() {
-            return {
-                showLoginDialog: true
-            }
-        },
-
-        methods: {
-            onLogin() {
-                this.showLoginDialog = false;
-                this.$router.replace({name: 'Index'});
-            }
-        }
+  data() {
+    return {
+      showLoginDialog: true
     }
+  },
+
+  methods: {
+    onLogin() {
+      this.showLoginDialog = false;
+      this.$router.replace({name: 'Index'});
+    }
+  }
+}
 </script>

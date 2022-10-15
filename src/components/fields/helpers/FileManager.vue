@@ -69,7 +69,7 @@
       class="pa-4"
     >
       <v-progress-circular
-        indeterminate
+        :indeterminate="true"
         color="primary"
       />
     </v-layout>
@@ -83,25 +83,17 @@
       >
         <v-list-item
           :disabled="!file.type"
+          :prepend-avatar="file.type?.indexOf('image') === 0 ? `/uploads/${getURL(file)}` : null"
+          :prepend-icon="file.type?.indexOf('image') !== 0 ? getIconClass(file.type) : null"
           @click="selectFile(file)"
         >
-          <v-list-item-avatar v-if="file.type">
-            <img
-              v-if="file.type.indexOf('image') === 0"
-              :src="`/uploads/${getURL(file)}`"
-            >
-            <v-icon
-              v-else
-              :icon="getIconClass(file.type)"
-            />
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title v-html="file.name" />
-            <v-list-item-subtitle>
-              <span v-if="file.type == 'directory'">{{ $t('directory') }}</span>
-              <span v-else-if="file.size">{{ prettyBytes(file.size) }}</span>
-            </v-list-item-subtitle>
-          </v-list-item-content>
+          <v-list-item-title>
+            {{ file.name }}
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            <span v-if="file.type === 'directory'">{{ $t('directory') }}</span>
+            <span v-else-if="file.size">{{ prettyBytes(file.size) }}</span>
+          </v-list-item-subtitle>
         </v-list-item>
       </template>
     </v-list>
@@ -126,6 +118,7 @@
         props: [
             'directory'
         ],
+emits: ['update:modelValue'],
 
         data() {
             let path = [];
