@@ -7,17 +7,20 @@
   >
     <template #activator="{ props: menu }">
       <v-btn
+        size="small"
         icon="edit"
         color="orange"
         class="model-table-cell-edit"
         v-bind="menu"
       />
     </template>
-    <v-card width="320px">
+    <v-card
+      width="320px"
+      :title="column.name"
+    >
       <FieldWrapper
         v-model="internalValue"
         :type="column.type"
-        :label="column.name"
         :name="column.key"
         :options="column.options"
         :class="column.classes"

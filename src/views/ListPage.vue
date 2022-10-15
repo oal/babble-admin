@@ -45,6 +45,7 @@
             >
               {{ column.text }}
             </th>
+            <th style="width: 1px; white-space: nowrap" />
           </tr>
         </thead>
         <tbody>
@@ -132,17 +133,13 @@ export default {
       return columns;
     },
     headers() {
-      let buttonHeader = {text: '', value: null, sortable: false, width: '1px'};
-      return [
-        ...this.listDisplay.map(column => {
-          return {
-            text: column.name,
-            value: column.key,
-            align: 'left'
-          }
-        }),
-        buttonHeader
-      ];
+      return this.listDisplay.map(column => {
+        return {
+          text: column.name,
+          value: column.key,
+          align: 'left'
+        }
+      })
     },
     sortColumn() {
       if (this.sort && this.sort.substr(0, 1) === '-') {
