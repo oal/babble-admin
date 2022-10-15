@@ -1,5 +1,6 @@
 import {createI18n} from 'vue-i18n'
 
+// @ts-ignore
 const rawLocales = import.meta.glob('@/locales/*.json')
 
 let i18n = createI18n({

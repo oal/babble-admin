@@ -24,7 +24,7 @@
 <script>
 import {camelCase, upperFirst} from 'lodash';
 import InlineEdit from './helpers/InlineEdit.vue'
-import {previews} from "@/fields.js";
+import {previews} from "@/fields.ts";
 
 
 export default {
