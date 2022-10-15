@@ -1,58 +1,23 @@
 <template>
   <div>
-    <div class="pb-3 input-group input-group--text-field">
-      <label>{{ label }}</label>
-    </div>
-    <v-layout
+    <label class="d-block pb-3">{{ label }}</label>
+    <v-row
       row
       wrap
     >
-      <v-flex>
-        <v-menu
-          ref="menu"
-          v-model="menuDate"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-        >
-          <template #activator="{ props: menu }">
-            <v-text-field
-              v-model="date"
-              :label="$t('date')"
-              prepend-icon="event"
-              readonly
-              v-bind="menu"
-            />
-          </template>
-          <v-date-picker v-model="date" />
-        </v-menu>
-      </v-flex>
-      <v-flex>
-        <v-menu
-          ref="menu"
-          v-model="menuTime"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-        >
-          <template #activator="{ props: menu }">
-            <v-text-field
-              v-model="time"
-              :label="$t('time')"
-              prepend-icon="schedule"
-              readonly
-              v-bind="menu"
-            />
-          </template>
-          <v-time-picker
-            v-model="time"
-            format="24hr"
-          />
-        </v-menu>
-      </v-flex>
-    </v-layout>
+      <v-col>
+        <v-text-field
+          v-model="date"
+          type="date"
+        />
+      </v-col>
+      <v-col>
+        <v-text-field
+          v-model="time"
+          type="time"
+        />
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -74,21 +39,14 @@ export default {
     else dateTime = moment();
 
     return {
-      menuDate: false,
-      menuTime: false,
-
       date: dateTime.format('YYYY-MM-DD'),
       time: dateTime.format('HH:mm')
     }
   },
 
   watch: {
-    date() {
-      this.emitInput();
-    },
-    time() {
-      this.emitInput();
-    }
+    date: 'emitInput',
+    time: 'emitInput'
   },
 
   mounted() {
