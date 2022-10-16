@@ -61,11 +61,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MainToolbar from '../components/MainToolbar.vue';
 import FileManager from '../components/fields/helpers/FileManager.vue';
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   name: 'FilePage',
   components: {
     MainToolbar,
@@ -77,18 +78,18 @@ export default {
       loading: false,
 
       showSelectionDialog: false,
-      selection: null
+      selection: null as string|null
     }
   },
 
   methods: {
-    select(selection) {
+    select(selection: string) {
       this.showSelectionDialog = true;
       this.selection = selection;
     },
 
     remove() {
-      let ok = confirm(this.$t('confirmDeleteMessage'));
+      const ok = confirm(this.$t('confirmDeleteMessage'));
       if (!ok) {
         this.close();
         return;
@@ -110,5 +111,5 @@ export default {
       this.selection = null;
     }
   }
-}
+})
 </script>

@@ -24,10 +24,11 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import LoginForm from '@/components/LoginForm.vue';
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   name: 'LoginPage',
   components: {
     LoginForm
@@ -45,5 +46,5 @@ export default {
       this.$router.replace({name: 'Index'});
     }
   }
-}
+})
 </script>

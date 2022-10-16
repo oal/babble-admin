@@ -63,12 +63,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MainToolbar from '../components/MainToolbar.vue';
 import ModelTableRow from '../components/ModelTableRow.vue';
 import {useDisplay} from "vuetify";
+import {defineComponent} from "vue";
+import {Field, Model, ModelInstance} from "@/types";
+import {AxiosResponse} from "axios";
 
-export default {
+export default defineComponent({
   name: 'ListPage',
 
   components: {
@@ -81,7 +84,7 @@ export default {
   },
 
   setup() {
-    let {smAndUp} = useDisplay()
+    const {smAndUp} = useDisplay()
     return {
       smAndUp
     }
@@ -90,15 +93,15 @@ export default {
   data() {
     return {
       loading: true,
-      model: {},
-      models: [],
+      model: {} as Model,
+      models: []as ModelInstance[],
       sort: 'id'
     }
   },
 
   computed: {
     options: function () {
-      let options = this.model.options.admin || {};
+      const options = this.model.options.admin || {};
       if (!options.list_display) {
         options.list_display = [this.model.fields[0].key];
       }
@@ -108,16 +111,18 @@ export default {
       return options;
     },
     fieldsByKey() {
-      let fields = {};
+      const fields: Record<string, Field> = {};
       this.model.fields.forEach(field => fields[field.key] = field);
       return fields;
     },
     listDisplay() {
-      let columnKeys = this.options['list_display'];
+      const columnKeys = this.options['list_display'];
 
-      let columns = columnKeys.filter(fieldKey => fieldKey !== 'id').map(fieldKey => this.fieldsByKey[fieldKey]);
+      let columns = columnKeys
+          .filter((fieldKey: string) => fieldKey !== 'id')
+          .map((fieldKey: string) => this.fieldsByKey[fieldKey]);
 
-      let idIndex = columnKeys.indexOf('id');
+      const idIndex = columnKeys.indexOf('id');
       if (idIndex !== -1) {
         columns = [
           {
@@ -133,7 +138,7 @@ export default {
       return columns;
     },
     headers() {
-      return this.listDisplay.map(column => {
+      return this.listDisplay.map((column: Field) => {
         return {
           text: column.name,
           value: column.key,
@@ -168,7 +173,7 @@ export default {
     fetchData() {
       this.loading = true;
 
-      let modelPromise = this.axios.options('/models/' + this.modelType).then(response => {
+      const modelPromise = this.axios.options('/models/' + this.modelType).then((response: AxiosResponse) => {
         this.model = response.data.model;
         this.sort = this.options['sort'] || 'id'
       });
@@ -183,13 +188,13 @@ export default {
       });
     },
     fetchRecords() {
-      let wasLoading = this.loading;
+      const wasLoading = this.loading;
       this.loading = true;
 
-      let params = {
+      const params = {
         sort: this.sort
       };
-      return this.axios.get('/models/' + this.modelType, {params: params}).then(response => {
+      return this.axios.get('/models/' + this.modelType, {params: params}).then((response: AxiosResponse) => {
         this.models = response.data;
 
         // If fetchRecords is called outside of fetchData, and it wasn't already loading,
@@ -197,29 +202,29 @@ export default {
         if (!wasLoading) this.loading = false;
       });
     },
-    remove(record) {
-      let ok = confirm('Do you really want to delete this item?');
+    remove(record: ModelInstance) {
+      const ok = confirm('Do you really want to delete this item?');
       if (!ok) return;
 
-      this.axios.delete('/models/' + this.modelType + '/' + record.id).then(response => {
+      this.axios.delete('/models/' + this.modelType + '/' + record.id).then((response: AxiosResponse) => {
         console.log(response);
         this.fetchData();
       });
     },
-    updateSortBy(column) {
+    updateSortBy(column: string|string[]) {
       if (Array.isArray(column)) {
         column = column[0];
       }
       this.sort = column;
     },
-    updateSortDesc(desc) {
+    updateSortDesc(desc: boolean) {
       if (desc) {
         this.sort = `-${this.sort}`;
       } else {
         this.sort = this.sortColumn; // Without - prefix.
       }
     },
-    sortBy(columnKey) {
+    sortBy(columnKey: string) {
       if (this.sort === columnKey) {
         this.sort = '-' + columnKey;
       } else {
@@ -228,5 +233,5 @@ export default {
       this.fetchRecords();
     }
   }
-}
+})
 </script>

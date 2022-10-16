@@ -15,17 +15,15 @@
       {{ message.message }}
       <v-btn
         dark
-        icon
-        @click.native="message.visible = false"
-      >
-        <v-icon icon="close" />
-      </v-btn>
+        icon="close"
+        @click="message.visible = false"
+      />
     </v-snackbar>
   </v-app>
 </template>
 
 
-<script>
+<script lang="ts">
 
 export default {
   name: 'App',

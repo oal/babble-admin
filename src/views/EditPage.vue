@@ -159,33 +159,8 @@ import EditCardActions from '../components/helpers/EditCardActions.vue';
 import MainToolbar from '../components/MainToolbar.vue';
 import {useDisplay} from "vuetify";
 import {defineComponent} from "vue";
-import {AxiosError, AxiosResponse} from "axios";
-
-interface Field {
-  key: string
-  name: string
-  type: string
-  options: Record<string, any>
-}
-
-interface AugmentedField extends Field {
-  classes: string
-}
-
-interface Model {
-  name: string
-  name_plural: string
-  fields: Field[]
-  options: Record<string, any>
-  single: boolean
-  type: string,
-  hierarchical?: boolean
-}
-
-interface FieldError {
-  property: string,
-  message: string
-}
+import type {AxiosError, AxiosResponse} from "axios";
+import type {AugmentedField, FieldError, Model} from "@/types";
 
 export default defineComponent({
   name: 'EditPage',

@@ -99,10 +99,12 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
 import LoginForm from '../components/LoginForm.vue';
+import {defineComponent} from "vue";
+import {AxiosError, AxiosResponse} from "axios";
 
-export default {
+export default defineComponent({
   name: 'PanelWrapper',
 
   components: {
@@ -120,9 +122,9 @@ export default {
   created: function () {
     this.loading = true;
 
-    this.axios.get('/login').then(response => {
+    this.axios.get('/login').then((response: AxiosResponse) => {
       this.$root.user = response.data;
-      this.axios.options('/models').then(response => {
+      this.axios.options('/models').then((response: AxiosResponse) => {
         this.models = response.data;
         this.loading = false;
       });
@@ -131,8 +133,8 @@ export default {
       this.loading = false;
     });
 
-    this.axios.interceptors.response.use(null, (error) => {
-      if (error.response.status === 401) {
+    this.axios.interceptors.response.use(null, (error: AxiosError) => {
+      if (error.response?.status === 401) {
         this.showLoginDialog = true;
       }
       return Promise.reject(error);
@@ -148,7 +150,7 @@ export default {
       this.showLoginDialog = false;
     }
   }
-}
+})
 </script>
 
 <style>

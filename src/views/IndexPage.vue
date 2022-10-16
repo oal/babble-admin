@@ -65,14 +65,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MainToolbar from '../components/MainToolbar.vue';
+import {defineComponent} from "vue";
+import {AxiosResponse} from "axios";
 
-export default {
+export default defineComponent({
   name: 'IndexPage',
   components: {
     MainToolbar
   },
+  
   data() {
     return {
       loading: false,
@@ -82,10 +85,10 @@ export default {
 
   created() {
     this.loading = true;
-    this.axios.options('/models').then(response => {
+    this.axios.options('/models').then((response: AxiosResponse) => {
       this.models = response.data;
       this.loading = false;
     });
   }
-}
+})
 </script>
