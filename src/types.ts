@@ -29,3 +29,12 @@ export interface FieldError {
     property: string
     message: string
 }
+
+export type ToastType = 'info' | 'success' | 'error'
+
+export interface Toast {
+    key: string
+    message: string
+    type: ToastType
+    visible: boolean
+}
