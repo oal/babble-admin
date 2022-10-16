@@ -1,30 +1,20 @@
 <template>
-  <v-card color="grey lighten-5">
-    <v-card-title>
-      <v-layout>
-        <v-flex>
-          <h2 class="headline mb-0">
-            {{ label }}
-          </h2>
-        </v-flex>
-        <v-spacer />
-        <div>
-          <v-btn
-            v-for="block in blockObjects"
-            :key="block.type"
-            text
-            color="green"
-            @click="addBlock(block.type)"
-          >
-            <v-icon
-              icon="add_circle"
-              left
-            />
-            {{ block.name }}
-          </v-btn>
-        </div>
-      </v-layout>
-    </v-card-title>
+  <v-card
+    :title="label"
+    color="grey lighten-5"
+  >
+    <template #append>
+      <v-btn
+        v-for="block in blockObjects"
+        :key="block.type"
+        text
+        color="green"
+        prepend-icon="add_circle"
+        @click="addBlock(block.type)"
+      >
+        {{ block.name }}
+      </v-btn>
+    </template>
 
     <v-card-text
       v-if="error"
@@ -34,17 +24,14 @@
     </v-card-text>
 
     <v-card-text
-      v-if="blocksWithFields.length > 0"
+      v-if="blocksWithFields?.length > 0"
       class="pt-0"
     >
-      <v-layout
-        :column="!displayAsCards"
-        wrap
-      >
-        <v-flex
+      <v-row v-if="blocksWithFields">
+        <v-col
           v-for="(block, $index) in blocksWithFields"
           :key="block.key"
-          :md4="displayAsCards"
+          :cols="displayAsCards ? 4 : 12"
         >
           <ListFieldBlock
             :block="block.block"
@@ -57,8 +44,8 @@
             @move="moveBlock($index, $event)"
             @remove="removeBlockAt($index)"
           />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>
@@ -76,9 +63,7 @@ export default {
   props: {
     modelValue: {
       type: Array,
-      default: () => {
-        return []
-      }
+      default: () => ([])
     },
     name: String,
     label: String,
@@ -89,9 +74,12 @@ export default {
   emits: ['update:modelValue'],
 
   computed: {
+    value () {
+      return this.modelValue ?? []
+    },
     blocksWithFields () {
       if (!this.blocks) return []
-      return this.modelValue.map(blockData => {
+      return (this.modelValue ?? []).map(blockData => {
         const block = this.blocks[blockData.type]
         if (!block) return null
 
@@ -119,17 +107,15 @@ export default {
 
   created () {
     // Set an internal key on field init for all data blocks for reordering etc. to work nicely.
-    if (Array.isArray(this.modelValue)) {
-      this.modelValue.forEach(item => {
-        item._key = Math.floor(Math.random() * 99999999).toString(16)
-      })
-    }
+    this.value.forEach(item => {
+      item._key = Math.floor(Math.random() * 99999999).toString(16)
+    })
   },
 
   methods: {
     addBlock (type) {
       this.$emit('update:modelValue', [
-        ...this.modelValue,
+        ...this.value,
         {
           type,
           value: {}
@@ -138,7 +124,7 @@ export default {
     },
 
     moveBlock (index, movement) {
-      const newValue = [...this.modelValue]
+      const newValue = [...this.value]
       // Swap.
       const temp = newValue[index + movement]
       newValue[index + movement] = newValue[index]
@@ -148,17 +134,17 @@ export default {
     },
 
     removeBlockAt (index) {
-      const newValue = [...this.modelValue]
+      const newValue = [...this.value]
       newValue.splice(index, 1)
 
       this.$emit('update:modelValue', newValue)
     },
 
     onFieldInput (blockIndex, event) {
-      const newFieldValue = { ...this.modelValue[blockIndex] }
+      const newFieldValue = { ...this.value[blockIndex] }
       newFieldValue.value[event.key] = event.value
 
-      const newValue = [...this.modelValue]
+      const newValue = [...this.value]
       newValue[blockIndex] = newFieldValue
 
       this.$emit('update:modelValue', newValue)

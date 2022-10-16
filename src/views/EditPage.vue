@@ -264,7 +264,7 @@ export default defineComponent({
         this.blocks = response.data.blocks
 
         // Only load record data if ID is set, or if this is a single instance model (doesn't have an ID).
-        if (this.id || this.model.single) {
+        if ((this.id || this.model.single) && this.dataPath) {
           api.get(this.dataPath).then((response: AxiosResponse) => {
             this.data = response.data
             this.initEmptyFields()
@@ -351,7 +351,7 @@ export default defineComponent({
     initEmptyFields () {
       this.model.fields.forEach(field => {
         if (typeof this.data[field.key] === 'undefined') {
-          this.data[field.key] = ''
+          this.data[field.key] = null
         }
       })
 

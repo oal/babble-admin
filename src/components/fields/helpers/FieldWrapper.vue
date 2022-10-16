@@ -18,7 +18,7 @@
 
 <script>
 import { camelCase, upperFirst } from 'lodash'
-import { fields } from '@/fields.ts'
+import { fields } from '@/fields'
 
 export default {
   name: 'FieldWrapper',

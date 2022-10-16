@@ -1,14 +1,9 @@
 <template>
   <v-chip
-    outlined
-    label
-    color="blue-grey darken-1"
-    v-on="on"
+    variant="outlined"
+    color="blue-grey"
+    prepend-icon="insert_drive_file"
   >
-    <v-icon
-      icon="insert_drive_file"
-      left
-    />
     {{ modelValue }}
   </v-chip>
 </template>

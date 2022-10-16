@@ -1,83 +1,54 @@
 <template>
-  <v-card>
-    <v-card-text>
-      <v-layout align-center>
-        <v-flex>
-          <h3 class="subheading">
-            {{ blockName }}
-          </h3>
-        </v-flex>
-        <v-spacer />
-        <div>
-          <v-btn
-            v-if="!isFirst"
-            color="primary"
-            small
-            icon
-            class="ml-0"
-            @click="moveBlock(-1)"
-          >
-            <v-icon
-              v-if="displayAsCards"
-              icon="keyboard_arrow_left"
-            />
-            <v-icon
-              v-else
-              icon="keyboard_arrow_up"
-            />
-          </v-btn>
-          <v-btn
-            v-if="!isLast"
-            color="primary"
-            small
-            icon
-            class="ml-0"
-            @click="moveBlock(1)"
-          >
-            <v-icon
-              v-if="displayAsCards"
-              icon="keyboard_arrow_right"
-            />
-            <v-icon
-              v-else
-              icon="keyboard_arrow_down"
-            />
-          </v-btn>
-          <v-btn
-            color="red"
-            dark
-            small
-            icon
-            class="ml-0"
-            @click="removeBlock()"
-          >
-            <v-icon icon="clear" />
-          </v-btn>
-        </div>
-      </v-layout>
-    </v-card-text>
-
-    <v-card-text>
-      <!-- TODO: Send errors -->
-      <FieldList
-        :fields="block.fields"
-        :data="value.value"
-        :errors="{}"
-        :blocks="blocks"
-        @update:model-value="onFieldInput($event)"
+  <v-card :title="blockName">
+    <template #append>
+      <v-btn
+        v-if="!isFirst"
+        color="primary"
+        size="small"
+        :icon="displayAsCards ? 'keyboard_arrow_left' : 'keyboard_arrow_up'"
+        class="ml-2"
+        @click="moveBlock(-1)"
       />
-    </v-card-text>
+      <v-btn
+        v-if="!isLast"
+        color="primary"
+        size="small"
+        :icon="displayAsCards ? 'keyboard_arrow_right' : 'keyboard_arrow_down'"
+        class="ml-2"
+        @click="moveBlock(1)"
+      />
+      <v-btn
+        color="red"
+        size="small"
+        icon="clear"
+        class="ml-2"
+        @click="removeBlock()"
+      />
+    </template>
+
+    <!-- TODO: Send errors -->
+    <FieldList
+      :fields="block.fields"
+      :data="modelValue.value"
+      :errors="{}"
+      :blocks="blocks"
+      @update:model-value="onFieldInput($event)"
+    />
   </v-card>
 </template>
 
 <script>
+
 import FieldList from '@/components/fields/helpers/FieldList.vue'
 
 export default {
+  components: {
+    FieldList
+  },
   props: {
     blocks: Object, // In case there's a nested ListField, pass through
     block: Object,
-    value: Object,
+    modelValue: Object,
     displayAsCards: {
       type: Boolean,
       default: false
@@ -91,16 +62,12 @@ export default {
       default: false
     }
   },
+  emits: ['move', 'remove', 'update:modelValue'],
 
   computed: {
     blockName () {
       return this.block.name
     }
-  },
-
-  beforeCreate: function () {
-    // Relevant: https://vuejs.org/v2/guide/components.html#Recursive-Components
-    this.$options.components.FieldList = FieldList
   },
 
   methods: {
