@@ -65,6 +65,7 @@
 import MainToolbar from '../components/MainToolbar.vue';
 import FileManager from '../components/fields/helpers/FileManager.vue';
 import {defineComponent} from "vue";
+import api from "@/api";
 
 export default defineComponent({
   name: 'FilePage',
@@ -96,7 +97,7 @@ export default defineComponent({
       }
 
       this.loading = true;
-      this.axios.delete('/files/' + this.selection).then(() => {
+      api.delete('/files/' + this.selection).then(() => {
         this.$refs['file-manager'].loadFiles();
         this.close();
         this.loading = false;

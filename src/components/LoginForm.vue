@@ -26,6 +26,8 @@
 </template>
 
 <script>
+    import api from "@/api";
+
     export default {
         data() {
             return {
@@ -40,14 +42,14 @@
                 if (this.loading) return;
 
                 this.loading = true;
-                let auth = {
+                const auth = {
                     username: this.username,
                     password: this.password,
                 };
-                this.axios.get('/models/User/' + this.username, {
+                api.get('/models/User/' + this.username, {
                     auth: auth
                 }).then(response => {
-                    this.axios.defaults.auth = auth;
+                    api.defaults.auth = auth;
                     this.$root.user = response.data;
                     this.loading = false;
                     this.$emit('login');

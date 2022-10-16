@@ -111,6 +111,7 @@
 
 <script>
     import prettyBytes from 'pretty-bytes';
+    import api from "@/api";
 
     export default {
         name: 'FileManager',
@@ -163,7 +164,7 @@ emits: ['update:modelValue'],
                 if (this.path.length) {
                     path += '/' + this.path.join('/');
                 }
-                this.axios.get(path).then(response => {
+                api.get(path).then(response => {
                     this.files = response.data;
                     this.loading = false;
                 });
@@ -194,15 +195,15 @@ emits: ['update:modelValue'],
             },
 
             onUploadChange(event) {
-                let files = event.target.files;
+                const files = event.target.files;
 
-                let formData = new FormData();
+                const formData = new FormData();
                 for (let i = 0; i < files.length; i++) {
                     formData.append('file-' + i, files[i]);
                 }
 
-                let apiPath = ['/files', ...this.path].join('/');
-                this.axios.post(apiPath, formData, {
+                const apiPath = ['/files', ...this.path].join('/');
+                api.post(apiPath, formData, {
                     onUploadProgress: event => {
                         this.progress = (event.loaded / event.total) * 100;
                     }
@@ -215,12 +216,12 @@ emits: ['update:modelValue'],
             },
 
             onCreateDirectory() {
-                let name = prompt('Directory name:');
+                const name = prompt('Directory name:');
                 if (!name) return;
 
-                let apiPath = ['/files', ...this.path].join('/');
+                const apiPath = ['/files', ...this.path].join('/');
 
-                this.axios.post(apiPath, {name: name}).then(() => {
+                api.post(apiPath, {name: name}).then(() => {
                     this.loadFiles();
                 }).catch(() => {
                     console.log('fail');
@@ -228,12 +229,12 @@ emits: ['update:modelValue'],
             },
 
             onRenameDirectory(index) {
-                let name = prompt(this.$t('newDirectoryName') + ':');
+                const name = prompt(this.$t('newDirectoryName') + ':');
                 if (!name) return;
 
-                let apiPath = ['/files', ...this.path.slice(0, index + 1)].join('/');
+                const apiPath = ['/files', ...this.path.slice(0, index + 1)].join('/');
 
-                this.axios.put(apiPath, {name: name}).then(() => {
+                api.put(apiPath, {name: name}).then(() => {
                     this.path = [...this.path.slice(0, index), name]; // Move up to the directory that contains the renamed directory.
                     this.loadFiles();
                 }).catch(() => {

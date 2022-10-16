@@ -7,13 +7,11 @@ import App from './App.vue';
 import router from './router';
 import './registerServiceWorker';
 import i18n from './i18n';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import FieldWrapper from '@/components/fields/helpers/FieldWrapper.vue';
+import api from "@/api";
 
-axios.defaults.baseURL = '/api/';
 
 const app = createApp({
     setup() {
@@ -31,7 +29,7 @@ const app = createApp({
     created() {
         this.drawer = this.mdAndUp;
 
-        this.axios.interceptors.response.use(response => {
+        api.interceptors.response.use(response => {
             let message = response.data.message;
             if (!message) {
                 if (response.config.method === 'post') message = this.$t('saveSuccessful');
@@ -73,7 +71,6 @@ const app = createApp({
 
 app.component('FieldWrapper', FieldWrapper)
 
-app.use(VueAxios, axios)
 app.use(router)
 app.use(i18n)
 app.use(createVuetify({

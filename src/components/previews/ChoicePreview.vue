@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import api from "@/api";
+
 export default {
   props: {
     modelValue: String,
@@ -35,7 +37,7 @@ export default {
         if (!this.modelInstance) return this.modelValue;
         return this.modelInstance.title || this.modelInstance.name || this.modelInstance.id;
       }
-      let choices = this.field.options.choices;
+      const choices = this.field.options.choices;
       if (Array.isArray(choices)) return this.modelValue;
       return choices[this.modelValue];
     },
@@ -61,8 +63,8 @@ export default {
 
   methods: {
     loadData() {
-      let model = this.relatedModelName;
-      this.axios.get(`/models/${model}/${this.modelValue}`).then(response => {
+      const model = this.relatedModelName;
+      api.get(`/models/${model}/${this.modelValue}`).then(response => {
         this.modelInstance = response.data;
       })
     }

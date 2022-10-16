@@ -69,6 +69,7 @@
 import MainToolbar from '../components/MainToolbar.vue';
 import {defineComponent} from "vue";
 import {AxiosResponse} from "axios";
+import api from "@/api";
 
 export default defineComponent({
   name: 'IndexPage',
@@ -85,7 +86,7 @@ export default defineComponent({
 
   created() {
     this.loading = true;
-    this.axios.options('/models').then((response: AxiosResponse) => {
+    api.options('/models').then((response: AxiosResponse) => {
       this.models = response.data;
       this.loading = false;
     });

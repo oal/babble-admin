@@ -161,6 +161,7 @@ import {useDisplay} from "vuetify";
 import {defineComponent} from "vue";
 import type {AxiosError, AxiosResponse} from "axios";
 import type {AugmentedField, FieldError, Model} from "@/types";
+import api from "@/api";
 
 export default defineComponent({
   name: 'EditPage',
@@ -258,13 +259,13 @@ export default defineComponent({
         this.data = {};
       }
 
-      this.axios.options('/models/' + this.modelType).then((response: AxiosResponse) => {
+      api.options('/models/' + this.modelType).then((response: AxiosResponse) => {
         this.model = response.data.model;
         this.blocks = response.data.blocks;
 
         // Only load record data if ID is set, or if this is a single instance model (doesn't have an ID).
         if (this.id || this.model.single) {
-          this.axios.get(this.dataPath).then((response: AxiosResponse) => {
+          api.get(this.dataPath).then((response: AxiosResponse) => {
             this.data = response.data;
             this.initEmptyFields();
             this.loading = false;
@@ -293,8 +294,8 @@ export default defineComponent({
     save() {
       this.loading = true;
       let request;
-      if (this.id) request = this.axios.put;
-      else request = this.axios.post;
+      if (this.id) request = api.put;
+      else request = api.post;
 
       let data = this.data;
       if (this.id !== this.changedId) {

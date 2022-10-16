@@ -4,12 +4,14 @@
     :label="label"
     :items="choices"
     item-value="value"
-    item-text="label"
+    item-title="label"
     :loading="loading"
   />
 </template>
 
 <script>
+import api from "@/api";
+
 export default {
   name: 'ChoiceField',
 
@@ -43,7 +45,7 @@ emits: ['update:modelValue'],
 
   methods: {
     choicesToArray() {
-      let choices = this.options.choices;
+      const choices = this.options.choices;
       if (!choices) return [];
 
       // Array (use values as keys as well)
@@ -68,11 +70,11 @@ emits: ['update:modelValue'],
 
     loadModel() {
       this.loading = true;
-      let modelType = this.options.model;
+      const modelType = this.options.model;
 
-      this.axios.options('/models/' + modelType).then(response => {
-        let previewField = response.data.model.fields[0].key; // TODO: Allow overriding this.
-        this.axios.get('/models/' + modelType).then(response => {
+      api.options('/models/' + modelType).then(response => {
+        const previewField = response.data.model.fields[0].key; // TODO: Allow overriding this.
+        api.get('/models/' + modelType).then(response => {
           this.choices = response.data.map(record => {
             return {
               value: record.id,

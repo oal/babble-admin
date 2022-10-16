@@ -103,6 +103,7 @@
 import LoginForm from '../components/LoginForm.vue';
 import {defineComponent} from "vue";
 import {AxiosError, AxiosResponse} from "axios";
+import api from "@/api";
 
 export default defineComponent({
   name: 'PanelWrapper',
@@ -122,9 +123,9 @@ export default defineComponent({
   created: function () {
     this.loading = true;
 
-    this.axios.get('/login').then((response: AxiosResponse) => {
+    api.get('/login').then((response: AxiosResponse) => {
       this.$root.user = response.data;
-      this.axios.options('/models').then((response: AxiosResponse) => {
+      api.options('/models').then((response: AxiosResponse) => {
         this.models = response.data;
         this.loading = false;
       });
@@ -133,7 +134,7 @@ export default defineComponent({
       this.loading = false;
     });
 
-    this.axios.interceptors.response.use(null, (error: AxiosError) => {
+    api.interceptors.response.use(null, (error: AxiosError) => {
       if (error.response?.status === 401) {
         this.showLoginDialog = true;
       }
@@ -143,7 +144,7 @@ export default defineComponent({
 
   methods: {
     logout() {
-      this.axios.auth = null;
+      api.defaults.auth = undefined;
       this.$router.push({name: 'Login'});
     },
     onLogin() {

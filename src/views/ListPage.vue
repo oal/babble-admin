@@ -70,6 +70,7 @@ import {useDisplay} from "vuetify";
 import {defineComponent} from "vue";
 import {Field, Model, ModelInstance} from "@/types";
 import {AxiosResponse} from "axios";
+import api from "@/api";
 
 export default defineComponent({
   name: 'ListPage',
@@ -173,7 +174,7 @@ export default defineComponent({
     fetchData() {
       this.loading = true;
 
-      const modelPromise = this.axios.options('/models/' + this.modelType).then((response: AxiosResponse) => {
+      const modelPromise = api.options('/models/' + this.modelType).then((response: AxiosResponse) => {
         this.model = response.data.model;
         this.sort = this.options['sort'] || 'id'
       });
@@ -194,7 +195,7 @@ export default defineComponent({
       const params = {
         sort: this.sort
       };
-      return this.axios.get('/models/' + this.modelType, {params: params}).then((response: AxiosResponse) => {
+      return api.get('/models/' + this.modelType, {params: params}).then((response: AxiosResponse) => {
         this.models = response.data;
 
         // If fetchRecords is called outside of fetchData, and it wasn't already loading,
@@ -206,7 +207,7 @@ export default defineComponent({
       const ok = confirm('Do you really want to delete this item?');
       if (!ok) return;
 
-      this.axios.delete('/models/' + this.modelType + '/' + record.id).then((response: AxiosResponse) => {
+      api.delete('/models/' + this.modelType + '/' + record.id).then((response: AxiosResponse) => {
         console.log(response);
         this.fetchData();
       });

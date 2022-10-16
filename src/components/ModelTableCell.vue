@@ -25,6 +25,7 @@
 import {camelCase, upperFirst} from 'lodash';
 import InlineEdit from './helpers/InlineEdit.vue'
 import {previews} from "@/fields.ts";
+import api from "@/api";
 
 
 export default {
@@ -50,7 +51,7 @@ export default {
 
   computed: {
     hasPreviewComponent() {
-      let componentName = upperFirst(`${camelCase(this.column.type)}Preview`);
+      const componentName = upperFirst(`${camelCase(this.column.type)}Preview`);
       return !!this.$options.components[componentName];
     },
     value() {
@@ -60,10 +61,10 @@ export default {
 
   methods: {
     save(newValue) {
-      let key = this.column.key;
-      let partialData = {};
+      const key = this.column.key;
+      const partialData = {};
       partialData[key] = newValue;
-      this.axios.patch(`models/${this.model.type}/${this.record.id}`, partialData).then(response => {
+      api.patch(`models/${this.model.type}/${this.record.id}`, partialData).then(response => {
         this.record[key] = response.data[key];
         this.isEditing = false
       }).catch(error => {
