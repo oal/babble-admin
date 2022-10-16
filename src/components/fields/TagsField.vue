@@ -16,26 +16,26 @@ export default {
     label: String
   },
   emits: ['update:modelValue'],
-  data() {
+  data () {
     return {
       tags: []
     }
   },
   watch: {
-    value(value) {
-      this.$emit('update:modelValue', value);
+    value (value) {
+      this.$emit('update:modelValue', value)
     },
-    tags(value) {
-      this.$emit('update:modelValue', value);
+    tags (value) {
+      this.$emit('update:modelValue', value)
     }
   },
-  mounted() {
+  mounted () {
     if (!Array.isArray(this.modelValue)) {
-      let value = [];
-      if (this.modelValue) value.push(this.modelValue);
-      this.tags = value;
+      const value = []
+      if (this.modelValue) value.push(this.modelValue)
+      this.tags = value
     } else {
-      this.tags = [...this.modelValue];
+      this.tags = [...this.modelValue]
     }
   }
 }

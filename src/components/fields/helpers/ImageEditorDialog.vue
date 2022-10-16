@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import ImageCropper from './ImageCropper.vue';
+import ImageCropper from './ImageCropper.vue'
 
 export default {
   components: {
-    ImageCropper,
+    ImageCropper
   },
   props: {
     modelValue: Boolean,
@@ -40,37 +40,37 @@ export default {
   emits: ['update:modelValue', 'image', 'preview'],
 
   computed: {
-    cropData() {
-      if (this.modelValue && this.modelValue.crop) return this.modelValue.crop;
-      return null;
+    cropData () {
+      if (this.modelValue && this.modelValue.crop) return this.modelValue.crop
+      return null
     },
-    width() {
-      if (this.options && this.options.width) return this.options.width;
-      return null;
+    width () {
+      if (this.options && this.options.width) return this.options.width
+      return null
     },
-    height() {
-      if (this.options && this.options.height) return this.options.height;
-      return null;
-    },
+    height () {
+      if (this.options && this.options.height) return this.options.height
+      return null
+    }
   },
   methods: {
-    close() {
-      this.$emit('update:modelValue', false);
+    close () {
+      this.$emit('update:modelValue', false)
     },
 
-    onCrop(previewCanvas, cropData) {
+    onCrop (previewCanvas, cropData) {
       previewCanvas.toBlob(blob => {
-        let reader = new FileReader();
+        const reader = new FileReader()
         reader.onload = () => {
           this.$emit('image', {
             ...this.image,
             crop: cropData
-          });
-          this.$emit('preview', reader.result);
-          this.close();
-        };
-        reader.readAsDataURL(blob);
-      });
+          })
+          this.$emit('preview', reader.result)
+          this.close()
+        }
+        reader.readAsDataURL(blob)
+      })
     }
   }
 }

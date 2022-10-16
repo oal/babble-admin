@@ -62,10 +62,10 @@
 </template>
 
 <script lang="ts">
-import MainToolbar from '../components/MainToolbar.vue';
-import FileManager from '../components/fields/helpers/FileManager.vue';
-import {defineComponent} from "vue";
-import api from "@/api";
+import MainToolbar from '../components/MainToolbar.vue'
+import FileManager from '../components/fields/helpers/FileManager.vue'
+import { defineComponent } from 'vue'
+import api from '@/api'
 
 export default defineComponent({
   name: 'FilePage',
@@ -74,7 +74,7 @@ export default defineComponent({
     FileManager
   },
 
-  data() {
+  data () {
     return {
       loading: false,
 
@@ -84,32 +84,32 @@ export default defineComponent({
   },
 
   methods: {
-    select(selection: string) {
-      this.showSelectionDialog = true;
-      this.selection = selection;
+    select (selection: string) {
+      this.showSelectionDialog = true
+      this.selection = selection
     },
 
-    remove() {
-      const ok = confirm(this.$t('confirmDeleteMessage'));
+    remove () {
+      const ok = confirm(this.$t('confirmDeleteMessage'))
       if (!ok) {
-        this.close();
-        return;
+        this.close()
+        return
       }
 
-      this.loading = true;
+      this.loading = true
       api.delete('/files/' + this.selection).then(() => {
-        this.$refs['file-manager'].loadFiles();
-        this.close();
-        this.loading = false;
+        this.$refs['file-manager'].loadFiles()
+        this.close()
+        this.loading = false
       }).catch(() => {
-        console.log('fail');
-        this.loading = false;
-      });
+        console.log('fail')
+        this.loading = false
+      })
     },
 
-    close() {
-      this.showSelectionDialog = false;
-      this.selection = null;
+    close () {
+      this.showSelectionDialog = false
+      this.selection = null
     }
   }
 })

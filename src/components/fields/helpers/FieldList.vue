@@ -33,11 +33,11 @@ export default {
   emits: ['update:modelValue'],
 
   methods: {
-    onInput(field, value) {
+    onInput (field, value) {
       this.$emit('update:modelValue', {
         key: field,
-        value: value
-      });
+        value
+      })
     }
   }
 }

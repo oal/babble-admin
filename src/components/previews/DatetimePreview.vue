@@ -2,9 +2,8 @@
   <span>{{ datetime }}</span>
 </template>
 
-
 <script>
-import moment from 'moment';
+import moment from 'moment'
 
 export default {
   props: {
@@ -12,8 +11,8 @@ export default {
   },
 
   computed: {
-    datetime() {
-      return moment(this.modelValue, 'YYYY-MM-DD hh:mm').format('LLL');
+    datetime () {
+      return moment(this.modelValue, 'YYYY-MM-DD hh:mm').format('LLL')
     }
   }
 }

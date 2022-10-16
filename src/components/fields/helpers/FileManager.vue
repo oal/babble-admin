@@ -110,151 +110,150 @@
 </template>
 
 <script>
-    import prettyBytes from 'pretty-bytes';
-    import api from "@/api";
+import prettyBytes from 'pretty-bytes'
+import api from '@/api'
 
-    export default {
-        name: 'FileManager',
+export default {
+  name: 'FileManager',
 
-        props: [
-            'directory'
-        ],
-emits: ['update:modelValue'],
+  props: [
+    'directory'
+  ],
+  emits: ['update:modelValue'],
 
-        data() {
-            let path = [];
-            if (this.directory) path = this.directory.split('/').filter(dir => !!dir);
+  data () {
+    let path = []
+    if (this.directory) path = this.directory.split('/').filter(dir => !!dir)
 
-            return {
-                'loading': false,
-                'path': path,
-                'files': [],
-                'selection': null,
-                'progress': 100,
-            }
-        },
-
-        computed: {
-            uploadId() {
-                return 'upload-' + ((Math.random() * 99999) | 0).toString(16);
-            },
-
-            allFiles() {
-                if (this.files.length) return this.files;
-                return [{name: this.$t('noFilesFound')}]
-            }
-        },
-
-        watch: {
-            path() {
-                this.files = [];
-                this.loadFiles();
-            }
-        },
-
-        created() {
-            this.loadFiles();
-        },
-
-        methods: {
-            prettyBytes,
-            loadFiles() {
-                this.loading = true;
-                let path = '/files';
-                if (this.path.length) {
-                    path += '/' + this.path.join('/');
-                }
-                api.get(path).then(response => {
-                    this.files = response.data;
-                    this.loading = false;
-                });
-            },
-
-            getURL(file) {
-                return [...this.path, file.name].join('/');
-            },
-
-            popToDir(index) {
-                console.log(index);
-                if (index === this.path.length) return; // No change.
-
-                this.path = this.path.slice(0, index);
-            },
-
-            goToDir(dir) {
-                if (dir.type !== 'directory') return false;
-                this.path.push(dir.name);
-            },
-
-            selectFile(file) {
-                if (!file.type) return;
-                if (file.type === 'directory') return this.goToDir(file);
-
-                this.selection = this.getURL(file);
-                this.$emit('update:modelValue', this.selection);
-            },
-
-            onUploadChange(event) {
-                const files = event.target.files;
-
-                const formData = new FormData();
-                for (let i = 0; i < files.length; i++) {
-                    formData.append('file-' + i, files[i]);
-                }
-
-                const apiPath = ['/files', ...this.path].join('/');
-                api.post(apiPath, formData, {
-                    onUploadProgress: event => {
-                        this.progress = (event.loaded / event.total) * 100;
-                    }
-                }).then(() => {
-                    event.target.value = '';
-                    this.loadFiles();
-                }).catch(() => {
-                    console.log('fail');
-                });
-            },
-
-            onCreateDirectory() {
-                const name = prompt('Directory name:');
-                if (!name) return;
-
-                const apiPath = ['/files', ...this.path].join('/');
-
-                api.post(apiPath, {name: name}).then(() => {
-                    this.loadFiles();
-                }).catch(() => {
-                    console.log('fail');
-                });
-            },
-
-            onRenameDirectory(index) {
-                const name = prompt(this.$t('newDirectoryName') + ':');
-                if (!name) return;
-
-                const apiPath = ['/files', ...this.path.slice(0, index + 1)].join('/');
-
-                api.put(apiPath, {name: name}).then(() => {
-                    this.path = [...this.path.slice(0, index), name]; // Move up to the directory that contains the renamed directory.
-                    this.loadFiles();
-                }).catch(() => {
-                    console.log('fail');
-                });
-                console.log('Rename ', this.path[index], apiPath);
-            },
-
-            getIconClass(contentType) {
-                if (contentType === 'directory') return 'folder';
-                if (contentType.indexOf('text') === 0) return 'text_format';
-                if (contentType.indexOf('video') === 0) return 'ondemand_video';
-                if (contentType.indexOf('audio') === 0) return 'audiotrack';
-                if (contentType === 'application/pdf') return 'picture_as_pdf';
-                return 'insert_drive_file';
-            }
-        }
+    return {
+      loading: false,
+      path,
+      files: [],
+      selection: null,
+      progress: 100
     }
-</script>
+  },
 
+  computed: {
+    uploadId () {
+      return 'upload-' + ((Math.random() * 99999) | 0).toString(16)
+    },
+
+    allFiles () {
+      if (this.files.length) return this.files
+      return [{ name: this.$t('noFilesFound') }]
+    }
+  },
+
+  watch: {
+    path () {
+      this.files = []
+      this.loadFiles()
+    }
+  },
+
+  created () {
+    this.loadFiles()
+  },
+
+  methods: {
+    prettyBytes,
+    loadFiles () {
+      this.loading = true
+      let path = '/files'
+      if (this.path.length) {
+        path += '/' + this.path.join('/')
+      }
+      api.get(path).then(response => {
+        this.files = response.data
+        this.loading = false
+      })
+    },
+
+    getURL (file) {
+      return [...this.path, file.name].join('/')
+    },
+
+    popToDir (index) {
+      console.log(index)
+      if (index === this.path.length) return // No change.
+
+      this.path = this.path.slice(0, index)
+    },
+
+    goToDir (dir) {
+      if (dir.type !== 'directory') return false
+      this.path.push(dir.name)
+    },
+
+    selectFile (file) {
+      if (!file.type) return
+      if (file.type === 'directory') return this.goToDir(file)
+
+      this.selection = this.getURL(file)
+      this.$emit('update:modelValue', this.selection)
+    },
+
+    onUploadChange (event) {
+      const files = event.target.files
+
+      const formData = new FormData()
+      for (let i = 0; i < files.length; i++) {
+        formData.append('file-' + i, files[i])
+      }
+
+      const apiPath = ['/files', ...this.path].join('/')
+      api.post(apiPath, formData, {
+        onUploadProgress: event => {
+          this.progress = (event.loaded / event.total) * 100
+        }
+      }).then(() => {
+        event.target.value = ''
+        this.loadFiles()
+      }).catch(() => {
+        console.log('fail')
+      })
+    },
+
+    onCreateDirectory () {
+      const name = prompt('Directory name:')
+      if (!name) return
+
+      const apiPath = ['/files', ...this.path].join('/')
+
+      api.post(apiPath, { name }).then(() => {
+        this.loadFiles()
+      }).catch(() => {
+        console.log('fail')
+      })
+    },
+
+    onRenameDirectory (index) {
+      const name = prompt(this.$t('newDirectoryName') + ':')
+      if (!name) return
+
+      const apiPath = ['/files', ...this.path.slice(0, index + 1)].join('/')
+
+      api.put(apiPath, { name }).then(() => {
+        this.path = [...this.path.slice(0, index), name] // Move up to the directory that contains the renamed directory.
+        this.loadFiles()
+      }).catch(() => {
+        console.log('fail')
+      })
+      console.log('Rename ', this.path[index], apiPath)
+    },
+
+    getIconClass (contentType) {
+      if (contentType === 'directory') return 'folder'
+      if (contentType.indexOf('text') === 0) return 'text_format'
+      if (contentType.indexOf('video') === 0) return 'ondemand_video'
+      if (contentType.indexOf('audio') === 0) return 'audiotrack'
+      if (contentType === 'application/pdf') return 'picture_as_pdf'
+      return 'insert_drive_file'
+    }
+  }
+}
+</script>
 
 <style lang="scss" type="text/scss" scoped>
     .cursor-pointer {

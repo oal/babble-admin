@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import {camelCase, upperFirst} from 'lodash';
-import {fields} from "@/fields.ts";
+import { camelCase, upperFirst } from 'lodash'
+import { fields } from '@/fields.ts'
 
 export default {
   name: 'FieldWrapper',
@@ -39,13 +39,13 @@ export default {
   emits: ['update:modelValue'],
 
   methods: {
-    hasTypeComponent() {
-      let componentName = upperFirst(`${camelCase(this.type)}Field`);
-      return !!this.$options.components[componentName];
+    hasTypeComponent () {
+      const componentName = upperFirst(`${camelCase(this.type)}Field`)
+      return !!this.$options.components[componentName]
     },
-    onFieldInput(value) {
-      this.$emit('update:modelValue', value);
-    },
+    onFieldInput (value) {
+      this.$emit('update:modelValue', value)
+    }
   }
 }
 </script>

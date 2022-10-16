@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import moment from 'moment'
 
 export default {
   name: 'DatetimeField',
@@ -33,10 +33,10 @@ export default {
   },
   emits: ['update:modelValue'],
 
-  data() {
-    let dateTime;
-    if (this.modelValue) dateTime = moment(this.modelValue);
-    else dateTime = moment();
+  data () {
+    let dateTime
+    if (this.modelValue) dateTime = moment(this.modelValue)
+    else dateTime = moment()
 
     return {
       date: dateTime.format('YYYY-MM-DD'),
@@ -49,14 +49,14 @@ export default {
     time: 'emitInput'
   },
 
-  mounted() {
-    this.emitInput();
+  mounted () {
+    this.emitInput()
   },
 
   methods: {
-    emitInput() {
-      if (!this.date || !this.time) return null;
-      let dateTime = moment(`${this.date}T${this.time}:00`, 'YYYY-MM-DD hh:mm:ss');
+    emitInput () {
+      if (!this.date || !this.time) return null
+      const dateTime = moment(`${this.date}T${this.time}:00`, 'YYYY-MM-DD hh:mm:ss')
       this.$emit('update:modelValue', dateTime.format())
     }
   }

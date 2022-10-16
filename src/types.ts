@@ -22,6 +22,7 @@ export interface Model {
 export interface ModelInstance {
     id: string
     _permalink?: string
+
     [key: string]: any
 }
 

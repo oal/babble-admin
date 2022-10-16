@@ -26,38 +26,38 @@
 </template>
 
 <script>
-    import api from "@/api";
+import api from '@/api'
 
-    export default {
-        data() {
-            return {
-                loading: false,
-                username: '',
-                password: ''
-            }
-        },
-
-        methods: {
-            login() {
-                if (this.loading) return;
-
-                this.loading = true;
-                const auth = {
-                    username: this.username,
-                    password: this.password,
-                };
-                api.get('/models/User/' + this.username, {
-                    auth: auth
-                }).then(response => {
-                    api.defaults.auth = auth;
-                    this.$root.user = response.data;
-                    this.loading = false;
-                    this.$emit('login');
-                }).catch(() => {
-                    this.$root.addMessage(this.$t('invalidLogin'), 'error');
-                    this.loading = false;
-                });
-            }
-        }
+export default {
+  data () {
+    return {
+      loading: false,
+      username: '',
+      password: ''
     }
+  },
+
+  methods: {
+    login () {
+      if (this.loading) return
+
+      this.loading = true
+      const auth = {
+        username: this.username,
+        password: this.password
+      }
+      api.get('/models/User/' + this.username, {
+        auth
+      }).then(response => {
+        api.defaults.auth = auth
+        this.$root.user = response.data
+        this.loading = false
+        this.$emit('login')
+      }).catch(() => {
+        this.$root.addMessage(this.$t('invalidLogin'), 'error')
+        this.loading = false
+      })
+    }
+  }
+}
 </script>

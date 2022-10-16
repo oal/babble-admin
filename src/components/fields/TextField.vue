@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import {get} from 'lodash';
+import { get } from 'lodash'
 
 export default {
   name: 'TextField',
@@ -30,11 +30,11 @@ export default {
   emits: ['update:modelValue'],
 
   methods: {
-    getOption(path) {
+    getOption (path) {
       return get(this.options, path, null)
     },
-    onInput(value) {
-      this.$emit('update:modelValue', value);
+    onInput (value) {
+      this.$emit('update:modelValue', value)
     }
   }
 }

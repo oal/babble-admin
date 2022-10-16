@@ -13,14 +13,14 @@
 
 <script>
 // Editor
-import CodeMirror from 'codemirror';
-import 'codemirror/mode/markdown/markdown.js';
+import CodeMirror from 'codemirror'
+import 'codemirror/mode/markdown/markdown.js'
 
 // Style
-import 'codemirror/lib/codemirror.css';
+import 'codemirror/lib/codemirror.css'
 
 // Other imports
-import {get} from 'lodash';
+import { get } from 'lodash'
 
 export default {
   name: 'MarkdownField',
@@ -32,34 +32,34 @@ export default {
   },
   emits: ['update:modelValue'],
 
-  data() {
+  data () {
     return {
       codemirrorEditor: null
     }
   },
 
-  mounted() {
-    let codemirrorEditor = CodeMirror.fromTextArea(this.$refs.editor, {
+  mounted () {
+    const codemirrorEditor = CodeMirror.fromTextArea(this.$refs.editor, {
       lineNumbers: false,
       mode: 'markdown',
       lineWrapping: true,
       viewportMargin: Infinity
-    });
+    })
     codemirrorEditor.on('change', () => {
-      let modelValue = codemirrorEditor.getValue();
-      this.$emit('update:modelValue', modelValue);
-    });
-    this.codemirrorEditor = codemirrorEditor;
+      const modelValue = codemirrorEditor.getValue()
+      this.$emit('update:modelValue', modelValue)
+    })
+    this.codemirrorEditor = codemirrorEditor
   },
 
-  beforeUnmount() {
+  beforeUnmount () {
     if (this.codemirrorEditor) {
       // No teardown needed?
     }
   },
 
   methods: {
-    getOption(path) {
+    getOption (path) {
       return get(this.options, path, null)
     }
   }

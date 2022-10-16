@@ -22,11 +22,10 @@
 </template>
 
 <script>
-import {camelCase, upperFirst} from 'lodash';
+import { camelCase, upperFirst } from 'lodash'
 import InlineEdit from './helpers/InlineEdit.vue'
-import {previews} from "@/fields.ts";
-import api from "@/api";
-
+import { previews } from '@/fields.ts'
+import api from '@/api'
 
 export default {
   components: {
@@ -40,8 +39,7 @@ export default {
     column: Object
   },
 
-
-  data() {
+  data () {
     return {
       changedValue: null,
       errors: {},
@@ -50,25 +48,25 @@ export default {
   },
 
   computed: {
-    hasPreviewComponent() {
-      const componentName = upperFirst(`${camelCase(this.column.type)}Preview`);
-      return !!this.$options.components[componentName];
+    hasPreviewComponent () {
+      const componentName = upperFirst(`${camelCase(this.column.type)}Preview`)
+      return !!this.$options.components[componentName]
     },
-    value() {
-      return this.record[this.column.key];
+    value () {
+      return this.record[this.column.key]
     }
   },
 
   methods: {
-    save(newValue) {
-      const key = this.column.key;
-      const partialData = {};
-      partialData[key] = newValue;
+    save (newValue) {
+      const key = this.column.key
+      const partialData = {}
+      partialData[key] = newValue
       api.patch(`models/${this.model.type}/${this.record.id}`, partialData).then(response => {
-        this.record[key] = response.data[key];
+        this.record[key] = response.data[key]
         this.isEditing = false
       }).catch(error => {
-        console.log(error);
+        console.log(error)
       })
     }
   }

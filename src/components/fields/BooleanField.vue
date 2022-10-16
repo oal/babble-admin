@@ -14,21 +14,21 @@ export default {
     label: String
   },
   emits: ['update:modelValue'],
-  data() {
+  data () {
     return {
       state: !!this.modelValue
     }
   },
   watch: {
-    modelValue() {
+    modelValue () {
       this.state = this.modelValue
     },
-    state() {
-      this.$emit('update:modelValue', this.state);
+    state () {
+      this.$emit('update:modelValue', this.state)
     }
   },
-  mounted() {
-    if (this.modelValue !== this.state) this.$emit('update:modelValue', this.state);
-  },
+  mounted () {
+    if (this.modelValue !== this.state) this.$emit('update:modelValue', this.state)
+  }
 }
 </script>

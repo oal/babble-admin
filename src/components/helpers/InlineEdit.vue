@@ -58,7 +58,7 @@ export default {
   },
   emits: ['update:modelValue', 'update:open'],
 
-  data() {
+  data () {
     return {
       internalValue: null
     }
@@ -66,7 +66,7 @@ export default {
 
   watch: {
     modelValue: {
-      handler() {
+      handler () {
         this.internalValue = JSON.parse(JSON.stringify(this.modelValue))
       },
       immediate: true
@@ -74,10 +74,10 @@ export default {
   },
 
   methods: {
-    save() {
+    save () {
       this.$emit('update:modelValue', this.internalValue)
     },
-    setVisibility(state) {
+    setVisibility (state) {
       this.$emit('update:open', state)
     }
   }

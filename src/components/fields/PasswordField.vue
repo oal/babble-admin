@@ -27,7 +27,7 @@ export default {
   },
   emits: ['update:modelValue'],
 
-  data() {
+  data () {
     return {
       modelValue: '',
       confirmValue: ''
@@ -35,22 +35,22 @@ export default {
   },
 
   watch: {
-    modelValue() {
-      this.emit();
+    modelValue () {
+      this.emit()
     },
-    confirmValue() {
-      this.emit();
+    confirmValue () {
+      this.emit()
     }
   },
 
   methods: {
-    emit() {
-      this.$emit('update:modelValue', this.modelValue);
+    emit () {
+      this.$emit('update:modelValue', this.modelValue)
     },
-    validate() {
-      if (this.modelValue === this.confirmValue) return true;
+    validate () {
+      if (this.modelValue === this.confirmValue) return true
 
-      return this.$t('invalidPassword');
+      return this.$t('invalidPassword')
     }
   }
 }

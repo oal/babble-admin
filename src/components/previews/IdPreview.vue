@@ -14,8 +14,8 @@ export default {
   },
 
   computed: {
-    parts() {
-      return this.modelValue.split('/');
+    parts () {
+      return this.modelValue.split('/')
     }
   }
 }

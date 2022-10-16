@@ -71,48 +71,48 @@
 </template>
 
 <script>
-    import FieldList from '@/components/fields/helpers/FieldList.vue';
+import FieldList from '@/components/fields/helpers/FieldList.vue'
 
-    export default {
-        props: {
-            blocks: Object, // In case there's a nested ListField, pass through
-            block: Object,
-            value: Object,
-            displayAsCards: {
-                type: Boolean,
-                default: false
-            },
-            isFirst: {
-                type: Boolean,
-                default: false
-            },
-            isLast: {
-                type: Boolean,
-                default: false
-            }
-        },
-
-        computed: {
-            blockName() {
-                return this.block.name;
-            }
-        },
-
-        beforeCreate: function () {
-            // Relevant: https://vuejs.org/v2/guide/components.html#Recursive-Components
-            this.$options.components.FieldList = FieldList
-        },
-
-        methods: {
-            moveBlock(direction) {
-                this.$emit('move', direction);
-            },
-            removeBlock() {
-                this.$emit('remove');
-            },
-            onFieldInput(value) {
-                this.$emit('update:modelValue', value);
-            }
-        }
+export default {
+  props: {
+    blocks: Object, // In case there's a nested ListField, pass through
+    block: Object,
+    value: Object,
+    displayAsCards: {
+      type: Boolean,
+      default: false
+    },
+    isFirst: {
+      type: Boolean,
+      default: false
+    },
+    isLast: {
+      type: Boolean,
+      default: false
     }
+  },
+
+  computed: {
+    blockName () {
+      return this.block.name
+    }
+  },
+
+  beforeCreate: function () {
+    // Relevant: https://vuejs.org/v2/guide/components.html#Recursive-Components
+    this.$options.components.FieldList = FieldList
+  },
+
+  methods: {
+    moveBlock (direction) {
+      this.$emit('move', direction)
+    },
+    removeBlock () {
+      this.$emit('remove')
+    },
+    onFieldInput (value) {
+      this.$emit('update:modelValue', value)
+    }
+  }
+}
 </script>

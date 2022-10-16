@@ -13,17 +13,17 @@
 
 <script>
 // Editors
-import MediumEditor from 'medium-editor';
-import CodeMirror from 'codemirror';
-import 'codemirror/mode/htmlmixed/htmlmixed.js';
+import MediumEditor from 'medium-editor'
+import CodeMirror from 'codemirror'
+import 'codemirror/mode/htmlmixed/htmlmixed.js'
 
 // Styles
-import 'medium-editor/src/sass/medium-editor.scss';
-import 'medium-editor/src/sass/themes/flat.scss';
-import 'codemirror/lib/codemirror.css';
+import 'medium-editor/src/sass/medium-editor.scss'
+import 'medium-editor/src/sass/themes/flat.scss'
+import 'codemirror/lib/codemirror.css'
 
 // Other imports
-import {get} from 'lodash';
+import { get } from 'lodash'
 
 export default {
   name: 'HtmlField',
@@ -35,16 +35,16 @@ export default {
   },
   emits: ['update:modelValue'],
 
-  data() {
+  data () {
     return {
       mediumEditor: null,
       codemirrorEditor: null
     }
   },
 
-  mounted() {
+  mounted () {
     if (this.getOption('admin.wysiwyg')) {
-      let mediumEditor = new MediumEditor(this.$refs.editor, {
+      const mediumEditor = new MediumEditor(this.$refs.editor, {
         toolbar: {
           buttons: [
             'bold', 'italic', 'anchor',
@@ -52,45 +52,45 @@ export default {
             'orderedlist', 'unorderedlist'
           ]
         }
-      });
+      })
 
-      let removeSpans = (element) => {
-        var spans = element.getElementsByTagName('span');
-        for (var i = 0; i < spans.length; i++) {
+      const removeSpans = (element) => {
+        const spans = element.getElementsByTagName('span')
+        for (let i = 0; i < spans.length; i++) {
           spans[i].outerHTML = spans[i].innerHTML
         }
-      };
+      }
 
       // Remove style attributes inserted by the browser in the contenteditable element.
       mediumEditor.subscribe('blur', (event, editable) => {
-        removeSpans(editable);
-        this.$emit('update:modelValue', editable.innerHTML);
-      });
+        removeSpans(editable)
+        this.$emit('update:modelValue', editable.innerHTML)
+      })
 
-      this.mediumEditor = mediumEditor;
+      this.mediumEditor = mediumEditor
     } else {
-      let codemirrorEditor = CodeMirror.fromTextArea(this.$refs.editor, {
+      const codemirrorEditor = CodeMirror.fromTextArea(this.$refs.editor, {
         lineNumbers: true,
         mode: 'htmlmixed'
-      });
+      })
       codemirrorEditor.on('change', () => {
-        let modelValue = codemirrorEditor.getValue();
-        this.$emit('update:modelValue', modelValue);
-      });
-      this.codemirrorEditor = codemirrorEditor;
+        const modelValue = codemirrorEditor.getValue()
+        this.$emit('update:modelValue', modelValue)
+      })
+      this.codemirrorEditor = codemirrorEditor
     }
   },
 
-  beforeUnmount() {
+  beforeUnmount () {
     if (this.mediumEditor) {
-      this.mediumEditor.destroy();
+      this.mediumEditor.destroy()
     } else if (this.codemirrorEditor) {
       // No teardown needed?
     }
   },
 
   methods: {
-    getOption(path) {
+    getOption (path) {
       return get(this.options, path, null)
     }
   }

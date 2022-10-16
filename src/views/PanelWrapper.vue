@@ -100,10 +100,10 @@
 </template>
 
 <script lang="ts">
-import LoginForm from '../components/LoginForm.vue';
-import {defineComponent} from "vue";
-import {AxiosError, AxiosResponse} from "axios";
-import api from "@/api";
+import LoginForm from '../components/LoginForm.vue'
+import { defineComponent } from 'vue'
+import { AxiosError, AxiosResponse } from 'axios'
+import api from '@/api'
 
 export default defineComponent({
   name: 'PanelWrapper',
@@ -112,7 +112,7 @@ export default defineComponent({
     LoginForm
   },
 
-  data() {
+  data () {
     return {
       loading: false,
       showLoginDialog: false,
@@ -121,34 +121,34 @@ export default defineComponent({
   },
 
   created: function () {
-    this.loading = true;
+    this.loading = true
 
     api.get('/login').then((response: AxiosResponse) => {
-      this.$root.user = response.data;
+      this.$root.user = response.data
       api.options('/models').then((response: AxiosResponse) => {
-        this.models = response.data;
-        this.loading = false;
-      });
+        this.models = response.data
+        this.loading = false
+      })
     }).catch(() => {
-      this.$router.push({name: 'Login'});
-      this.loading = false;
-    });
+      this.$router.push({ name: 'Login' })
+      this.loading = false
+    })
 
     api.interceptors.response.use(null, (error: AxiosError) => {
       if (error.response?.status === 401) {
-        this.showLoginDialog = true;
+        this.showLoginDialog = true
       }
-      return Promise.reject(error);
-    });
+      return Promise.reject(error)
+    })
   },
 
   methods: {
-    logout() {
-      api.defaults.auth = undefined;
-      this.$router.push({name: 'Login'});
+    logout () {
+      api.defaults.auth = undefined
+      this.$router.push({ name: 'Login' })
     },
-    onLogin() {
-      this.showLoginDialog = false;
+    onLogin () {
+      this.showLoginDialog = false
     }
   }
 })

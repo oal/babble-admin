@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import FileManager from '../fields/helpers/FileManager.vue';
+import FileManager from '../fields/helpers/FileManager.vue'
 
 export default {
   name: 'FileField',
@@ -77,25 +77,25 @@ export default {
   },
   emits: ['update:modelValue'],
 
-  data() {
+  data () {
     return {
       showFileManager: false
     }
   },
 
   methods: {
-    onOpenFileManager() {
-      this.showFileManager = true;
+    onOpenFileManager () {
+      this.showFileManager = true
     },
 
-    onSelectFile(file) {
-      this.$emit('update:modelValue', file);
-      this.showFileManager = false;
+    onSelectFile (file) {
+      this.$emit('update:modelValue', file)
+      this.showFileManager = false
     },
 
-    onDeselectFile() {
-      this.$emit('update:modelValue', null);
-    },
+    onDeselectFile () {
+      this.$emit('update:modelValue', null)
+    }
   }
 }
 </script>

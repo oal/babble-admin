@@ -7,6 +7,7 @@ module.exports = {
         "node": true
     },
     "extends": [
+        "standard",
         "plugin:vue/vue3-recommended",
         "eslint:recommended",
         "@vue/eslint-config-typescript/recommended"

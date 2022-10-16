@@ -66,30 +66,30 @@
 </template>
 
 <script lang="ts">
-import MainToolbar from '../components/MainToolbar.vue';
-import {defineComponent} from "vue";
-import {AxiosResponse} from "axios";
-import api from "@/api";
+import MainToolbar from '../components/MainToolbar.vue'
+import { defineComponent } from 'vue'
+import { AxiosResponse } from 'axios'
+import api from '@/api'
 
 export default defineComponent({
   name: 'IndexPage',
   components: {
     MainToolbar
   },
-  
-  data() {
+
+  data () {
     return {
       loading: false,
       models: []
     }
   },
 
-  created() {
-    this.loading = true;
+  created () {
+    this.loading = true
     api.options('/models').then((response: AxiosResponse) => {
-      this.models = response.data;
-      this.loading = false;
-    });
+      this.models = response.data
+      this.loading = false
+    })
   }
 })
 </script>

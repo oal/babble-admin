@@ -86,8 +86,8 @@
 </template>
 
 <script>
-import FileManager from './helpers/FileManager.vue';
-import ImageEditorDialog from './helpers/ImageEditorDialog.vue';
+import FileManager from './helpers/FileManager.vue'
+import ImageEditorDialog from './helpers/ImageEditorDialog.vue'
 
 export default {
   name: 'ImageField',
@@ -102,93 +102,93 @@ export default {
     options: Object
   },
   emits: ['update:modelValue'],
-  data() {
+  data () {
     return {
       showFileManager: false,
       showImageEditor: false,
       selection: null,
       directory: null,
-      croppedImage: null,
+      croppedImage: null
     }
   },
 
   computed: {
-    hasCropper() {
-      return this.options && this.options.admin && this.options.admin.crop;
+    hasCropper () {
+      return this.options && this.options.admin && this.options.admin.crop
     },
-    previewImage() {
+    previewImage () {
       if (this.croppedImage) {
-        return this.croppedImage;
+        return this.croppedImage
       }
       if (this.modelValue && this.modelValue.filename) {
         if (this.modelValue.url) {
-          return `/uploads/${this.modelValue.url}`;
+          return `/uploads/${this.modelValue.url}`
         }
-        return `/uploads/${this.modelValue.filename}`;
+        return `/uploads/${this.modelValue.filename}`
       }
-      return null;
+      return null
     }
   },
 
   watch: {
-    modelValue() {
+    modelValue () {
       if (!this.modelValue) {
         // Reset state when value is set to null or undefined (happens in ListField when moved).
-        this.reset();
+        this.reset()
       }
     }
   },
-  created() {
-    this.reset();
+  created () {
+    this.reset()
   },
   methods: {
-    reset() {
-      let croppedImage = null;
+    reset () {
+      let croppedImage = null
       if (this.modelValue && this.modelValue.url) {
-        croppedImage = this.modelValue.url;
+        croppedImage = this.modelValue.url
       }
-      let filename = (this.modelValue ? this.modelValue.filename : null) || null;
-      let directory = '/';
-      if (filename) directory = '/' + filename.split('/').slice(0, -1).join('/');
+      const filename = (this.modelValue ? this.modelValue.filename : null) || null
+      let directory = '/'
+      if (filename) directory = '/' + filename.split('/').slice(0, -1).join('/')
 
-      this.selection = filename;
-      this.directory = directory;
-      this.croppedImage = croppedImage;
+      this.selection = filename
+      this.directory = directory
+      this.croppedImage = croppedImage
     },
-    syncInput(modelValue) {
-      this.$emit('update:modelValue', modelValue);
+    syncInput (modelValue) {
+      this.$emit('update:modelValue', modelValue)
     },
-    setFile(filename) {
+    setFile (filename) {
       this.$emit('update:modelValue', {
-        filename: filename
-      });
+        filename
+      })
     },
-    onOpenFileManager() {
-      this.showFileManager = true;
+    onOpenFileManager () {
+      this.showFileManager = true
     },
-    closeImageEditor() {
-      this.showImageEditor = false;
+    closeImageEditor () {
+      this.showImageEditor = false
       // If no cropped version was already set, unset selection as cropped version is still missing.
       if (!this.croppedImage) {
-        this.setFile(null);
+        this.setFile(null)
       }
     },
-    onSelectFile(file) {
-      this.croppedImage = null;
-      this.setFile(file);
-      this.showFileManager = false;
+    onSelectFile (file) {
+      this.croppedImage = null
+      this.setFile(file)
+      this.showFileManager = false
       if (this.hasCropper) {
-        this.showImageEditor = true;
+        this.showImageEditor = true
       }
     },
-    onDeselectFile() {
-      this.croppedImage = null;
-      this.showFileManager = true;
-      this.setFile(null);
+    onDeselectFile () {
+      this.croppedImage = null
+      this.showFileManager = true
+      this.setFile(null)
     },
-    onReCrop() {
-      this.showImageEditor = true;
-    },
+    onReCrop () {
+      this.showImageEditor = true
+    }
   }
 }
 </script>

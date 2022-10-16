@@ -32,8 +32,8 @@ export default {
   emits: ['save'],
 
   methods: {
-    save() {
-      this.$emit('save');
+    save () {
+      this.$emit('save')
     }
   }
 }

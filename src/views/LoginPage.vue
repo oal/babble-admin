@@ -25,8 +25,8 @@
 </template>
 
 <script lang="ts">
-import LoginForm from '@/components/LoginForm.vue';
-import {defineComponent} from "vue";
+import LoginForm from '@/components/LoginForm.vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'LoginPage',
@@ -34,16 +34,16 @@ export default defineComponent({
     LoginForm
   },
 
-  data() {
+  data () {
     return {
       showLoginDialog: true
     }
   },
 
   methods: {
-    onLogin() {
-      this.showLoginDialog = false;
-      this.$router.replace({name: 'Index'});
+    onLogin () {
+      this.showLoginDialog = false
+      this.$router.replace({ name: 'Index' })
     }
   }
 })

@@ -151,17 +151,17 @@
 </template>
 
 <script lang="ts">
-import {get} from 'lodash';
-import slug from 'slug';
+import { get } from 'lodash'
+import slug from 'slug'
 
-import FieldList from '../components/fields/helpers/FieldList.vue';
-import EditCardActions from '../components/helpers/EditCardActions.vue';
-import MainToolbar from '../components/MainToolbar.vue';
-import {useDisplay} from "vuetify";
-import {defineComponent} from "vue";
-import type {AxiosError, AxiosResponse} from "axios";
-import type {AugmentedField, FieldError, Model} from "@/types";
-import api from "@/api";
+import FieldList from '../components/fields/helpers/FieldList.vue'
+import EditCardActions from '../components/helpers/EditCardActions.vue'
+import MainToolbar from '../components/MainToolbar.vue'
+import { useDisplay } from 'vuetify'
+import { defineComponent } from 'vue'
+import type { AxiosError, AxiosResponse } from 'axios'
+import type { AugmentedField, FieldError, Model } from '@/types'
+import api from '@/api'
 
 export default defineComponent({
   name: 'EditPage',
@@ -177,15 +177,15 @@ export default defineComponent({
     id: String
   },
 
-  setup() {
-    const {smAndUp} = useDisplay()
+  setup () {
+    const { smAndUp } = useDisplay()
 
     return {
-      smAndUp,
+      smAndUp
     }
   },
 
-  data() {
+  data () {
     return {
       a: true,
       isNew: !this.id,
@@ -200,122 +200,122 @@ export default defineComponent({
   },
 
   computed: {
-    mainFields() {
+    mainFields () {
       return this.model.fields.filter(field => {
-        return !get(field, 'options.admin.sidebar');
+        return !get(field, 'options.admin.sidebar')
       }).map(field => {
         const augmentedField = field as AugmentedField
-        const numColumns = get(augmentedField, 'options.admin.columns') || 12;
-        augmentedField.classes = 'md' + numColumns;
-        return augmentedField;
-      });
+        const numColumns = get(augmentedField, 'options.admin.columns') || 12
+        augmentedField.classes = 'md' + numColumns
+        return augmentedField
+      })
     },
-    sidebarFields() {
+    sidebarFields () {
       return this.model.fields.filter(field => {
-        return get(field, 'options.admin.sidebar') === true;
-      });
+        return get(field, 'options.admin.sidebar') === true
+      })
     },
-    hasSidebar() {
+    hasSidebar () {
       return this.sidebarFields.length > 0
     },
-    dataPath() {
-      const path = '/models/' + this.modelType;
+    dataPath () {
+      const path = '/models/' + this.modelType
 
-      if (this.model.single) return path;
-      if (!this.changedId) return null;
+      if (this.model.single) return path
+      if (!this.changedId) return null
 
-      return path + '/' + this.changedId;
+      return path + '/' + this.changedId
     },
 
-    autoIdField() {
-      const field = get(this.model, 'options.admin.id');
-      if (!field) return null;
+    autoIdField () {
+      const field = get(this.model, 'options.admin.id')
+      if (!field) return null
 
-      const fieldKeys = this.model.fields.map(field => field.key);
-      if (fieldKeys.indexOf(field) === -1) return null;
+      const fieldKeys = this.model.fields.map(field => field.key)
+      if (fieldKeys.indexOf(field) === -1) return null
 
-      return field;
+      return field
     },
 
-    saveError() {
-      return this.dataPath ? null : this.$t('missingIdError');
+    saveError () {
+      return this.dataPath ? null : this.$t('missingIdError')
     }
   },
 
   watch: {
-    '$route': 'fetchData',
+    $route: 'fetchData'
   },
 
-  created() {
-    this.fetchData();
+  created () {
+    this.fetchData()
   },
 
   methods: {
-    fetchData() {
-      this.loading = true;
+    fetchData () {
+      this.loading = true
 
       if (!this.id) {
-        this.changedId = null;
-        this.data = {};
+        this.changedId = null
+        this.data = {}
       }
 
       api.options('/models/' + this.modelType).then((response: AxiosResponse) => {
-        this.model = response.data.model;
-        this.blocks = response.data.blocks;
+        this.model = response.data.model
+        this.blocks = response.data.blocks
 
         // Only load record data if ID is set, or if this is a single instance model (doesn't have an ID).
         if (this.id || this.model.single) {
           api.get(this.dataPath).then((response: AxiosResponse) => {
-            this.data = response.data;
-            this.initEmptyFields();
-            this.loading = false;
-          });
+            this.data = response.data
+            this.initEmptyFields()
+            this.loading = false
+          })
         } else {
-          this.initEmptyFields();
-          this.loading = false;
+          this.initEmptyFields()
+          this.loading = false
         }
-      });
+      })
     },
-    validateId(value: string) {
+    validateId (value: string) {
       if (this.errors.id) {
-        return this.errors.id;
+        return this.errors.id
       }
 
-      let validChars = 'a-z0-9-_';
+      let validChars = 'a-z0-9-_'
       if (this.model.hierarchical) {
-        validChars = validChars + '/';
+        validChars = validChars + '/'
       }
 
       if (value && !value.match(new RegExp(`^([${validChars}]+)$`, 'g'))) {
-        return this.$t('invalidIdError');
+        return this.$t('invalidIdError')
       }
-      return true;
+      return true
     },
-    save() {
-      this.loading = true;
-      let request;
-      if (this.id) request = api.put;
-      else request = api.post;
+    save () {
+      this.loading = true
+      let request
+      if (this.id) request = api.put
+      else request = api.post
 
-      let data = this.data;
+      let data = this.data
       if (this.id !== this.changedId) {
         data = {
           ...this.data,
-          '_old_id': this.id
-        };
+          _old_id: this.id
+        }
       }
 
       request(this.dataPath, data).then((response: AxiosResponse) => {
         // Redirect if page didn't already have an ID. Otherwise, update data.
         if (this.id !== response.data.id) {
-          let location;
+          let location
           if (this.model.single) {
             location = {
               name: 'EditSingle',
               params: {
                 modelType: this.model.type
               }
-            };
+            }
           } else {
             location = {
               name: 'Edit',
@@ -323,47 +323,47 @@ export default defineComponent({
                 modelType: this.model.type,
                 id: this.changedId
               }
-            };
+            }
           }
-          this.$router.push(location);
+          this.$router.push(location)
         } else {
           Object.keys(this.data).forEach(field => {
-            this.data[field] = response.data[field];
-          });
+            this.data[field] = response.data[field]
+          })
         }
 
-        this.errors = {};
-        this.loading = false;
+        this.errors = {}
+        this.loading = false
       }).catch((error: AxiosError) => {
         const errors: Record<string, string> = {};
         (error.response as AxiosResponse)?.data.errors.forEach((errorObject: FieldError) => {
-          errors[errorObject.property] = errorObject.message;
+          errors[errorObject.property] = errorObject.message
         })
-        this.errors = errors;
+        this.errors = errors
         this.loading = false
-      });
+      })
     },
-    onFieldInput(event: any) {
-      const updatedData = {...this.data};
-      updatedData[event.key] = event.value;
-      this.data = updatedData;
+    onFieldInput (event: any) {
+      const updatedData = { ...this.data }
+      updatedData[event.key] = event.value
+      this.data = updatedData
     },
-    initEmptyFields() {
+    initEmptyFields () {
       this.model.fields.forEach(field => {
         if (typeof this.data[field.key] === 'undefined') {
-          this.data[field.key] = '';
+          this.data[field.key] = ''
         }
-      });
+      })
 
       // Automatic ID if enabled in model options.
       if (!this.data.id && this.autoIdField) {
-        this.data = {...this.data}; // Allows us to watch for changes.
+        this.data = { ...this.data } // Allows us to watch for changes.
 
-        const watchKey = 'data.' + this.autoIdField;
+        const watchKey = 'data.' + this.autoIdField
 
         this.$watch(watchKey, (value: string) => {
-          this.changedId = slug(value, {lower: true});
-        });
+          this.changedId = slug(value, { lower: true })
+        })
       }
     }
   }

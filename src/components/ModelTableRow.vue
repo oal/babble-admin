@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import ModelTableCell from '../components/ModelTableCell.vue';
+import ModelTableCell from '../components/ModelTableCell.vue'
 
 export default {
   components: {
@@ -43,13 +43,13 @@ export default {
   props: {
     record: Object,
     model: Object,
-    listDisplay: Array,
+    listDisplay: Array
   },
   emits: ['remove'],
 
   methods: {
-    remove() {
-      this.$emit('remove');
+    remove () {
+      this.$emit('remove')
     }
   }
 }

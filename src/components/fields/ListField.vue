@@ -64,107 +64,107 @@
 </template>
 
 <script>
-    import {get} from 'lodash';
-    import ListFieldBlock from "./helpers/ListFieldBlock.vue";
+import { get } from 'lodash'
+import ListFieldBlock from './helpers/ListFieldBlock.vue'
 
-    export default {
-        name: 'ListField',
-        components: {
-            ListFieldBlock
-        },
+export default {
+  name: 'ListField',
+  components: {
+    ListFieldBlock
+  },
 
-        props: {
-            modelValue: {
-                type: Array,
-                default: () => {
-                    return [];
-                }
-            },
-            name: String,
-            label: String,
-            options: Object,
-            blocks: Object,
-            error: Object
-        },
-emits: ['update:modelValue'],
+  props: {
+    modelValue: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    name: String,
+    label: String,
+    options: Object,
+    blocks: Object,
+    error: Object
+  },
+  emits: ['update:modelValue'],
 
-        computed: {
-            blocksWithFields() {
-                if (!this.blocks) return [];
-                return this.modelValue.map(blockData => {
-                    let block = this.blocks[blockData.type];
-                    if (!block) return null;
+  computed: {
+    blocksWithFields () {
+      if (!this.blocks) return []
+      return this.modelValue.map(blockData => {
+        const block = this.blocks[blockData.type]
+        if (!block) return null
 
-                    return {
-                        value: blockData,
-                        block: block,
-                        key: blockData._key
-                    };
-                }).filter(it => !!it)
-            },
-
-            displayAsCards() {
-                return get(this.options, 'admin.cards') === true;
-            },
-
-            blockObjects() {
-                let blockTypes = this.options.blocks;
-                let blocks = [];
-                blockTypes.forEach(type => {
-                    blocks.push(this.blocks[type]);
-                });
-                return blocks;
-            }
-        },
-
-        created() {
-            // Set an internal key on field init for all data blocks for reordering etc. to work nicely.
-            if (Array.isArray(this.modelValue)) {
-                this.modelValue.forEach(item => {
-                    item._key = Math.floor(Math.random() * 99999999).toString(16);
-                })
-            }
-        },
-
-        methods: {
-            addBlock(type) {
-                this.$emit('update:modelValue', [
-                    ...this.modelValue,
-                    {
-                        type: type,
-                        value: {}
-                    }
-                ]);
-            },
-
-            moveBlock(index, movement) {
-                let newValue = [...this.modelValue];
-                // Swap.
-                let temp = newValue[index + movement];
-                newValue[index + movement] = newValue[index];
-                newValue[index] = temp;
-
-                this.$emit('update:modelValue', newValue);
-            },
-
-            removeBlockAt(index) {
-                let newValue = [...this.modelValue];
-                newValue.splice(index, 1);
-
-                this.$emit('update:modelValue', newValue);
-            },
-
-            onFieldInput(blockIndex, event) {
-                let newFieldValue = {...this.modelValue[blockIndex]};
-                newFieldValue.value[event.key] = event.value;
-
-                let newValue = [...this.modelValue];
-                newValue[blockIndex] = newFieldValue;
-
-                this.$emit('update:modelValue', newValue);
-            }
+        return {
+          value: blockData,
+          block,
+          key: blockData._key
         }
+      }).filter(it => !!it)
+    },
+
+    displayAsCards () {
+      return get(this.options, 'admin.cards') === true
+    },
+
+    blockObjects () {
+      const blockTypes = this.options.blocks
+      const blocks = []
+      blockTypes.forEach(type => {
+        blocks.push(this.blocks[type])
+      })
+      return blocks
     }
+  },
+
+  created () {
+    // Set an internal key on field init for all data blocks for reordering etc. to work nicely.
+    if (Array.isArray(this.modelValue)) {
+      this.modelValue.forEach(item => {
+        item._key = Math.floor(Math.random() * 99999999).toString(16)
+      })
+    }
+  },
+
+  methods: {
+    addBlock (type) {
+      this.$emit('update:modelValue', [
+        ...this.modelValue,
+        {
+          type,
+          value: {}
+        }
+      ])
+    },
+
+    moveBlock (index, movement) {
+      const newValue = [...this.modelValue]
+      // Swap.
+      const temp = newValue[index + movement]
+      newValue[index + movement] = newValue[index]
+      newValue[index] = temp
+
+      this.$emit('update:modelValue', newValue)
+    },
+
+    removeBlockAt (index) {
+      const newValue = [...this.modelValue]
+      newValue.splice(index, 1)
+
+      this.$emit('update:modelValue', newValue)
+    },
+
+    onFieldInput (blockIndex, event) {
+      const newFieldValue = { ...this.modelValue[blockIndex] }
+      newFieldValue.value[event.key] = event.value
+
+      const newValue = [...this.modelValue]
+      newValue[blockIndex] = newFieldValue
+
+      this.$emit('update:modelValue', newValue)
+    }
+  }
+}
 </script>
 
 <style scoped>
