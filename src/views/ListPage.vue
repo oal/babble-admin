@@ -71,6 +71,7 @@ import { defineComponent } from 'vue'
 import { Field, Model, ModelInstance } from '@/types'
 import { AxiosResponse } from 'axios'
 import api from '@/api'
+import { debounce } from 'lodash'
 
 export default defineComponent({
   name: 'ListPage',
@@ -161,9 +162,7 @@ export default defineComponent({
 
   watch: {
     $route: 'fetchData',
-    sort () {
-      this.fetchData()
-    }
+    sort: 'fetchData'
   },
 
   created () {
@@ -171,7 +170,7 @@ export default defineComponent({
   },
 
   methods: {
-    fetchData () {
+    fetchData: debounce(function (this: any) {
       this.loading = true
 
       const modelPromise = api.options('/models/' + this.modelType).then((response: AxiosResponse) => {
@@ -187,7 +186,7 @@ export default defineComponent({
         }
         this.loading = false
       })
-    },
+    }),
     fetchRecords () {
       const wasLoading = this.loading
       this.loading = true
