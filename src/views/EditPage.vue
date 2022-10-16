@@ -150,7 +150,7 @@
   </v-form>
 </template>
 
-<script>
+<script lang="ts">
 import {get} from 'lodash';
 import slug from 'slug';
 
@@ -158,8 +158,36 @@ import FieldList from '../components/fields/helpers/FieldList.vue';
 import EditCardActions from '../components/helpers/EditCardActions.vue';
 import MainToolbar from '../components/MainToolbar.vue';
 import {useDisplay} from "vuetify";
+import {defineComponent} from "vue";
+import {AxiosError, AxiosResponse} from "axios";
 
-export default {
+interface Field {
+  key: string
+  name: string
+  type: string
+  options: Record<string, any>
+}
+
+interface AugmentedField extends Field {
+  classes: string
+}
+
+interface Model {
+  name: string
+  name_plural: string
+  fields: Field[]
+  options: Record<string, any>
+  single: boolean
+  type: string,
+  hierarchical?: boolean
+}
+
+interface FieldError {
+  property: string,
+  message: string
+}
+
+export default defineComponent({
   name: 'EditPage',
 
   components: {
@@ -174,10 +202,10 @@ export default {
   },
 
   setup() {
-    let {smAndUp} = useDisplay()
+    const {smAndUp} = useDisplay()
 
     return {
-      smAndUp
+      smAndUp,
     }
   },
 
@@ -186,12 +214,12 @@ export default {
       a: true,
       isNew: !this.id,
       editId: false,
-      changedId: this.id,
+      changedId: this.id as string | null,
       loading: true,
-      model: {},
+      model: {} as Model,
       blocks: {},
-      data: {},
-      errors: {}
+      data: {} as Record<string, any>,
+      errors: {} as Record<string, string>
     }
   },
 
@@ -200,9 +228,10 @@ export default {
       return this.model.fields.filter(field => {
         return !get(field, 'options.admin.sidebar');
       }).map(field => {
-        let numColumns = get(field, 'options.admin.columns') || 12;
-        field.classes = 'md' + numColumns;
-        return field;
+        const augmentedField = field as AugmentedField
+        const numColumns = get(augmentedField, 'options.admin.columns') || 12;
+        augmentedField.classes = 'md' + numColumns;
+        return augmentedField;
       });
     },
     sidebarFields() {
@@ -214,7 +243,7 @@ export default {
       return this.sidebarFields.length > 0
     },
     dataPath() {
-      let path = '/models/' + this.modelType;
+      const path = '/models/' + this.modelType;
 
       if (this.model.single) return path;
       if (!this.changedId) return null;
@@ -223,10 +252,10 @@ export default {
     },
 
     autoIdField() {
-      let field = get(this.model, 'options.admin.id');
+      const field = get(this.model, 'options.admin.id');
       if (!field) return null;
 
-      let fieldKeys = this.model.fields.map(field => field.key);
+      const fieldKeys = this.model.fields.map(field => field.key);
       if (fieldKeys.indexOf(field) === -1) return null;
 
       return field;
@@ -254,13 +283,13 @@ export default {
         this.data = {};
       }
 
-      this.axios.options('/models/' + this.modelType).then(response => {
+      this.axios.options('/models/' + this.modelType).then((response: AxiosResponse) => {
         this.model = response.data.model;
         this.blocks = response.data.blocks;
 
         // Only load record data if ID is set, or if this is a single instance model (doesn't have an ID).
         if (this.id || this.model.single) {
-          this.axios.get(this.dataPath).then(response => {
+          this.axios.get(this.dataPath).then((response: AxiosResponse) => {
             this.data = response.data;
             this.initEmptyFields();
             this.loading = false;
@@ -271,7 +300,7 @@ export default {
         }
       });
     },
-    validateId(value) {
+    validateId(value: string) {
       if (this.errors.id) {
         return this.errors.id;
       }
@@ -300,7 +329,7 @@ export default {
         };
       }
 
-      request(this.dataPath, data).then(response => {
+      request(this.dataPath, data).then((response: AxiosResponse) => {
         // Redirect if page didn't already have an ID. Otherwise, update data.
         if (this.id !== response.data.id) {
           let location;
@@ -329,17 +358,17 @@ export default {
 
         this.errors = {};
         this.loading = false;
-      }).catch(error => {
-        let errors = {};
-        error.response.data.errors.forEach(errorObject => {
+      }).catch((error: AxiosError) => {
+        const errors: Record<string, string> = {};
+        (error.response as AxiosResponse)?.data.errors.forEach((errorObject: FieldError) => {
           errors[errorObject.property] = errorObject.message;
         })
         this.errors = errors;
         this.loading = false
       });
     },
-    onFieldInput(event) {
-      let updatedData = {...this.data};
+    onFieldInput(event: any) {
+      const updatedData = {...this.data};
       updatedData[event.key] = event.value;
       this.data = updatedData;
     },
@@ -354,13 +383,13 @@ export default {
       if (!this.data.id && this.autoIdField) {
         this.data = {...this.data}; // Allows us to watch for changes.
 
-        let watchKey = 'data.' + this.autoIdField;
+        const watchKey = 'data.' + this.autoIdField;
 
-        this.$watch(watchKey, value => {
-          this.changedId = slug(value, {mode: 'rfc3986'}).replace(/[.]/g, '');
+        this.$watch(watchKey, (value: string) => {
+          this.changedId = slug(value, {lower: true});
         });
       }
     }
   }
-}
+})
 </script>
