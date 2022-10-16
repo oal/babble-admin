@@ -10,10 +10,7 @@
       color="primary"
     />
   </v-row>
-  <v-form
-    v-else
-    class="fill-height"
-  >
+  <v-form v-else>
     <MainToolbar>
       <template #title>
         <span
@@ -92,16 +89,9 @@
         </div>
       </v-row>
     </MainToolbar>
-    <v-container
-      fluid
-      grid-list-lg
-      class="fill-height pa-0"
-    >
-      <v-row
-        wrap
-        class="pl-2"
-      >
-        <v-col :cols="8">
+    <v-container class="pa-0">
+      <v-row class="pl-2">
+        <v-col :cols="hasSidebar ? 8 : 12">
           <div v-if="!model.single && (isNew || editId)">
             <v-card>
               <v-card-text>
@@ -130,30 +120,31 @@
             @save="save"
           />
         </v-col>
-        <v-divider :vertical="true" />
-        <v-col
-          v-if="sidebarFields.length > 0"
-          :cols="4"
-          class="pa-0"
-        >
-          <div class="fill-height blue-grey lighten-5">
-            <v-card-text class="pa-5">
-              <FieldList
-                :fields="sidebarFields"
-                :data="data"
-                :errors="errors"
-                :blocks="blocks"
-                @update:model-value="onFieldInput"
+        <template v-if="hasSidebar">
+          <v-divider :vertical="true" />
+          <v-col
+            :cols="4"
+            class="pa-0"
+          >
+            <div class="fill-height blue-grey lighten-5">
+              <v-card-text class="pa-5">
+                <FieldList
+                  :fields="sidebarFields"
+                  :data="data"
+                  :errors="errors"
+                  :blocks="blocks"
+                  @update:model-value="onFieldInput"
+                />
+              </v-card-text>
+              <edit-card-actions
+                class="hidden-md-and-up"
+                :error="saveError"
+                :model="model"
+                @save="save"
               />
-            </v-card-text>
-            <edit-card-actions
-              class="hidden-md-and-up"
-              :error="saveError"
-              :model="model"
-              @save="save"
-            />
-          </div>
-        </v-col>
+            </div>
+          </v-col>
+        </template>
       </v-row>
     </v-container>
   </v-form>
@@ -218,6 +209,9 @@ export default {
       return this.model.fields.filter(field => {
         return get(field, 'options.admin.sidebar') === true;
       });
+    },
+    hasSidebar() {
+      return this.sidebarFields.length > 0
     },
     dataPath() {
       let path = '/models/' + this.modelType;
