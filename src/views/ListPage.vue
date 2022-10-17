@@ -115,7 +115,9 @@ export default defineComponent({
     },
     fieldsByKey () {
       const fields: Record<string, Field> = {}
-      this.model.fields.forEach(field => fields[field.key] = field)
+      this.model.fields.forEach(field => {
+        fields[field.key] = field
+      })
       return fields
     },
     listDisplay () {
@@ -150,14 +152,14 @@ export default defineComponent({
       })
     },
     sortColumn () {
-      if (this.sort && this.sort.substr(0, 1) === '-') {
-        return this.sort.substr(1, this.sort.length)
+      if (this.sort && this.sort.substring(0, 1) === '-') {
+        return this.sort.substring(1, this.sort.length + 1)
       }
       return this.sort
     },
     sortDesc () {
       if (!this.sort) return false
-      return this.sort.substr(0, 1) === '-'
+      return this.sort.substring(0, 1) === '-'
     }
   },
 
@@ -198,7 +200,7 @@ export default defineComponent({
       return api.get('/models/' + this.modelType, { params }).then((response: AxiosResponse) => {
         this.models = response.data
 
-        // If fetchRecords is called outside of fetchData, and it wasn't already loading,
+        // If fetchRecords is called outside fetchData, and it wasn't already loading,
         // there is no more requests waiting at this time.
         if (!wasLoading) this.loading = false
       })

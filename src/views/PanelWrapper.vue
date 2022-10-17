@@ -134,7 +134,7 @@ export default defineComponent({
       this.loading = false
     })
 
-    api.interceptors.response.use(null, (error: AxiosError) => {
+    api.interceptors.response.use(undefined, (error: AxiosError) => {
       if (error.response?.status === 401) {
         this.showLoginDialog = true
       }
