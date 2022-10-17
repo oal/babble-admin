@@ -50,11 +50,12 @@
         </thead>
         <tbody>
           <ModelTableRow
-            v-for="item in models"
+            v-for="(item, index) in models"
             :key="item.id"
-            :record="item"
+            :model-value="item"
             :list-display="listDisplay"
             :model="model"
+            @update:model-value="syncValue($event, index)"
             @remove="remove(item)"
           />
         </tbody>
@@ -96,7 +97,7 @@ export default defineComponent({
     return {
       loading: true,
       model: {} as Model,
-      models: []as ModelInstance[],
+      models: [] as ModelInstance[],
       sort: 'id'
     }
   },
@@ -210,6 +211,9 @@ export default defineComponent({
         console.log(response)
         this.fetchData()
       })
+    },
+    syncValue (record: ModelInstance, index: number) {
+      this.models[index] = record
     },
     updateSortBy (column: string|string[]) {
       if (Array.isArray(column)) {

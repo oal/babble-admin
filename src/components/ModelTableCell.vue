@@ -35,9 +35,10 @@ export default {
 
   props: {
     model: Object,
-    record: Object,
+    modelValue: Object,
     column: Object
   },
+  emits: ['update:modelValue'],
 
   data () {
     return {
@@ -53,7 +54,7 @@ export default {
       return !!this.$options.components[componentName]
     },
     value () {
-      return this.record[this.column.key]
+      return this.modelValue[this.column.key]
     }
   },
 
@@ -62,8 +63,11 @@ export default {
       const key = this.column.key
       const partialData = {}
       partialData[key] = newValue
-      api.patch(`models/${this.model.type}/${this.record.id}`, partialData).then(response => {
-        this.record[key] = response.data[key]
+      api.patch(`models/${this.model.type}/${this.modelValue.id}`, partialData).then(response => {
+        this.$emit('update:modelValue', {
+          ...this.modelValue,
+          [key]: response.data[key]
+        })
         this.isEditing = false
       }).catch(error => {
         console.log(error)

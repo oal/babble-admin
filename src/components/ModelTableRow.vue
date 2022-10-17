@@ -3,10 +3,11 @@
     <ModelTableCell
       v-for="column in listDisplay"
       :key="column.key"
+      :model-value="modelValue"
       :class="{highlight: column.key === 'id'}"
       :column="column"
       :model="model"
-      :record="record"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
 
     <td class="text-xs-right text-no-wrap">
@@ -15,7 +16,7 @@
         left
         color="green"
         prepend-icon="edit"
-        :to="{name: 'Edit', params: {modelType: model.type, id: record.id}}"
+        :to="{name: 'Edit', params: {modelType: model.type, id: modelValue.id}}"
       >
         {{ $t('edit') }}
       </v-btn>
@@ -24,7 +25,7 @@
         variant="text"
         color="red"
         prepend-icon="delete"
-        @click="remove(record)"
+        @click="remove(modelValue)"
       >
         {{ $t('delete') }}
       </v-btn>
@@ -41,11 +42,11 @@ export default {
   },
 
   props: {
-    record: Object,
+    modelValue: Object,
     model: Object,
     listDisplay: Array
   },
-  emits: ['remove'],
+  emits: ['remove', 'update:modelValue'],
 
   methods: {
     remove () {
